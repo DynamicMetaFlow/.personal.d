@@ -182,9 +182,9 @@
 
 
 
-  (exwm-input-set-key  (kbd "s-;") 'my/switch-to-last-buffer)
-  (exwm-input-set-key (kbd "s-p") 'exwm-jump-to-last-exwm)
-  (exwm-input-set-key  (kbd "s-'") 'counsel-switch-buffer)
+  (exwm-input-set-key  (kbd "s-SPC") 'my/switch-to-last-buffer)
+  (exwm-input-set-key (kbd "s-\\") 'exwm-jump-to-last-exwm)
+  (exwm-input-set-key  (kbd "<s-return>") 'counsel-switch-buffer)
   (exwm-input-set-key (kbd "s-f") 'my/toggle-maximize)
 
 
@@ -765,6 +765,7 @@
   (projectile-create-missing-test-files t)
   (projectile-completion-system 'ivy)
   (projectile-switch-project-action  #'projectile-commander)
+  (projectile-discover-projects-in-search-path "~/org/projects")
   :config
   (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
   (projectile-mode +1)
@@ -860,76 +861,6 @@
  #+END_SRC
 
 ** Keybindings
-*** ACTIVE General
- #+BEGIN_SRC emacs-lisp
-
-  (use-package general
-    :after which-key
-    :config
-
-    (general-create-definer tyrant-def
-      :prefix "C-SPC"
-      :global-prefix "SPC"
-      :keymaps 'boon-moves-map)
-
-    (general-create-definer despot-def
-      :prefix "C-SPC"
-      :global-prefix "SPC"
-      :keymaps 'boon-moves-map)
-
-    (general-define-key
-      :keymaps 'key-translation-map
-      "ESC" (kbd "C-g"))
-
-    (tyrant-def
-
-      ""     nil
-      "SPC" 'counsel-M-x
-      "RET" 'counsel-linux-app
-      "@"  'hycontrol-windows-grid
-      "0"  'delete-window
-      "1"  'delete-other-windows
-      "2"  'split-window-below
-      "3"  'split-window-right
-
-      ;; Buffer operations
-      "b"   '(:ignore t :which-key "buffer")
-      "bb"  'counsel-switch-buffer
-      "bB"  'counsel-switch-buffer-other-window
-      "bk"  'kill-this-buffer
-      "bn"  'next-buffer
-      "bp"  'previous-buffer
-      "bi"  'ibuffer
-
-      ;; Window operations
-      "w"   '(:ignore t :which-key "window")
-      "wu"  'winner-undo
-      "wr"  'winner-redo
-
-
-      ;; File operations
-      "f"  '(:ignore t :which-key "files")
-      "fj"  'dired-jump
-      "fl"  'find-file-literally
-      "fr"  'crux-rename-file-and-buffer
-      "fw"  'write-file
-      "fs"  'save-buffer
-
-      ;; Applications
-      "a"   '(:ignore t :which-key "applications")
-      "ad"  'dired
-      "ac"  'calendar
-      "ag" 'deadgrep
-
-      "ap" '(:keymap projectile-command-map :wk "projectile")
-
-
-
-
-
-
-      ))
- #+END_SRC
 *** ACTIVE hydra
 **** Package
  #+BEGIN_SRC emacs-lisp
@@ -990,7 +921,7 @@
   ("r"     hydra-register/body nil)
   ("s"     hydra-search/body nil)
   ("t"     hydra-text/body nil)
-  ("w"     ace-window nil)
+  ("w"     hydra-window/body nil)
   ("x"     hydra-system/body nil))
 
  #+END_SRC
@@ -1030,12 +961,14 @@
   [_b_] switch             [_d_] kill the buffer
   [_i_] ibuffer            [_r_] toggle read-only mode
   [_a_] alternate          [_u_] revert buffer changes
-                         [_w_] save buffer
-  [_t_] torus
+  [_t_] torus              [_w_] save buffer
+
+
    ^ ^
 --------------------------------------------------------------------------------
     "
   ("a" my/switch-to-last-buffer)
+
   ("b" ivy-switch-buffer)
   ("d" kill-this-buffer)
   ("i" ibuffer)
@@ -1164,7 +1097,7 @@
                                      (exwm-input-char-mode)))
   "
                                                                         ╭──────┐
-  Window          WordChar        Line         iSearch                 │ Jump │
+  Window          WordChar        Line         iSearch                  │ Jump │
 ╭───────────────────────────────────────────────────────────────────────┴──────╯
   [_w_] jump        [_j_] word         [_l_] jump     [_i_] jump
   [_d_] close       [_p_] all words    [_y_] copy
@@ -1308,7 +1241,7 @@
   ("f"   projectile-find-file)
   ("F"   projectile-find-file-other-window)
   ("g"   projectile-vc)
-  ("h"   helm-projectile)
+  ("h"   counsel-projectile)
   ("i"   projectile-project-info)
   ("kc"  projectile-invalidate-cache)
   ("kd"  projectile-remove-known-project)
@@ -1549,6 +1482,35 @@
 
 )
 
+#+END_SRC
+**** window
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-window (:color blue :hint nil :inherit (hydra-common/heads)
+                                :pre (progn
+                                       (exwm-input-line-mode))
+                                :post (progn
+                                        (exwm-input-char-mode)))
+  "
+                                                                                           ╭──────────┐
+      Do                                                                                   │  Window  │
+╭──────────────────────────────────────────────────────────────────────────────────────────┴──────────╯
+  [_0_] delete
+  [_1_] other-window
+
+  [_2_] split-below
+  [_3_] split-right
+  [_g_] grid
+   ^ ^
+-------------------------------------------------------------------------------------------------------
+    "
+
+   ("0" delete-window)
+   ("1" delete-other-windows)
+   ("2" split-window-below)
+   ("3" split-window-right)
+   ("g"  hycontrol-windows-grid)
+
+)
 #+END_SRC
 * Activities
 ** ACTIVE GTD
@@ -4132,3 +4094,69 @@ assume a filename and skip displaying Dashboard."
 #+BEGIN_SRC emacs-lisp
 (use-package crux)
 #+END_SRC
+** DISABLED General
+*** DISABLED package
+#+BEGIN_SRC emacs-lisp
+  (use-package general
+    :after which-key)
+#+END_SRC
+*** DISABLED configuration
+  #+BEGIN_SRC emacs-lisp
+    (general-create-definer tyrant-def
+      :prefix "C-SPC"
+      :global-prefix "SPC"
+      :keymaps 'boon-moves-map)
+
+    (general-create-definer despot-def
+      :prefix "C-SPC"
+      :global-prefix "SPC"
+      :keymaps 'boon-moves-map)
+
+    (general-define-key
+      :keymaps 'key-translation-map
+      "ESC" (kbd "C-g"))
+
+    (tyrant-def
+
+      ""     nil
+      "SPC" 'counsel-M-x
+      "RET" 'counsel-linux-app
+      "@"  'hycontrol-windows-grid
+      "0"  'delete-window
+      "1"  'delete-other-windows
+      "2"  'split-window-below
+      "3"  'split-window-right
+
+      ;; Buffer operations
+      "b"   '(:ignore t :which-key "buffer")
+      "bb"  'counsel-switch-buffer
+      "bB"  'counsel-switch-buffer-other-window
+      "bk"  'kill-this-buffer
+      "bn"  'next-buffer
+      "bp"  'previous-buffer
+      "bi"  'ibuffer
+
+      ;; Window operations
+      "w"   '(:ignore t :which-key "window")
+      "wu"  'winner-undo
+      "wr"  'winner-redo
+
+
+      ;; File operations
+      "f"  '(:ignore t :which-key "files")
+      "fj"  'dired-jump
+      "fl"  'find-file-literally
+      "fr"  'crux-rename-file-and-buffer
+      "fw"  'write-file
+      "fs"  'save-buffer
+
+      ;; Applications
+      "a"   '(:ignore t :which-key "applications")
+      "ad"  'dired
+      "ac"  'calendar
+      "ag" 'deadgrep
+
+      "ap" '(:keymap projectile-command-map :wk "projectile")
+
+      )
+  #+END_SRC
