@@ -3259,10 +3259,12 @@ are exported to a filename derived from the headline text."
 
 * Keybindings
 #+BEGIN_SRC emacs-lisp
-(require 'org-agenda)
-
 (global-set-key "\C-c\C-e" 'eval-buffer)
+#+END_SRC
 
+* Disabled
+** DISABLED old-code
+#+BEGIN_SRC emacs-lisp
 ;; (define-key org-agenda-mode-map (kbd "TAB") #'my/org-agenda-goto-narrow)
 ;; (define-key org-agenda-mode-map (kbd "RET") #'my/org-agenda-switch-to)
 (define-key org-agenda-mode-map (kbd ";") #'org-agenda-workflow)
@@ -3279,11 +3281,7 @@ are exported to a filename derived from the headline text."
 (define-key org-brain-visualize-mode-map "c" 'my/org-brain-add-child)
 (define-key org-brain-visualize-mode-map "C" 'org-brain-add-child)
 
-#+END_SRC
 
-* Disabled
-** DISABLED old-code
-#+BEGIN_SRC emacs-lisp
  (define-key global-map (kbd "C-1") 'bjm/org-capture-todo)
  (define-key global-map (kbd "C-2") 'bjm/org-capture-zettel)
  (define-key global-map (kbd "C-3") 'bjm/org-capture-event)
