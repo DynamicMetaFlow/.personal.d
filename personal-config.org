@@ -17,335 +17,512 @@
 * Modules
 ** EXWM Window Manager
 *** config
-#+BEGIN_SRC emacs-lisp
-(use-package exwm
-  :config
-  (server-start)
-  (require 'exwm)
-  (require 'exwm-systemtray)
-  (require 'exwm-randr)
+ #+BEGIN_SRC emacs-lisp
+   (use-package exwm
+     :config
+     (server-start)
+     (require 'exwm)
+     (require 'exwm-systemtray)
+     (require 'exwm-randr)
 
-  (display-time-mode t)
-  (display-battery-mode t)
-  (setq use-dialog-box nil)
+     (display-time-mode t)
+     (display-battery-mode nil)
 
-  (setq exwm-workspace-show-all-buffers t)
-  (setq exwm-layout-show-all-buffers t)
+     (setq use-dialog-box nil)
+     (setq exwm-workspace-show-all-buffers t)
+     (setq exwm-layout-show-all-buffers t)
 
-(setq exwm-workspace-index-map
-      (lambda (index) (number-to-string (1+ index))))
+     (setq exwm-workspace-index-map
+           (lambda (index) (number-to-string (1+ index))))
 
-(dotimes (i 10)
-  (exwm-input-set-key (kbd (format "s-%d" i))
-                      `(lambda ()
-                         (interactive)
-                         (exwm-workspace-switch-create (1- ,i)))))
+     (dotimes (i 10)
+       (exwm-input-set-key (kbd (format "s-%d" i))
+                           `(lambda ()
+                              (interactive)
+                              (exwm-workspace-switch-create (1- ,i)))))
 
-  (ido-mode 0)
+     (ido-mode 0)
 
-  (setq display-time-default-load-average nil)
+     (setq display-time-default-load-average nil)
 
-  (setq window-divider-default-bottom-width 2
-        window-divider-default-right-width 2)
+     (setq window-divider-default-bottom-width 2
+           window-divider-default-right-width 2)
 
-  (setq exwm-manage-configurations '((t char-mode t)))
+     (setq exwm-manage-configurations '((t char-mode t)))
 
-  (setq exwm-workspace-number 9)
+     (setq exwm-workspace-number 9)
 
-  (defvar exwm-toggle-workspace 0
-    "Previously selected workspace. Used with `exwm-jump-to-last-exwm'.")
+     (defvar exwm-toggle-workspace 0
+       "Previously selected workspace. Used with `exwm-jump-to-last-exwm'.")
 
-  (defun exwm-jump-to-last-exwm ()
-    (interactive)
-    (exwm-workspace-switch exwm-toggle-workspace))
+     (defun exwm-jump-to-last-exwm ()
+       (interactive)
+       (exwm-workspace-switch exwm-toggle-workspace))
 
-  (defadvice exwm-workspace-switch (before save-toggle-workspace activate)
-    (setq exwm-toggle-workspace exwm-workspace-current-index))
+     (defadvice exwm-workspace-switch (before save-toggle-workspace activate)
+       (setq exwm-toggle-workspace exwm-workspace-current-index))
 
-  (defun my/exwm-rename-buffer-to-title () (exwm-workspace-rename-buffer exwm-title))
+     (defun my/exwm-rename-buffer-to-title () (exwm-workspace-rename-buffer exwm-title))
 
-  (add-hook 'exwm-update-title-hook 'my/exwm-rename-buffer-to-title)
+     (add-hook 'exwm-update-title-hook 'my/exwm-rename-buffer-to-title)
 
-  (add-hook 'exwm-floating-setup-hook 'exwm-layout-hide-mode-line)
-  (add-hook 'exwm-floating-exit-hook 'exwm-layout-show-mode-line)
+     (add-hook 'exwm-floating-setup-hook 'exwm-layout-hide-mode-line)
+     (add-hook 'exwm-floating-exit-hook 'exwm-layout-show-mode-line)
 
-  (window-divider-mode))
-  #+END_SRC
+     (defun my-exwm-workspace-display-current ()
+       "Display current workspace index."
+       (interactive)
+       (let ((message-log-max))
+         (message (elt exwm-workspace--switch-history
+                       exwm-workspace-current-index))))
+
+     (add-hook 'exwm-workspace-switch-hook #'my-exwm-workspace-display-current)
+     (advice-add 'exwm-workspace-add :after #'my-exwm-workspace-display-current)
+     (advice-add 'exwm-workspace-delete :after #'my-exwm-workspace-display-current)
+
+
+     (window-divider-mode))
+   #+END_SRC
 *** packages
-**** ACTIVE xelb
-#+BEGIN_SRC emacs-lisp
-(use-package xelb)
-#+END_SRC
-**** ACTIVE exwm-edit
-#+BEGIN_SRC emacs-lisp
-(use-package exwm-edit)
-#+END_SRC
+**** xelb
+ #+BEGIN_SRC emacs-lisp
+   (use-package xelb)
+ #+END_SRC
+**** exwm-edit
+ #+BEGIN_SRC emacs-lisp
+   (use-package exwm-edit)
+ #+END_SRC
 *** keybindings
-#+BEGIN_SRC emacs-lisp
-(setq exwm-input-line-mode-passthrough t)
+ #+BEGIN_SRC emacs-lisp
+   (setq exwm-input-line-mode-passthrough t)
 
-(defun exwm-input-line-mode ()
-  "Set exwm window to line-mode and show mode line"
-  (call-interactively #'exwm-input-grab-keyboard)
-  (exwm-layout-show-mode-line))
+   (defun exwm-input-line-mode ()
+     "Set exwm window to line-mode and show mode line"
+     (call-interactively #'exwm-input-grab-keyboard)
+     (exwm-layout-show-mode-line))
 
-(defun exwm-input-char-mode ()
-  "Set exwm window to char-mode and hide mode line"
-  (call-interactively #'exwm-input-release-keyboard)
-  (exwm-layout-hide-mode-line))
+   (defun exwm-input-char-mode ()
+     "Set exwm window to char-mode and hide mode line"
+     (call-interactively #'exwm-input-release-keyboard)
+     (exwm-layout-hide-mode-line))
 
-(defun exwm-input-toggle-mode ()
-  "Toggle between line- and char-mode"
-  (with-current-buffer (window-buffer)
-    (when (eq major-mode 'exwm-mode)
-      (if (equal (second (second mode-line-process)) "line")
-          (exwm-input-char-mode)
-        (exwm-input-line-mode)))))
+   (defun exwm-input-toggle-mode ()
+     "Toggle between line- and char-mode"
+     (with-current-buffer (window-buffer)
+       (when (eq major-mode 'exwm-mode)
+         (if (equal (second (second mode-line-process)) "line")
+             (exwm-input-char-mode)
+           (exwm-input-line-mode)))))
 
-(defun exwm-input-set-global-key (key function)
-  "Add KEY to `exwm-input-prefix-keys' and bind FUNCTION to KEY
-     in exwm keymap"
-  (cl-pushnew (elt key 0) exwm-input-prefix-keys)
-  (exwm-input-set-key key function))
+   (defun exwm-input-set-global-key (key function)
+     "Add KEY to `exwm-input-prefix-keys' and bind FUNCTION to KEY
+        in exwm keymap"
+     (cl-pushnew (elt key 0) exwm-input-prefix-keys)
+     (exwm-input-set-key key function))
 
-(defun my/switch-to-last-buffer ()
-  "Switch to last open buffer in current window."
-  (interactive)
-  (switch-to-buffer (other-buffer (current-buffer) 1)))
+   (defun my/switch-to-last-buffer ()
+     "Switch to last open buffer in current window."
+     (interactive)
+     (switch-to-buffer (other-buffer (current-buffer) 1)))
 
-(define-key minibuffer-inactive-mode-map [mouse-1] #'ignore)
+   (define-key minibuffer-inactive-mode-map [mouse-1] #'ignore)
 
-(setq windmove-wrap-around t)
+   (defun my-counsel-ibuffer-by-exwm-class-name ()
+     "`counsel-ibuffer' limited to Exwm buffers of same X class."
+     (interactive)
+     (require 'ibuffer)
+     (cl-letf*
+         ((class-name exwm-class-name)
+          (get-buffers-function
+           (symbol-function 'counsel-ibuffer--get-buffers))
+          ((symbol-function 'counsel-ibuffer--get-buffers)
+           (lambda ()
+             (--filter (with-current-buffer (cdr it)
+                         (and (eq major-mode 'exwm-mode)
+                              (string-equal exwm-class-name class-name)))
+                       (funcall get-buffers-function)))))
+       (counsel-ibuffer)))
 
-(push ?\s-  exwm-input-prefix-keys)
-;(push ?\M-  exwm-input-prefix-keys)
-;(add-to-list 'exwm-input-prefix-keys ?\C-\s)
-;(add-to-list 'exwm-input-prefix-keys ?\C-\c)
+   (setq windmove-wrap-around t)
+
+   (push ?\s-  exwm-input-prefix-keys)
+   ;(push ?\M-  exwm-input-prefix-keys)
+   ;(add-to-list 'exwm-input-prefix-keys ?\C-\s)
+   ;(add-to-list 'exwm-input-prefix-keys ?\C-\c)
 
 
 
 
-(defvar exwm-input-prefix-keys-extra nil)
+   (defvar exwm-input-prefix-keys-extra nil)
 
-;;Send next key/sequence to XWindow
-(define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
-;;Enter fullscreen
-(define-key exwm-mode-map [?\C-c C-f] 'exwm-layout-set-fullscreen)
-;;Hide a floating windows
-(define-key exwm-mode-map [?\C-c C-h] 'exwm-floating-hide)
-;;Switch to char-mode
-(define-key exwm-mode-map [?\C-c C-k] 'exwm-input-release-keyboard)
-;;Move window to new workspace
-(define-key exwm-mode-map [?\C-c C-w] 'exwm-workspace-move-window)
-;;Toggle floating
-(define-key exwm-mode-map [?\C-c C-t C-f] 'exwm-floating-toggle-floating)
-;;Toggle mode-line
-(define-key exwm-mode-map [?\C-c C-t C-m] 'exwm-layout-toggle-mode-line)
+   ;;Send next key/sequence to XWindow
+   (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
+   ;;Enter fullscreen
+   (define-key exwm-mode-map [?\C-c C-f] 'exwm-layout-set-fullscreen)
+   ;;Hide a floating windows
+   (define-key exwm-mode-map [?\C-c C-h] 'exwm-floating-hide)
+   ;;Switch to char-mode
+   (define-key exwm-mode-map [?\C-c C-k] 'exwm-input-release-keyboard)
+   ;;Move window to new workspace
+   (define-key exwm-mode-map [?\C-c C-w] 'exwm-workspace-move-window)
+   ;;Toggle floating
+   (define-key exwm-mode-map [?\C-c C-t C-f] 'exwm-floating-toggle-floating)
+   ;;Toggle mode-line
+   (define-key exwm-mode-map [?\C-c C-t C-m] 'exwm-layout-toggle-mode-line)
 
-(setq exwm-input-simulation-keys
-      '(
-        ;; movement
-        ([?\C-b] . [left])
-        ([?\C-f] . [right])
-        ([?\C-p] . [up])
-        ([?\C-n] . [down])
-        ([?\C-a] . [home])
-        ([?\C-e] . [end])
-        ([?\M-v] . [prior])
-        ([?\C-v] . [next])
-        ([?\C-d] . [delete])
-        ([?\C-k] . [S-end delete])
+   (setq exwm-input-simulation-keys
+         '(
+           ;; movement
+           ([?\C-b] . [left])
+           ([?\C-f] . [right])
+           ([?\C-p] . [up])
+           ([?\C-n] . [down])
+           ([?\C-a] . [home])
+           ([?\C-e] . [end])
+           ([?\M-v] . [prior])
+           ([?\C-v] . [next])
+           ([?\C-d] . [delete])
+           ([?\C-k] . [S-end delete])
 
-        ;; cut/paste
-        ([?\C-w] . [?\C-x])
-        ([?\M-w] . [?\C-c])
-        ([?\C-y] . [?\C-v])
-        ;; search
-        ([?\C-s] . [?\C-f])))
-
+           ;; cut/paste
+           ([?\C-w] . [?\C-x])
+           ([?\M-w] . [?\C-c])
+           ([?\C-y] . [?\C-v])
+           ;; search
+           ([?\C-s] . [?\C-f])))
 
 (defun my-exwm-keybindings ()
   "Add the key bindings for exwm."
-
- (exwm-input-set-key (kbd "<print>") #'desktop-environment-screenshot)
-
-  ;(exwm-input-set-key (kbd "C-SPC") (general-simulate-key "C-SPC"))
-
+  (exwm-input-set-key (kbd "<print>") #'desktop-environment-screenshot)
 
   (exwm-input-set-key (kbd "C-SPC")
                       (lambda ()
                         (interactive)
                         (exwm-input-line-mode)
-                        (hydra-master/body)
-                        ))
+                        (hydra-master/body)))
+
+  (exwm-input-set-key (kbd "s-m")
+                      (lambda ()
+                        (interactive)
+                        (exwm-input-line-mode)
+                        (boon-mode-hydra)))
+
+  (exwm-input-set-key  (kbd "s-;") 'counsel-switch-buffer)
+  (exwm-input-set-key  (kbd "s-p") 'my/switch-to-last-buffer)
+  (exwm-input-set-key (kbd "s-SPC") 'exwm-jump-to-last-exwm)
 
 
-
-  (exwm-input-set-key  (kbd "s-SPC") 'my/switch-to-last-buffer)
-  (exwm-input-set-key (kbd "s-\\") 'exwm-jump-to-last-exwm)
-  (exwm-input-set-key  (kbd "<s-return>") 'counsel-switch-buffer)
   (exwm-input-set-key (kbd "s-f") 'my/toggle-maximize)
 
+  (exwm-input-set-key (kbd "s-,") 'winner-undo)
+  (exwm-input-set-key (kbd "s-.") 'winner-redo)
 
-
-  ;; 's-r': Reset
   (exwm-input-set-key (kbd "s-r") #'exwm-reset)
-  ;; 's-w': Switch workspace
   (exwm-input-set-key (kbd "s-w") #'exwm-workspace-switch)
 
+  (exwm-input-set-key (kbd "s-x") #'exwm-input-toggle-keyboard))
 
-  ;; Keybinds
-  (exwm-input-set-key (kbd "s-x") #'exwm-input-toggle-keyboard)
 
-  (exwm-input-set-key (kbd "s-l") #'windmove-right)
-  (exwm-input-set-key (kbd "s-k") #'windmove-left)
-  (exwm-input-set-key (kbd "s-i") #'windmove-up)
-  (exwm-input-set-key (kbd "s-o") #'windmove-down)
-
-  (exwm-input-set-key (kbd "s-L") #'buf-move-right)
-  (exwm-input-set-key (kbd "s-K") #'buf-move-left)
-  (exwm-input-set-key (kbd "s-I") #'buf-move-up)
-  (exwm-input-set-key (kbd "s-O") #'buf-move-down))
-
-#+END_SRC
+ #+END_SRC
 *** randr
-#+BEGIN_SRC emacs-lisp
-(setq exwm-randr-workspace-output-plist '(0 "eDP1" 1 "HDMI2" 2 "VGA1"))
+ #+BEGIN_SRC emacs-lisp
+   (setq exwm-randr-workspace-output-plist '(0 "eDP1" 1 "HDMI2" 2 "VGA1"))
 
-(add-hook 'exwm-randr-screen-change-hook
-            (lambda ()
-              (start-process-shell-command
-               "xrandr" nil "xrandr --output HDMI2 --left-of VGA1 --auto")))
+   (add-hook 'exwm-randr-screen-change-hook
+               (lambda ()
+                 (start-process-shell-command
+                  "xrandr" nil "xrandr --output HDMI2 --left-of VGA1 --auto")))
 
-#+END_SRC
+ #+END_SRC
 *** ibuffer
-#+BEGIN_SRC emacs-lisp
-(setq ibuffer-saved-filter-groups
-  (quote (("default"
-    ("EXWM" (mode . exwm-mode))
-    ("org-mode" (mode . org-mode))
-    ("git" (mode . magit-status-mode))
-    ("dired" (mode . dired-mode))
-    ("emacs" (or
-              (name . "^\\*scratch\\*$")
-              (name . "^\\*Messages\\*$")
-	      (name . "^\\*Bookmark List\\*$")
-	      (name . "^\\*GNU Emacs\\*$")))))))
+ #+BEGIN_SRC emacs-lisp
+   (setq ibuffer-saved-filter-groups
+     (quote (("default"
+       ("EXWM" (mode . exwm-mode))
+       ("org-mode" (mode . org-mode))
+       ("git" (mode . magit-status-mode))
+       ("dired" (mode . dired-mode))
+       ("emacs" (or
+                 (name . "^\\*scratch\\*$")
+                 (name . "^\\*Messages\\*$")
+                 (name . "^\\*Bookmark List\\*$")
+                 (name . "^\\*GNU Emacs\\*$")))))))
 
-(add-hook 'ibuffer-mode-hook
-	  (lambda ()
-	    (ibuffer-switch-to-saved-filter-groups "default")))
+   (add-hook 'ibuffer-mode-hook
+             (lambda ()
+               (ibuffer-switch-to-saved-filter-groups "default")))
 
 
 
-;; Use human readable Size column instead of original one
-(define-ibuffer-column size-h
-  (:name "Size")
-  (cond
-   ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
-   ((> (buffer-size) 100000) (format "%7.0fk" (/ (buffer-size) 1000.0)))
-   ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
-   (t (format "%8d" (buffer-size)))))
+   ;; Use human readable Size column instead of original one
+   (define-ibuffer-column size-h
+     (:name "Size")
+     (cond
+      ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
+      ((> (buffer-size) 100000) (format "%7.0fk" (/ (buffer-size) 1000.0)))
+      ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
+      (t (format "%8d" (buffer-size)))))
 
-(define-ibuffer-column exwm-class
-  (:name "Class")
-  (cond
-   (exwm-class-name (format "%s" exwm-class-name))
-   (t (format "%s" ""))))
+   (define-ibuffer-column exwm-class
+     (:name "Class")
+     (cond
+      (exwm-class-name (format "%s" exwm-class-name))
+      (t (format "%s" ""))))
 
-;; Needs work to look good, major-mode is not equal to ibuffer-formats mode
-(define-ibuffer-column exwm-mode
-  (:name "EXWM-Mode")
-  (cond
-   ((string-equal major-mode "exwm-mode") (format "%s" exwm-class-name))
-   (t (format "%s" mode-name))))
+   ;; Needs work to look good, major-mode is not equal to ibuffer-formats mode
+   (define-ibuffer-column exwm-mode
+     (:name "EXWM-Mode")
+     (cond
+      ((string-equal major-mode "exwm-mode") (format "%s" exwm-class-name))
+      (t (format "%s" mode-name))))
 
-(setq ibuffer-formats
-      '((mark modified read-only locked " "
-              (name 50 50 :left :elide)
-              " "
-              (size-h 16 16 :right)
-              " "
-              (exwm-mode 18 18 :left :elide)
-              " " filename-and-process)
-        (mark modified read-only locked " "
-              (name 50 50 :left :elide)
-              " "
-              (size-h 16 16 :right)
-              " "
-              (mode 18 18 :left :elide)
-              (exwm-class 18 18 :left :elide)
-              " " filename-and-process)
-        (mark " "
-              (name 16 -1)
-              " " filename)))
-#+END_SRC
+   (setq ibuffer-formats
+         '((mark modified read-only locked " "
+                 (name 50 50 :left :elide)
+                 " "
+                 (size-h 16 16 :right)
+                 " "
+                 (exwm-mode 18 18 :left :elide)
+                 " " filename-and-process)
+           (mark modified read-only locked " "
+                 (name 50 50 :left :elide)
+                 " "
+                 (size-h 16 16 :right)
+                 " "
+                 (mode 18 18 :left :elide)
+                 (exwm-class 18 18 :left :elide)
+                 " " filename-and-process)
+           (mark " "
+                 (name 16 -1)
+                 " " filename)))
+ #+END_SRC
 *** autostart
+ #+BEGIN_SRC emacs-lisp
+   (defun app/autostart (application)
+     "Add an application to autostart."
+     (add-hook 'exwm-init-hook
+               `(lambda ()
+                  (start-process-shell-command "autostart-process" nil ,application))))
+
+   (defun my-exwm-autostart ()
+     "Add applications that will be loaded after exwm init is done."
+     (mapcar (lambda (program) (app/autostart program)) exwm-autostart))
+
+
+   (setq exwm-autostart
+         (list
+          "nm-applet"
+          "compton -b"
+          "volumeicon"
+          "thinkpad-touchpad off"
+          "/usr/bin/dunst"
+          "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+          "pamac-tray"
+          "autorandr --change"
+          "xfce4-power-manager"
+          "redshift-gtk"
+          ))
+
+
+   (add-hook 'after-init-hook
+             (lambda ()
+               (my-exwm-autostart)
+               (exwm-systemtray-enable)
+               (exwm-nw-mode)
+               (exwm-randr-enable)
+               (exwm-input--update-global-prefix-keys)
+               (my-exwm-keybindings)
+               (exwm-init))
+             t)
+ #+END_SRC
+** torus
 #+BEGIN_SRC emacs-lisp
-(defun app/autostart (application)
-  "Add an application to autostart."
-  (add-hook 'exwm-init-hook
-            `(lambda ()
-               (start-process-shell-command "autostart-process" nil ,application))))
+    (use-package torus
+      :init
+  (defun torus-read (filename)
+    "Read main torus variables from FILENAME as Lisp code."
+    (interactive
+     (list
+      (read-file-name
+       "Torus file : "
+       (file-name-as-directory torus-dirname))))
+    (let*
+        ((file-basename (file-name-nondirectory filename))
+         (minus-len-ext (- (min (length torus-extension)
+                                (length filename))))
+         (buffer))
+      (unless (equal (cl-subseq filename minus-len-ext) torus-extension)
+        (setq filename (concat filename torus-extension)))
+      (when (torus--update-input-history file-basename)
+        (if (file-exists-p filename)
+            (progn
+              (setq buffer (find-file-noselect filename))
+              (eval-buffer buffer)
+              (kill-buffer buffer))
+          (message "File %s does not exist." filename))))
+    ;; Also saved in file
+    ;; (torus--update-meta)
+    ;; (torus--build-index)
+    ;; (torus--build-meta-index)
+    (torus--jump))
+      (setq torus-prefix-key (kbd "C-x t"))
 
-(defun my-exwm-autostart ()
-  "Add applications that will be loaded after exwm init is done."
-  (mapcar (lambda (program) (app/autostart program)) exwm-autostart))
+      :bind-keymap ("C-x t" . torus-map)
+      :bind (
+             :map torus-map
+             ("t" . torus-copy-to-circle))
+      :hook ((emacs-startup . torus-start)
+             (kill-emacs . torus-quit))
+      :custom (
+               (torus-binding-level 1)
+               (torus-verbosity 1)
+               (torus-dirname (concat user-emacs-directory (file-name-as-directory "torus")))
+               (torus-load-on-startup t)
+               (torus-save-on-exit t)
+               (torus-autoread-file (concat torus-dirname "last.el"))
+               (torus-autowrite-file torus-autoread-file)
+               (torus-backup-number 5)
+               (torus-history-maximum-elements 30)
+               (torus-maximum-horizontal-split 3)
+               (torus-maximum-vertical-split 4)
+               (torus-display-tab-bar t)
+               (torus-separator-torus-circle " >> ")
+               (torus-separator-circle-location " > ")
+               (torus-prefix-separator "/")
+               (torus-join-separator " & "))
+      :config
+      (torus-init)
+      (torus-install-default-bindings)
+    )
 
-
-(setq exwm-autostart
-      (list
-       "nm-applet"
-       "compton -b"
-       "volumeicon"
-       "thinkpad-touchpad off"
-       "/usr/bin/dunst"
-       "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
-       "pamac-tray"
-       "autorandr --change"
-       "xfce4-power-manager"
-       "redshift-gtk"
-       ))
-
-
-(add-hook 'after-init-hook
-	  (lambda ()
-            (my-exwm-autostart)
-            (exwm-systemtray-enable)
-            (exwm-nw-mode)
-            (exwm-randr-enable)
-            (exwm-input--update-global-prefix-keys)
-            (my-exwm-keybindings)
-            (exwm-init))
-	  t)
 #+END_SRC
-** General
-*** boon
- #+BEGIN_SRC emacs-lisp
-(use-package boon
-  :config
-  (require 'boon-qwerty)
-  (boon-mode))
- #+END_SRC
-** Media
-*** emms
- #+BEGIN_SRC emacs-lisp
-  (use-package emms
-  :ensure t
-  :config
-  (require 'emms)
-     (emms-all)
-     (emms-default-players)
-     (setq emms-source-file-default-directory "/home/alexander/org/data/c0/80320c-060b-4348-a413-ee7d8ed40dd6/")
 
-     (setq emms-playlist-buffer-name "*Music*")
-     (setq emms-info-asynchronously t)
-     (setq emms-info-functions '(emms-info-libtag))
-     (emms-mode-line 0)
-     (emms-playing-time 1))
- #+END_SRC
+** boon
+*** setup
+#+BEGIN_SRC emacs-lisp
+    (use-package boon
+      :config
+      (require 'boon-qwerty)
+      (boon-mode)
 
-*** pdf-tools
+  )
+#+END_SRC
+*** boon-objed
+#+BEGIN_SRC emacs-lisp
+  ;; (defvar boon-objed-map (make-sparse-keymap))
+  ;; (append boon-mode-map-alist (cons 'boon-objed-state boon-objed-map))
+
+  (defvar-local boon-objed-state nil "Non-nil when boon objed mode is activated.")
+
+  (defun boon-reset-all-mode-states ()
+    (interactive)
+    (mapcar (lambda (boon-mode)
+              (setq boon-mode nil)) boon-mode-map-alist))
+
+
+
+
+  (defun boon-set-objed-state ()
+    "Switch to objed state."
+    (boon-set-state 'boon-objed-state))
+
+  (setq boon-key-list '
+        ((org-mode . (message "%s" "command from org mode"))
+         (lisp-mode . (message "%s" "command from lisp mode"))
+         (python-mode . (message "%s" "command from python mode"))))
+#+END_SRC
+*** boon-major-mode
+#+BEGIN_SRC emacs-lisp
+  (defun boon-detect-mode (boon-mode-map)
+    (let ((boon-mode-command (cdr (assoc major-mode boon-mode-map))))
+      (if boon-mode-command (apply boon-mode-command))))
+
+  (setq boon-major-mode-hydra-list '
+        ((org-mode . (hydra-org/body))
+         (emacs-lisp-mode . (hydra-lisp/body))
+         (js2-mode . (hydra-javascript/body))
+         (json-mode . (hydra-json/body))
+         (sql-mode . (hydra-sql/body))
+         (css-mode . (hydra-css/body))
+         (scss-mode . (hydra-scss/body))
+         (javascript-mode . (hydra-javascript/body))
+         (yaml-mode . (hydra-yaml/body))
+         (c++-mode . (hydra-c++/body))
+         (web-mode . (hydra-web/body))
+         (html-mode . (hydra-html/body))
+         (exwm-mode . (hydra-exwm/body))
+         (python-mode . (hydra-python/body))))
+
+  (defun boon-select-major-mode (boon-mode-map)
+    (let ((boon-mode-command (cdr (assoc major-mode boon-mode-map))))
+      (if boon-mode-command (apply boon-mode-command))))
+
+  (defun boon-mode-hydra ()
+    (interactive)
+    (boon-select-major-mode boon-major-mode-hydra-list))
+
+  (define-key boon-command-map (kbd "SPC")   'hydra-master/body)
+  (define-key boon-command-map (kbd "RET")   'counsel-linux-app)
+
+  (define-key boon-command-map  (kbd "m")   'boon-mode-hydra)
+
+  (define-key boon-command-map (kbd "5")     'hydra-narrow/body)
+  (define-key boon-command-map (kbd "8")     'objed-mode)
+
+  (define-key boon-command-map (kbd "<f12>") 'hydra-emacs/body)
+  (define-key boon-command-map (kbd "g")     'hydra-jump/body)
+  (define-key boon-command-map (kbd "G")     'hydra-goto/body)
+
+  (define-key boon-command-map (kbd "r")     'hydra-search/body)
+  (define-key boon-command-map (kbd "b")     'hydra-register/body)
+
+  (define-key boon-command-map (kbd "/")     'hui-search-web)
+  (define-key boon-command-map (kbd "F")     'my/exwm-counsel-yank-pop)
+  (define-key boon-command-map (kbd "H")     'avy-goto-word-1)
+  (define-key boon-command-map (kbd "h")     'avy-goto-char)
+
+#+END_SRC
+*** boon-special
+#+BEGIN_SRC emacs-lisp
+  (custom-set-variables
+   '(boon-special-mode-list
+     (quote
+      (
+       magit-mode
+       magit-popup-mode
+       debugger-mode
+       git-rebase-mode
+       help-mode
+       org-agenda-mode
+       ,,*dashboard*
+       ))))
+
+
+#+END_SRC
+
+** objed
+#+BEGIN_SRC emacs-lisp
+  (use-package objed)
+#+END_SRC
+
+** emms
+#+BEGIN_SRC emacs-lisp
+ (use-package emms
+ :ensure t
+ :config
+ (require 'emms)
+    (emms-all)
+    (emms-default-players)
+    (setq emms-source-file-default-directory "/home/alexander/org/data/c0/80320c-060b-4348-a413-ee7d8ed40dd6/")
+
+    (setq emms-playlist-buffer-name "*Music*")
+    (setq emms-info-asynchronously t)
+    (setq emms-info-functions '(emms-info-libtag))
+    (emms-mode-line 0)
+    (emms-playing-time 1))
+#+END_SRC
+
+** pdf-tools
  #+BEGIN_SRC emacs-lisp
 (use-package pdf-tools :ensure t
   :config
@@ -354,41 +531,39 @@
   (setq-default pdf-view-display-size 'fit-page))
  #+END_SRC
 
-** Management
-*** Information
-**** ACTIVE Hyperbole
-  #+BEGIN_SRC emacs-lisp
-  (use-package hyperbole
-    :ensure t
-    :config
-    (defun goto-button (heading loc)
-      (widen)
-      (goto-char(point-min))
-      (search-forward-regexp heading)
-      (org-narrow-to-subtree)
-      (search-forward-regexp loc)
-      (recenter-top-bottom))
+** Hyperbole
+#+BEGIN_SRC emacs-lisp
+(use-package hyperbole
+  :ensure t
+  :config
+  (defun goto-button (heading loc)
+    (widen)
+    (goto-char(point-min))
+    (search-forward-regexp heading)
+    (org-narrow-to-subtree)
+    (search-forward-regexp loc)
+    (recenter-top-bottom))
 
-    (defun my/avy-goto-jump (char &optional arg)
-      "Jump to the currently visible CHAR.
-    The window scope is determined by `avy-all-windows' (ARG negates it)."
-      (interactive (list (read-char "char: " t)
-                         current-prefix-arg))
+  (defun my/avy-goto-jump (char &optional arg)
+    "Jump to the currently visible CHAR.
+  The window scope is determined by `avy-all-windows' (ARG negates it)."
+    (interactive (list (read-char "char: " t)
+                       current-prefix-arg))
 
-      (avy-with avy-goto-char
-        (avy-jump
-         (if (= 13 char)
-             "\n"
-           (regexp-quote (string char)))
-         :window-flip arg))
-      (hkey-either arg))
+    (avy-with avy-goto-char
+      (avy-jump
+       (if (= 13 char)
+           "\n"
+         (regexp-quote (string char)))
+       :window-flip arg))
+    (hkey-either arg))
 
-    )
+  )
 
 
-  #+END_SRC
-**** ACTIVE howm
-***** functions
+#+END_SRC
+** howm
+*** functions
   #+BEGIN_SRC emacs-lisp
 (defvar howm-view-title-header "#+TITLE:")
 
@@ -623,7 +798,7 @@
 
 
   #+END_SRC
-***** package
+*** package
    #+BEGIN_SRC emacs-lisp
 (use-package howm
   :demand t
@@ -655,8 +830,7 @@
 
 
    #+END_SRC
-*** Buffer/File
-**** ACTIVE projectile
+** projectile
   #+BEGIN_SRC emacs-lisp
 (use-package projectile
   :custom
@@ -668,6 +842,7 @@
   :config
   (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
   (projectile-mode +1)
+  (counsel-projectile-mode +1)
   (def-projectile-commander-method ?S
     "Run a search in the project"
     (counsel-projectile-rg))
@@ -697,71 +872,108 @@
 
 
   #+END_SRC
-**** ACTIVE torus
-  #+BEGIN_SRC emacs-lisp
-  (use-package torus
-    :init
-(defun torus-read (filename)
-  "Read main torus variables from FILENAME as Lisp code."
-  (interactive
-   (list
-    (read-file-name
-     "Torus file : "
-     (file-name-as-directory torus-dirname))))
-  (let*
-      ((file-basename (file-name-nondirectory filename))
-       (minus-len-ext (- (min (length torus-extension)
-                              (length filename))))
-       (buffer))
-    (unless (equal (cl-subseq filename minus-len-ext) torus-extension)
-      (setq filename (concat filename torus-extension)))
-    (when (torus--update-input-history file-basename)
-      (if (file-exists-p filename)
-          (progn
-            (setq buffer (find-file-noselect filename))
-            (eval-buffer buffer)
-            (kill-buffer buffer))
-        (message "File %s does not exist." filename))))
-  ;; Also saved in file
-  ;; (torus--update-meta)
-  ;; (torus--build-index)
-  ;; (torus--build-meta-index)
-  (torus--jump))
-    (setq torus-prefix-key (kbd "C-x t"))
+** ivy-xref
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy-xref
+    :ensure t
+    :init (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
+#+END_SRC
+** goto-last-point
+#+BEGIN_SRC emacs-lisp
+  (use-package goto-last-point
+    :ensure t
+    :demand t
+    :config (goto-last-point-mode))
+#+END_SRC
+** goto-last-change
+#+BEGIN_SRC emacs-lisp
+  (use-package goto-last-change
+    :ensure t
+    :bind
+    (:map boon-goto-map
+          ("SPC" . goto-last-change)))
+#+END_SRC
+** edit-indirect
+#+BEGIN_SRC emacs-lisp
+  (use-package edit-indirect)
+#+END_SRC
+** gpastel
+#+BEGIN_SRC emacs-lisp
+  (use-package gpastel
+  :config
+  (exwm-input-set-key (kbd "M-y") #'my/exwm-counsel-yank-pop)
+  (defun my/exwm-counsel-yank-pop ()
+    "Same as `counsel-yank-pop' and paste into exwm buffer."
+    (interactive)
+    (let ((inhibit-read-only t)
+          (yank-pop-change-selection t))
+      (call-interactively #'counsel-yank-pop))
+    (when (derived-mode-p 'exwm-mode)
+      (exwm-input--set-focus (exwm--buffer->id (window-buffer (selected-window))))
+      (exwm-input--fake-key ?\C-v))))
 
-    :bind-keymap ("C-x t" . torus-map)
-    :bind (
-           :map torus-map
-           ("t" . torus-copy-to-circle))
-    :hook ((emacs-startup . torus-start)
-           (kill-emacs . torus-quit))
-    :custom (
-             (torus-binding-level 1)
-             (torus-verbosity 1)
-             (torus-dirname (concat user-emacs-directory (file-name-as-directory "torus")))
-             (torus-load-on-startup t)
-             (torus-save-on-exit t)
-             (torus-autoread-file (concat torus-dirname "last.el"))
-             (torus-autowrite-file torus-autoread-file)
-             (torus-backup-number 5)
-             (torus-history-maximum-elements 30)
-             (torus-maximum-horizontal-split 3)
-             (torus-maximum-vertical-split 4)
-             (torus-display-tab-bar t)
-             (torus-separator-torus-circle " >> ")
-             (torus-separator-circle-location " > ")
-             (torus-prefix-separator "/")
-             (torus-join-separator " & "))
+#+END_SRC
+
+** telephone-line
+#+BEGIN_SRC emacs-lisp
+  (use-package telephone-line
     :config
-    (torus-init)
-    (torus-install-default-bindings)
-  )
+    (telephone-line-defsegment my-vc-info ()
+    (when vc-mode
+    (cond
+    ((string-match "Git[:-]" vc-mode)
+    (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
+    (concat "" (format " %s" branch))))
+    ((string-match "SVN-" vc-mode)
+    (let ((revision (cadr (split-string vc-mode "-"))))
+    (concat "" (format "SVN-%s" revision))))
+    (t (format "%s" vc-mode)))))
 
-  #+END_SRC
+    (telephone-line-defsegment* telephone-line-boon-mode-segment ()
+         (let ((tag (cond
+                     (boon-command-state  "CMD")
+                     (boon-insert-state   "INS")
+                     (boon-special-state  "SPC")
+                     (boon-objed-state    "OBJ")
+                     )))
+           (if telephone-line-evil-use-short-tag
+               (seq-take tag 1)
+             tag)))
 
-*** Keybindings
-**** ACTIVE hydra
-***** Package
+    ;; (telephone-line-defsegment* my-airline-position-segment (&optional lines columns)
+    ;;   (let* ((l (number-to-string (if lines lines 1)))
+    ;;          (c (number-to-string (if columns columns 2))))
+    ;;     (if (eq major-mode 'paradox-menu-mode)
+    ;;         (telephone-line-raw mode-line-front-space t)
+    ;;         (concat " " "%" l "l:%" c "c"))))
+
+    ;; (setq tel
+        (setq telephone-line-lhs
+          '((evil   . (telephone-line-boon-mode-segment))
+            (accent . (my-vc-info
+                       telephone-line-process-segment))
+            (nil    . (telephone-line-buffer-segment
+                       telephone-line-projectile-segment))))
+
+    (setq telephone-line-rhs
+          '((nil    . (telephone-line-flycheck-segment
+                       telephone-line-misc-info-segment))
+
+            (accent . (telephone-line-major-mode-segment))
+            (nil    . (telephone-line-hud-segment))))
+                       ;; my-airline-position-segment))))
+
+    (setq display-time-format "%l:%M %p")
+    (setq display-time-default-load-average nil)
+    (setq display-time-use-mail-icon t)
+    (setq display-time-mail-file t)
+
+    (display-time-mode t)
+
+    (telephone-line-mode 1))
+#+END_SRC
+** hydra
+*** package
   #+BEGIN_SRC emacs-lisp
 (use-package hydra
   :ensure t
@@ -769,68 +981,329 @@
   :init
   (define-key boon-moves-map  (kbd "SPC") 'hydra-master/body)
   :config
+
+  (defun counsel-projectile-switch-to-buffer-other-window ()
+    "Jump to a buffer in the current project."
+    (interactive)
+    (other-window 1)
+    (counsel-projectile-switch-to-buffer))
+
+  (defun counsel-projectile-find-dir-other-window ()
+    "Jump to a buffer in the current project."
+    (interactive)
+    (other-window 1)
+    (counsel-projectile-find-dir))
+
+  (defun counsel-projectile-find-file-other-window ()
+    "Jump to a buffer in the current project."
+    (interactive)
+    (other-window 1)
+    (counsel-projectile-find-file))
+
+  (defun counsel-projectile-find-file-dwim-other-window ()
+    "Jump to a buffer in the current project."
+    (interactive)
+    (other-window 1)
+    (counsel-projectile-find-file-dwim))
+
   (setq lv-use-separator t)
-  (set-face-attribute 'hydra-face-blue nil :foreground "deep sky blue" :weight 'bold)
-
-  (eval-and-compile
-    (defhydra hydra-common (:color blue)
-      ("<ESC>" nil "quit"))))
+  (set-face-attribute 'hydra-face-blue nil :foreground "deep sky blue" :weight 'bold))
   #+END_SRC
-***** Index
-  #+BEGIN_SRC emacs-lisp
-(defhydra hydra-master (:color blue
-                               :pre (progn
-                                      (exwm-input-line-mode))
-                               :post (progn
-                                       (exwm-input-char-mode)))
-  "
-                                                                       ╭───────┐
-                                                                       │ Index │
-╭──────────────────────────────────────────────────────────────────────┴───────╯
-  [_a_] bookmarks    [^h^]               [_o_] organization  [^v^]
-  [_b_] buffers      [_i_] internet      [_p_] project       [_w_] window
-  [_c_] flycheck     [_j_] jump          [_r_] register      [_x_] shell
-  [_e_] emacs        [_k_] spell         [_s_] search        [^y^]
-  [_f_] file         [_m_] media         [_t_] text          [^z^]
-  [_g_] git          [_n_] narrow        [^u^]
+*** common
+**** setup
+   #+BEGIN_SRC emacs-lisp
+(eval-and-compile
+  (defhydra hydra-common  (
+                           :color blue
+                           :hint nil
+                           :pre (progn
+                                  (exwm-input-line-mode))
+                           :post (progn
+                                   (exwm-input-char-mode)))
+    ("RET"   counsel-linux-app nil)
+    ("SPC" counsel-M-x nil)
+    ("<tab>" counsel-switch-buffer nil)
+    ("DEL"   hydra-master/body)
+    ("q" nil)
 
+
+
+    ("m"   boon-mode-hydra "mode")
+    ("b"   hydra-buffers/body "buffers")
+    ("/"   hydra-search/body "search")
+    ("\\"   hydra-narrow/body "narrow")
+    (","   hydra-jump/body "jump")
+    ("."   hydra-register/body "register")
+
+
+
+    ))
+   #+END_SRC
+**** major-mode-hydras
+***** hydra-org
+   #+BEGIN_SRC emacs-lisp :results silent
+  (defhydra hydra-org (:exit t :columns 4
+:inherit (hydra-common/heads))
+
+    "Org mode"
+    ("u" org-up-element "Up element")
+    ("d" org-down-element "Down element")
+    ("b" org-next-block "Next block")
+    ("e" org-export-dispatch "Export")
+    ("t" org-todo "Toggle todo states")
+    ("T" org-babel-tangle "Tangle code")
+    ("c" org-babel-execute-src-block "Run block")
+    ("," outline-show-children "Show node children")
+    ("." org-tree-to-indirect-buffer "Edit in buffer")
+    ("'" org-edit-special "Code buffer"))
+   #+END_SRC
+***** hydra-python
+  #+BEGIN_SRC emacs-lisp :results silent
+  (with-no-warnings
+  (defhydra hydra-python (:exit t :columns 4)
+    "Python"
+    ("#" poporg-dwim "Edit Comment")
+    ("," dumb-jump-back "Jump back")
+    ("." dumb-jump-go "Jump to definition")
+    ("D" hydra-python-django/body "Django")
+    ("L" flycheck-prev-error "Prev lint error")
+    ("T" pythonic-tests-all "Run pythonic test")
+    ("a" pytest-all "Run all tests")
+    ("b" python-shell-send-buffer "Send buffer to python")
+    ("u" em-python-pur "Upgrade pip requirements")
+    ;;("r" python-shell-send-buffer "Send line/region to python")
+    ("r" run-python "REPL")
+    ("d" helm-dash-at-point "Docs")
+    ("c" em-python-execute "Compile / Execute")
+    ("i" dumb-jump-quick-look "Definition Info")
+    ("l" flycheck-next-error "Next lint error")
+    ("t" pythonic-tests-run "Run current test")
+    ("V" flycheck-verify-setup "Verify linting")
+    ("v" em-python-environment "Check environment")
+    ("s" isortify-buffer "Sort imports")
+    ;;("n" flyceck "Run all tests")
+    ("f" blacken-buffer "Format buffer code")))
+  #+END_SRC
+***** hydra-lisp
+  #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-lisp (:exit t :columns 4)
+    "Lisp Mode"
+    ("r" ielm "Interactive REPL")
+    ("." dumb-jump-go "Jump definition")
+    ("v" flycheck-verify-setup "Verify linting")
+    ("f" elisp-format-buffer "Format buffer")
+    ("d" checkdoc "Lint doc strings")
+    ("l" package-lint-current-buffer "Lint code")
+    ("c" emacs-lisp-byte-compile-and-load "Lisp execute"))
+  #+END_SRC
+***** hydra-javascript
+  #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-javascript (:exit t :columns 4)
+    "Javascript"
+    ("," dumb-jump-back "Jump back")
+    ("." dumb-jump-go "Jump to definition")
+    ("l" flycheck-next-error "Next lint error")
+    ("i" npm-mode-npm-init "Initialize NPM")
+    ("f" prettier-js "Format code")
+    ("v" flycheck-verify-setup "Verify linting"))
+  #+END_SRC
+***** hydra-rjsx
+  #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-rjsx (:exit t :columns 4)
+    "Javascript"
+    ("," dumb-jump-back "Jump back")
+    ("." dumb-jump-go "Jump to definition")
+    ("l" flycheck-next-error "Next lint error")
+    ("i" npm-mode-npm-init "Initialize NPM")
+    ("f" prettier-js "Format code")
+    ("r" indium-connect "REPL")
+    ("h" html-to-react "HTML to react")
+    ("v" flycheck-verify-setup "Verify linting"))
+
+  #+END_SRC
+
+***** hydra-css
+   #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-css (:exit t :columns 4)
+    "Css"
+    ("," dumb-jump-back "Jump back")
+    ("." dumb-jump-go "Jump to definition")
+    ("f" web-beautify-css "Format css"))
+   #+END_SRC
+***** hydra-scss
+   #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-scss (:exit t :columns 4)
+    "Scss"
+    ("," dumb-jump-back "Jump back")
+    ("." dumb-jump-go "Jump to definition")
+    ("f" web-beautify-css "Format css"))
+   #+END_SRC
+***** hydra-web
+   #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-web (:exit t :columns 4)
+    "Web"
+    ("f" web-beautify-html "Format buffer")
+    ("o" browser-url-of-buffer "Open in browser"))
+  #+END_SRC
+***** hydra-html
+   #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-html (:exit t :columns 4)
+    "Html"
+    ("f" web-beautify-html "Format buffer")
+    ("o" browser-url-of-buffer "Open in browser"))
+    #+END_SRC
+
+***** hydra-c
+    #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-c (:exit t :columns 4)
+    "C"
+    ("." dumb-jump-go "Jump to definition")
+    ("," dumb-jump-back "Jump back")
+    ("i" dumb-jump-quick-look "Definition Info")
+    ("f" clang-format-buffer "Format buffer"))
+    #+END_SRC
+***** hydra-json
+  #+BEGIN_SRC emacs-lisp
+  (with-no-warnings
+  (defhydra hydra-json (:exit t :columns 4)
+    "CSV"
+    (";" yafolding-toggle-all "Fold")
+    ("f" csv-align-fields "Format visually")))
+  #+END_SRC
+***** hydra-exwm
+    #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-exwm (:exit t
+                        :columns 4
+                        :color blue
+                        :inherit (hydra-common/heads)
+                        :pre (progn
+                               (exwm-input-line-mode))
+                        :post (progn
+                                (exwm-input-char-mode)))
+
+    "EXWM"
+    ("b" my-counsel-ibuffer-by-exwm-class-name "buffer")
+
+)
+    #+END_SRC
+**** buffers
+   #+BEGIN_SRC emacs-lisp
+(defhydra hydra-buffers (
+                         :color red
+                         :hint  nil
+                         :inherit (hydra-common/heads)
+                         :pre (progn
+                                (exwm-input-line-mode))
+                         :post (progn
+                                 (exwm-input-char-mode))
+                         )
+  "
+                                                                     ╭─────────┐
+  Window           Switch                    Do                      │ Buffers │
+╭────────────────────────────────────────────────────────────────────┴─────────╯
+     ↑          [_ss_] buffer         [_dw_] delete window
+     _i_          [_sp_] projectile     [_do_] delete other windows
+ ← _k_   _l_ →      [_se_] exwm           [_ds_] swap
+     _o_          [_sb_] bookmarks      [_w_] grid
+     ↓          [_st_] torus
+
+   ^ ^
 --------------------------------------------------------------------------------
     "
-  ("\\" my/switch-to-last-buffer "last-buffer")
+  ("i" windmove-up)
+  ("o" windmove-down)
+  ("k" windmove-left)
+  ("l" windmove-right)
 
-  ("SPC" counsel-M-x "M-x")
-  ("RET" counsel-linux-app "run")
-  ("<ESC>" nil "quit")
-  ("q" nil "quit")
-  ("a"     hydra-bookmarks/body nil)
-  ("b"     hydra-buffers/body nil)
-  ("c"     hydra-flycheck/body nil)
-  ("e"     hydra-emacs/body nil)
-  ("f"     hydra-file/body nil)
-  ("g"     hydra-git/body nil)
-  ("i"     hui-search-web nil)
-  ("j"     hydra-jump/body nil)
-  ("k"     hydra-spell/body nil)
-  ("l"     hydra-lisp/body nil)
-  ("m"     hydra-media/body nil)
-  ("n"     hydra-narrow/body nil)
-  ("o"     hydra-organization/body nil)
-  ("p"     hydra-project/body nil)
-  ("Q"     hydra-exit/body nil)
-  ("r"     hydra-register/body nil)
-  ("s"     hydra-search/body nil)
-  ("t"     hydra-text/body nil)
-  ("w"     hydra-window/body nil)
-  ("x"     hydra-system/body nil))
+  ("I" buf-move-up)
+  ("O" buf-move-down)
+  ("K" buf-move-left)
+  ("L" buf-move-right)
 
-  #+END_SRC
-***** Bookmarks
-  #+BEGIN_SRC emacs-lisp
-(defhydra hydra-bookmarks (:color blue :hint nil :inherit (hydra-common/heads)
-                                  :pre (progn
-                                         (exwm-input-line-mode))
-                                  :post (progn
-                                          (exwm-input-char-mode)))
+  ("s-l" split-window-right)
+  ("s-k" split-window-left)
+  ("s-o" split-window-below)
+  ("s-i" split-window-up)
+
+  ("dw" delete-window)
+  ("do" delete-other-windows)
+  ("ds" ace-swap-window)
+
+  ("ss" my/switch-to-last-buffer)
+  ("sp" counsel-projectile-switch-to-buffer)
+  ("sb" hydra-bookmarks/body :color blue)
+  ("st" hydra-torus/body :color blue)
+  ("se" my-counsel-ibuffer-by-exwm-class-name)
+
+  ("w" hycontrol-windows-grid)
+  )
+   #+END_SRC
+***** torus
+    #+BEGIN_SRC emacs-lisp
+(defhydra hydra-torus (
+                       :color red
+                       :hint nil
+                       :inherit (hydra-common/heads)
+                       :pre (progn
+                              (exwm-input-line-mode))
+                       :post (progn
+                               (exwm-input-char-mode)))
+  "
+                                                                                           ╭─────────┐
+    Switch                    Move                        Do                               │  Torus  │
+╭──────────────────────────────────────────────────────────────────────────────────────────┴─────────╯
+  [_sc_] circle          [_<up>_]  prev-location         [_#_]  layout            [_ss_] search
+  [_sl_] location       [_<down>_] next-location         [_ac_] add-circle        [_sh_] search-history
+  [_st_] torus                                         [_al_] add-location
+                     [_<left>_]  prev-circle
+  [_!_] alt-circle     [_<right>_] next-circle          [_dc_] delete-circle
+  [_<_] alt-circles                                   [_dl_] delete-location
+  [_>_] alt-torus      [_<prior>_] newer-history
+                     [_<next>_]  older-history
+   ^ ^
+-------------------------------------------------------------------------------------------------------
+    "
+
+("#" torus-layout-menu)
+
+("sc" torus-switch-circle)
+("sl" torus-switch-location)
+("st" torus-switch-torus)
+
+("ac" torus-add-circle)
+("al" torus-add-location)
+
+("dl" torus-delete-location)
+("dc" torus-delete-circle)
+
+("<up>"   torus-previous-location)
+("<down>" torus-next-location)
+("<left>" torus-previous-circle)
+("<right>" torus-next-circle)
+
+
+("ss" torus-search)
+("sh" torus-search-history)
+
+("<prior>" torus-history-newer)
+("<next>" torus-history-older)
+
+("!" torus-alternate-in-same-torus)
+("<" torus-alternate-circles)
+(">" torus-alternate-in-same-circle)
+)
+
+    #+END_SRC
+***** bookmarks
+    #+BEGIN_SRC emacs-lisp
+(defhydra hydra-bookmarks (
+                           :color red
+                           :hint nil
+                           :inherit (hydra-common/heads)
+                           :pre (progn
+                                  (exwm-input-line-mode))
+                           :post (progn
+                                   (exwm-input-char-mode)))
 
   "
                                                                    ╭───────────┐
@@ -845,150 +1318,9 @@
   ("j" bookmark-jump)
   ("m" bookmark-set)
   ("s" bookmark-save))
-  #+END_SRC
-***** Buffers
-  #+BEGIN_SRC emacs-lisp
-(defhydra hydra-buffers (:color blue :hint nil :inherit (hydra-common/heads)
-                                :pre (progn
-                                       (exwm-input-line-mode))
-                                :post (progn
-                                        (exwm-input-char-mode)))
-  "
-                                                                     ╭─────────┐
-  Switch                 Do                                          │ Buffers │
-╭────────────────────────────────────────────────────────────────────┴─────────╯
-  [_b_] switch             [_d_] kill the buffer
-  [_i_] ibuffer            [_r_] toggle read-only mode
-  [_a_] alternate          [_u_] revert buffer changes
-  [_t_] torus              [_w_] save buffer
-
-
-   ^ ^
---------------------------------------------------------------------------------
-    "
-  ("a" my/switch-to-last-buffer)
-
-  ("b" ivy-switch-buffer)
-  ("d" kill-this-buffer)
-  ("i" ibuffer)
-  ("r" read-only-mode)
-  ("u" revert-buffer)
-  ("w" save-buffer)
-  ("t" hydra-torus/body nil))
-  #+END_SRC
-***** Flycheck
-  #+BEGIN_SRC emacs-lisp
-(defhydra hydra-flycheck (:color blue :hint nil :inherit (hydra-common/heads)
-                                 :pre (progn
-                                        (exwm-input-line-mode))
-                                 :post (progn
-                                         (exwm-input-char-mode)))
-
-
-  "
-                                                                    ╭──────────┐
-   Navigate          Show Errors                  Do                │ Flycheck │
-╭───────────────────────────────────────────────────────────────────┴──────────╯
-   ^_p_^revious     [_l_] list errors           [_t_] toggle Flycheck
-      ^^↑^^         [_d_] clear all errors      [_c_] select checker
-    ^_f_^irst        ^ ^                        [_r_] run via compile
-      ^^↓^^          ^ ^                        [_h_] describe checker
-    ^_n_^ext
---------------------------------------------------------------------------------
-      "
-  ("c" flycheck-select-checker)
-  ("h" flycheck-describe-checker)
-  ("d" flycheck-clear)
-  ("f" flycheck-first-error)
-  ("l" flycheck-list-errors)
-  ("n" flycheck-next-error :color red)
-  ("p" flycheck-previous-error :color red)
-  ("r" flycheck-compile)
-  ("t" flycheck-mode))
-  #+END_SRC
-***** emacs
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-emacs (:color blue :hint nil :inherit (hydra-common/heads)
-                              :pre (progn
-                                     (exwm-input-line-mode))
-                              :post (progn
-                                      (exwm-input-char-mode)))
-
-  "
-                                                                       ╭───────┐
-   Execute       Packages         Help                     Misc        │ Emacs │
-╭──────────────────────────────────────────────────────────────────────┴───────╯
-  [_x_] counsel M-x [_p_] list      [_f_] describe function [_t_] change theme
-   ^ ^              [_i_] install   [_v_] describe variable [_l_] list emacs process
-   ^ ^              [_u_] upgrade   [_m_] info manual       [_c_] init time
-   ^ ^               ^ ^            [_k_] bindings          [_o_] unbound commands
-   ^ ^               ^ ^            [_b_] personal bindings [_y_] emacs colors
-   ^ ^               ^ ^             ^ ^                    [_z_] list faces
-   ^ ^               ^ ^             ^ ^
---------------------------------------------------------------------------------
-      "
-  ("C-h b" counsel-descbinds "bindings")
-  ("f" counsel-describe-function)
-  ("v" counsel-describe-variable)
-  ("b" describe-personal-keybindings)
-  ("c" emacs-init-time)
-  ("i" package-install)
-  ("k" counsel-descbinds)
-  ("l" list-processes)
-  ("m" info-display-manual)
-  ("p" paradox-list-packages)
-  ("t" counsel-load-theme)
-  ("u" paradox-upgrade-packages)
-  ("o" smex-show-unbound-commands)
-  ("y" counsel-colors-emacs)
-  ("z" counsel-faces)
-  ("x" counsel-M-x))
-   #+END_SRC
-***** file
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-file (:color blue :hint nil :inherit (hydra-common/heads)
-                             :pre (progn
-                                    (exwm-input-line-mode))
-                             :post (progn
-                                     (exwm-input-char-mode)))
-  "
-                                                                        ╭──────┐
-     Ivy                    Dired        Ztree                          │ File │
-╭───────────────────────────────────────────────────────────────────────┴──────╯
-  [_f_] open file        [_d_] dired         [_z_] diff dirs
-  [_e_] open file extern
---------------------------------------------------------------------------------
-      "
-  ("f" counsel-find-file)
-  ("e" counsel-find-file-extern)
-  ("d" dired)
-)
-   #+END_SRC
-***** git
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-git (:color blue :hint nil :inherit (hydra-common/heads)
-                            :pre (progn
-                                   (exwm-input-line-mode))
-                            :post (progn
-                                    (exwm-input-char-mode)))
-  "
-                                                                         ╭─────┐
-   Magit                          VC                    Timemachine      │ Git │
-╭────────────────────────────────────────────────────────────────────────┴─────╯
-  [_s_] status              [_d_] diffs between revisions  [_t_] timemachine
-  [_B_] blame mode          [_b_] edition history
-  [_l_] file log
---------------------------------------------------------------------------------
-      "
-  ("B" magit-blame)
-  ("b" vc-annotate)
-  ("d" vc-diff)
-  ("l" magit-log-buffer-file)
-  ("s" magit-status)
-  ("t" git-timemachine))
-   #+END_SRC
-***** jump
-   #+BEGIN_SRC emacs-lisp
+    #+END_SRC
+**** jump
+    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-jump (:color blue :hint nil :inherit (hydra-common/heads)
                              :pre (progn
                                     (exwm-input-line-mode))
@@ -1018,177 +1350,11 @@
   ("y" avy-copy-line)
   ("m" avy-move-line)
   ("v" avy-copy-region)
-  ("i" avy-isearch))
-   #+END_SRC
-***** spell
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-spell (:color blue :hint nil :inherit (hydra-common/heads)
-                              :pre (progn
-                                     (exwm-input-line-mode))
-                              :post (progn
-                                      (exwm-input-char-mode)))
-  "
-                                                                       ╭───────┐
-    Flyspell               Ispell                      Gtranslate      │ Spell │
-╭──────────────────────────────────────────────────────────────────────┴───────╯
-  [_k_] correct word       [_w_] check word            [_g_] en ⇆ es
-  [_n_] next error                                     [_G_] any lang
-  [_f_] toggle flyspell
-  [_p_] toggle prog mode
---------------------------------------------------------------------------------
-      "
-  ("w" ispell-word)
-  ("d" ispell-change-dictionary)
-  ("g" google-translate-smooth-translate)
-  ("G" google-translate-query-translate)
-  ("f" flyspell-mode)
-  ("p" flyspell-prog-mode)
-  ("k" flyspell-correct-word-generic)
-  ("n" flyspell-goto-next-error))
-   #+END_SRC
-***** narrow
-  #+BEGIN_SRC emacs-lisp
-(defhydra hydra-narrow (:color blue :hint nil :inherit (hydra-common/heads)
-                               :pre (progn
-                                      (exwm-input-line-mode))
-                               :post (progn
-                                       (exwm-input-char-mode)))
-      "
-                                                                      ╭────────┐
-    Narrow                                                            │ Narrow │
-╭─────────────────────────────────────────────────────────────────────┴────────╯
-  [_f_] narrow to defun
-  [_p_] narrow to page
-  [_r_] narrow to region
-  [_w_] widen
---------------------------------------------------------------------------------
-      "
-      ("f" narrow-to-defun)
-      ("p" narrow-to-page)
-      ("r" narrow-to-region)
-      ("w" widen))
-  #+END_SRC
-***** organization
-  #+BEGIN_SRC emacs-lisp
-(defhydra hydra-organization (:color blue :hint nil :inherit (hydra-common/heads)
-                                     :pre (progn
-                                            (exwm-input-line-mode))
-                                     :post (progn
-                                             (exwm-input-char-mode)))
-
-     "
-                                                                 ╭──────────────┐
-      Tasks            Org mode               Comms      Others  │ Organization │
- ╭───────────────────────────────────────────────────────────────┴──────────────╯
-   [_a_] agenda      [_c_] capture             [_m_] mail      [_x_] speed type
-   [_l_] agenda list [_p_] pomodoro            [_t_] contacts
-   [_d_] calendar    [_s_] search headings     [_h_] add location
-    ^ ^              [_g_] open location gmaps
-    ^ ^              [_f_] archive subtree
- --------------------------------------------------------------------------------
-       "
-     ("a" org-agenda)
-     ("c" org-capture)
-     ("s" counsel-org-agenda-headlines)
-     ("d" cfw:open-org-calendar)
-     ("g" org-location-google-maps)
-     ("h" org-address-google-geocode-set)
-     ("l" org-agenda-list)
-     ("f" org-archive-subtree)
-     ("m" mu4e)
-     ("p" org-pomodoro)
-     ("t" org-contacts)
-     ("x" speed-type-text))
-  #+END_SRC
-***** project
-  #+BEGIN_SRC emacs-lisp
-(defhydra hydra-project (:color blue :hint nil
-                                :pre (progn
-                                       (exwm-input-line-mode))
-                                :post (progn
-                                        (exwm-input-char-mode)))
-  "
-                                                                     ╭────────────┐
-     Files             Search          Buffer             Do         │ Projectile │
-   ╭─────────────────────────────────────────────────────────────────┴────────────╯
-     [_f_] file          [_a_] ag          [_b_] switch         [_g_] magit
-     [_l_] file dwim     [_A_] grep        [_v_] show all       [_p_] commander
-     [_r_] recent file   [_s_] occur       [_V_] ibuffer        [_i_] info
-     [_d_] dir           [_S_] replace     [_K_] kill all       [_h_] Helm
-     [_o_] other         [_t_] find tag
-     [_u_] test file     [_T_] make tags
-                                                                         ╭────────┐
-     Other Window      Run             Cache              Do             │ Fixmee │
-   ╭──────────────────────────────────────────────────╯ ╭────────────────┴────────╯
-     [_F_] file          [_U_] test        [_kc_] clear         [_x_] TODO & FIXME
-     [_L_] dwim          [_m_] compile     [_kk_] add current   [_X_] toggle
-     [_D_] dir           [_c_] shell       [_ks_] cleanup
-     [_O_] other         [_C_] command     [_kd_] remove
-     [_B_] buffer
-   --------------------------------------------------------------------------------
-         "
-  ("<tab>" hydra-master/body "back")
-  ("<ESC>" nil "quit")
-  ("a"   projectile-ag)
-  ("A"   projectile-grep)
-  ("b"   projectile-switch-to-buffer)
-  ("B"   projectile-switch-to-buffer-other-window)
-  ("c"   projectile-run-async-shell-command-in-root)
-  ("C"   projectile-run-command-in-root)
-  ("d"   projectile-find-dir)
-  ("D"   projectile-find-dir-other-window)
-  ("f"   projectile-find-file)
-  ("F"   projectile-find-file-other-window)
-  ("g"   projectile-vc)
-  ("h"   counsel-projectile)
-  ("i"   projectile-project-info)
-  ("kc"  projectile-invalidate-cache)
-  ("kd"  projectile-remove-known-project)
-  ("kk"  projectile-cache-current-file)
-  ("K"   projectile-kill-buffers)
-  ("ks"  projectile-cleanup-known-projects)
-  ("l"   projectile-find-file-dwim)
-  ("L"   projectile-find-file-dwim-other-window)
-  ("m"   projectile-compile-project)
-  ("o"   projectile-find-other-file)
-  ("O"   projectile-find-other-file-other-window)
-  ("p"   projectile-commander)
-  ("r"   projectile-recentf)
-  ("s"   projectile-multi-occur)
-  ("S"   projectile-replace)
-  ("t"   projectile-find-tag)
-  ("T"   projectile-regenerate-tags)
-  ("u"   projectile-find-test-file)
-  ("U"   projectile-test-project)
-  ("v"   projectile-display-buffer)
-  ("V"   projectile-ibuffer)
-  ("X"   fixmee-mode)
-  ("x"   fixmee-view-listing))
-
-(define-key projectile-mode-map (kbd "C-c o") #'hydra-project/body)
-
-  #+END_SRC
-***** exit
-  #+BEGIN_SRC emacs-lisp
-(defhydra hydra-exit (:color blue :hint nil :inherit (hydra-common/heads)
-                             :pre (progn
-                                    (exwm-input-line-mode))
-                             :post (progn
-                                     (exwm-input-char-mode)))
-
-  "
-                                                                           ╭──────┐
-      Quit                                                                 │ Exit │
-   ╭───────────────────────────────────────────────────────────────────────┴──────╯
-     [_c_] exit emacs (standalone or client)
-     [_s_] shutdown the emacs daemon
-   --------------------------------------------------------------------------------
-         "
-  ("c" save-buffers-kill-terminal)
-  ("s" save-buffers-kill-emacs))
-  #+END_SRC
+  ("i" avy-isearch)
+)
+    #+END_SRC
 ***** register
-  #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-register (:color blue :hint nil :inherit (hydra-common/heads)
                                  :pre (progn
                                         (exwm-input-line-mode))
@@ -1213,9 +1379,10 @@
   ("o" view-echo-area-messages)
   ("r" evil-show-registers)
   ("u" undo-tree-visualize))
-  #+END_SRC
-***** search
-  #+BEGIN_SRC emacs-lisp
+    #+END_SRC
+
+**** search
+   #+BEGIN_SRC emacs-lisp
 (defhydra hydra-search (:color blue :hint nil :inherit (hydra-common/heads)
                                :pre (progn
                                       (exwm-input-line-mode))
@@ -1248,9 +1415,288 @@
   ("s" counsel-semantic)
   ("w" swiper-multi))
 
-  #+END_SRC
-***** text
+   #+END_SRC
+*** master
+**** setup
   #+BEGIN_SRC emacs-lisp
+(defhydra hydra-master (
+                        :color blue
+                        :pre (progn
+                               (exwm-input-line-mode))
+                        :post (progn
+                                (exwm-input-char-mode))
+                        :inherit (hydra-common/heads))
+"
+                                                                         ╭───────┐
+                                                                         │ Home  │
+╭────────────────────────────────────────────────────────────────────────┴───────╯
+  [_p_] Projects   [_o_] Organization   [_f_] Files   [_e_] Emacs
+
+-----------------------------------------------------------------------------------
+      "
+
+      ("p" hydra-projects/body nil)
+      ("o" hydra-organization/body nil)
+      ("f" hydra-file/body nil)
+      ("e" hydra-emacs/body nil)
+)
+    #+END_SRC
+**** projects
+   #+BEGIN_SRC emacs-lisp
+(defhydra hydra-projects (:color blue :columns 4 :hint nil
+                                :pre (progn
+                                       (exwm-input-line-mode))
+                                :post (progn
+                                        (exwm-input-char-mode))
+                                :inherit (hydra-common/heads))
+  "
+                                                                     ╭────────────┐
+     Files             Search          Buffer             Do         │ Projectile │
+   ╭─────────────────────────────────────────────────────────────────┴────────────╯
+     [_f_] file          [_a_] ag          [_b_] switch         [_g_] magit
+     [_l_] file dwim     [_r_] rg          [_v_] show all       [_p_] switch
+     [_r_] recent file   [_s_] occur       [_V_] ibuffer        [_P_] commander
+     [_d_] dir           [_S_] replace     [_K_] kill all       [_i_] info
+     [_o_] other         [_t_] find tag
+     [_u_] test file     [_T_] make tags
+                                                                         ╭────────┐
+     Other Window      Run             Cache              Do             │ Fixmee │
+   ╭──────────────────────────────────────────────────╯ ╭────────────────┴────────╯
+     [_F_] file          [_U_] test        [_kc_] clear         [_x_] TODO & FIXME
+     [_L_] dwim          [_m_] compile     [_kk_] add current   [_X_] toggle
+     [_D_] dir           [_c_] shell       [_ks_] cleanup
+     [_O_] other         [_C_] command     [_kd_] remove
+     [_B_] buffer
+   --------------------------------------------------------------------------------
+         "
+
+  ("p"   projectile-switch-project)
+  ("a"   counsel-projectile-ag)
+  ("r"   counsel-projectile-rg)
+  ("b"   counsel-projectile-switch-to-buffer)
+  ("B"   counsel-projectile-switch-to-buffer-other-window)
+  ("d"   counsel-projectile-find-dir)
+  ("D"   counsel-projectile-find-dir-other-window)
+  ("f"   counsel-projectile-find-file)
+  ("F"   counsel-projectile-find-file-other-window)
+  ("l"   counsel-projectile-find-file-dwim)
+  ("L"   counsel-projectile-find-file-dwim-other-window)
+
+  ("c"   projectile-run-async-shell-command-in-root)
+  ("C"   projectile-run-command-in-root)
+  ("g"   projectile-vc)
+  ("i"   projectile-project-info)
+  ("kc"  projectile-invalidate-cache)
+  ("kd"  projectile-remove-known-project)
+  ("kk"  projectile-cache-current-file)
+  ("K"   projectile-kill-buffers)
+  ("ks"  projectile-cleanup-known-projects)
+  ("m"   projectile-compile-project)
+  ("o"   projectile-find-other-file)
+  ("O"   projectile-find-other-file-other-window)
+  ("P"   projectile-commander)
+  ("<tab>"   projectile-recentf)
+  ("s"   projectile-multi-occur)
+  ("S"   projectile-replace)
+  ("t"   projectile-find-tag)
+  ("T"   projectile-regenerate-tags)
+  ("u"   projectile-find-test-file)
+  ("U"   projectile-test-project)
+  ("v"   projectile-display-buffer)
+  ("V"   projectile-ibuffer)
+
+  ("X"   fixmee-mode)
+  ("x"   fixmee-view-listing))
+
+(define-key projectile-mode-map (kbd "C-c o") #'hydra-project/body)
+
+   #+END_SRC
+**** organization
+   #+BEGIN_SRC emacs-lisp
+(defhydra hydra-organization (
+                              :color blue
+                              :hint nil
+                              :inherit (hydra-common/heads)
+                              :pre (progn
+                                     (exwm-input-line-mode))
+                              :post (progn
+                                      (exwm-input-char-mode)))
+
+     "
+                                                                 ╭──────────────┐
+      Tasks            Org mode               Comms      Others  │ Organization │
+ ╭───────────────────────────────────────────────────────────────┴──────────────╯
+   [_a_] agenda      [_c_] capture             [_m_] mail      [_x_] speed type
+   [_l_] agenda list [_p_] pomodoro            [_t_] contacts
+   [_d_] calendar    [_s_] search headings     [_h_] add location
+    ^ ^              [_g_] open location gmaps
+    ^ ^              [_f_] archive subtree
+ --------------------------------------------------------------------------------
+       "
+     ("a" org-agenda)
+     ("c" org-capture)
+     ("s" counsel-org-agenda-headlines)
+     ("d" cfw:open-org-calendar)
+     ("g" org-location-google-maps)
+     ("h" org-address-google-geocode-set)
+     ("l" org-agenda-list)
+     ("f" org-archive-subtree)
+     ("m" mu4e)
+     ("p" org-pomodoro)
+     ("t" org-contacts)
+     ("x" speed-type-text))
+   #+END_SRC
+**** emacs
+    #+BEGIN_SRC emacs-lisp
+(defhydra hydra-emacs (:color blue :hint nil :inherit (hydra-common/heads)
+                              :pre (progn
+                                     (exwm-input-line-mode))
+                              :post (progn
+                                      (exwm-input-char-mode)))
+
+  "
+                                                                       ╭───────┐
+   Execute       Packages         Help                     Misc        │ Emacs │
+╭──────────────────────────────────────────────────────────────────────┴───────╯
+  [_x_] counsel M-x [_p_] list      [_f_] describe function [_t_] change theme
+  [_e_] exit        [_i_] install   [_v_] describe variable [_l_] list emacs process
+  [_s_] system      [_u_] upgrade   [_m_] info manual       [_c_] init time
+   ^ ^               ^ ^            [_k_] bindings          [_o_] unbound commands
+   ^ ^               ^ ^            [_b_] personal bindings [_y_] emacs colors
+   ^ ^               ^ ^             ^ ^                    [_z_] list faces
+   ^ ^               ^ ^             ^ ^
+--------------------------------------------------------------------------------
+      "
+  ("C-h b" counsel-descbinds "bindings")
+  ("f" counsel-describe-function)
+  ("v" counsel-describe-variable)
+  ("b" describe-personal-keybindings)
+  ("c" emacs-init-time)
+  ("i" package-install)
+  ("k" counsel-descbinds)
+  ("l" list-processes)
+  ("m" info-display-manual)
+  ("p" paradox-list-packages)
+  ("t" counsel-load-theme)
+  ("u" paradox-upgrade-packages)
+  ("o" smex-show-unbound-commands)
+  ("y" counsel-colors-emacs)
+  ("z" counsel-faces)
+  ("x" counsel-M-x)
+  ("e" save-buffers-kill-emacs)
+  ("s" hydra-system/body nil)
+)
+    #+END_SRC
+
+***** system
+    #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-system (:color blue :hint nil :inherit (hydra-common/heads)
+                                 :pre (progn
+                                        (exwm-input-line-mode))
+                                 :post (progn
+                                         (exwm-input-char-mode)))
+
+      "
+                                                                      ╭────────┐
+   Terminals                     System                               │ System │
+╭─────────────────────────────────────────────────────────────────────┴────────╯
+  [_s_] new multi-term           [_c_] shell command
+  [_n_] next multi-term          [_a_] aync shell command
+  [_p_] previous multi-term      [_m_] man page
+  [_d_] dedicated multi-term     [_l_] list system process
+  [_e_] eshell
+--------------------------------------------------------------------------------
+      "
+      ("a" async-shell-command)
+      ("c" shell-command)
+      ("e" eshell)
+      ("m" man)
+      ("l" proced)
+      ("s" multi-term)
+      ("n" multi-term-next)
+      ("p" multi-term-previous)
+      ("d" multi-term-dedicated-toggle))
+
+    #+END_SRC
+
+**** file
+    #+BEGIN_SRC emacs-lisp
+(defhydra hydra-file (:color blue :hint nil :inherit (hydra-common/heads)
+                             :pre (progn
+                                    (exwm-input-line-mode))
+                             :post (progn
+                                     (exwm-input-char-mode)))
+  "
+                                                                        ╭──────┐
+     Ivy                    Dired            Hydras                     │ File │
+╭───────────────────────────────────────────────────────────────────────┴──────╯
+  [_f_] open file            [_d_] dired     [_t_] text
+  [_e_] open file extern                   [_s_] spell
+                                         [_n_] narrow
+                                         [_g_] git
+--------------------------------------------------------------------------------
+      "
+  ("f" counsel-find-file)
+  ("e" counsel-find-file-extern)
+  ("d" dired)
+  ("n" hydra-narrow/body nil :color blue)
+  ("s" hydra-spell/body nil  :color blue)
+  ("t" hydra-text/body nil   :color blue)
+  ("g" hydra-git/body nil   :color blue)
+)
+    #+END_SRC
+***** narrow
+    #+BEGIN_SRC emacs-lisp
+(defhydra hydra-narrow (:color blue :hint nil :inherit (hydra-common/heads)
+                               :pre (progn
+                                      (exwm-input-line-mode))
+                               :post (progn
+                                       (exwm-input-char-mode)))
+      "
+                                                                      ╭────────┐
+    Narrow                                                            │ Narrow │
+╭─────────────────────────────────────────────────────────────────────┴────────╯
+  [_f_] narrow to defun
+  [_p_] narrow to page
+  [_r_] narrow to region
+  [_w_] widen
+--------------------------------------------------------------------------------
+      "
+      ("f" narrow-to-defun)
+      ("p" narrow-to-page)
+      ("r" narrow-to-region)
+      ("w" widen))
+    #+END_SRC
+
+***** spell
+     #+BEGIN_SRC emacs-lisp
+(defhydra hydra-spell (:color blue :hint nil :inherit (hydra-common/heads)
+                              :pre (progn
+                                     (exwm-input-line-mode))
+                              :post (progn
+                                      (exwm-input-char-mode)))
+  "
+                                                                       ╭───────┐
+    Flyspell               Ispell                      Gtranslate      │ Spell │
+╭──────────────────────────────────────────────────────────────────────┴───────╯
+  [_k_] correct word       [_w_] check word            [_g_] en ⇆ es
+  [_n_] next error                                     [_G_] any lang
+  [_f_] toggle flyspell
+  [_p_] toggle prog mode
+--------------------------------------------------------------------------------
+      "
+  ("w" ispell-word)
+  ("d" ispell-change-dictionary)
+  ("g" google-translate-smooth-translate)
+  ("G" google-translate-query-translate)
+  ("f" flyspell-mode)
+  ("p" flyspell-prog-mode)
+  ("k" flyspell-correct-word-generic)
+  ("n" flyspell-goto-next-error))
+     #+END_SRC
+
+***** text
+    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-text (:color blue :hint nil :inherit (hydra-common/heads)
                              :pre (progn
                                     (exwm-input-line-mode))
@@ -1295,122 +1741,32 @@
   ("U" untabify)
   ("q" hydra-boxquote/body)
   ("x" comment-box))
-  #+END_SRC
-***** shell
-  #+BEGIN_SRC emacs-lisp
-  (defhydra hydra-system (:color blue :hint nil :inherit (hydra-common/heads)
-                                 :pre (progn
-                                        (exwm-input-line-mode))
-                                 :post (progn
-                                         (exwm-input-char-mode)))
+    #+END_SRC
 
-      "
-                                                                      ╭────────┐
-   Terminals                     System                               │ System │
-╭─────────────────────────────────────────────────────────────────────┴────────╯
-  [_s_] new multi-term           [_c_] shell command
-  [_n_] next multi-term          [_a_] aync shell command
-  [_p_] previous multi-term      [_m_] man page
-  [_d_] dedicated multi-term     [_l_] list system process
-  [_e_] eshell
+***** git
+     #+BEGIN_SRC emacs-lisp
+(defhydra hydra-git (:color blue :hint nil :inherit (hydra-common/heads)
+                            :pre (progn
+                                   (exwm-input-line-mode))
+                            :post (progn
+                                    (exwm-input-char-mode)))
+  "
+                                                                         ╭─────┐
+   Magit                          VC                    Timemachine      │ Git │
+╭────────────────────────────────────────────────────────────────────────┴─────╯
+  [_s_] status              [_d_] diffs between revisions  [_t_] timemachine
+  [_B_] blame mode          [_b_] edition history
+  [_l_] file log
 --------------------------------------------------------------------------------
       "
-      ("a" async-shell-command)
-      ("c" shell-command)
-      ("e" eshell)
-      ("m" man)
-      ("l" proced)
-      ("s" multi-term)
-      ("n" multi-term-next)
-      ("p" multi-term-previous)
-      ("d" multi-term-dedicated-toggle))
+  ("B" magit-blame)
+  ("b" vc-annotate)
+  ("d" vc-diff)
+  ("l" magit-log-buffer-file)
+  ("s" magit-status)
+  ("t" git-timemachine))
+     #+END_SRC
 
-  #+END_SRC
-
-***** torus
-  #+BEGIN_SRC emacs-lisp
-(defhydra hydra-torus (:color blue :hint nil :inherit (hydra-common/heads)
-                                :pre (progn
-                                       (exwm-input-line-mode))
-                                :post (progn
-                                        (exwm-input-char-mode)))
-  "
-                                                                                           ╭─────────┐
-    Switch                    Move                        Do                               │  Torus  │
-╭──────────────────────────────────────────────────────────────────────────────────────────┴─────────╯
-  [_SPC_] circle       [_<up>_]   prev-location         [_#_] layout            [_s_] search
-  [_=_] location       [_<down>_] next-location         [_c_] add-circle        [_h_] search-history
-  [_@_] torus                                         [_l_] add-location
-                     [_<left>_]  prev-circle
-  [_!_] alt-circle     [_<right>_] next-circle          [_d_] delete-location
-  [_<_] alt-circles                                   [_D_] delete-circle
-  [_>_] alt-torus      [_<prior>_] newer-history
-                     [_<next>_]  older-history
-   ^ ^
--------------------------------------------------------------------------------------------------------
-    "
-
-("#" torus-layout-menu)
-
-("SPC" torus-switch-circle)
-("=" torus-switch-location)
-("@" torus-switch-torus)
-
-("c" torus-add-circle)
-("l" torus-add-location)
-
-("d" torus-delete-location)
-("D" torus-delete-circle)
-
-("<up>"   torus-previous-location :color red)
-("<down>" torus-next-location     :color red)
-("<left>" torus-previous-circle   :color red)
-("<right>" torus-next-circle      :color red)
-
-
-("s" torus-search)
-("h" torus-search-history)
-
-("<prior>" torus-history-newer :color red)
-("<next>" torus-history-older  :color red)
-
-("!" torus-alternate-in-same-torus)
-("<" torus-alternate-circles)
-(">" torus-alternate-in-same-circle)
-
-
-)
-
-  #+END_SRC
-***** window
-  #+BEGIN_SRC emacs-lisp
-(defhydra hydra-window (:color blue :hint nil :inherit (hydra-common/heads)
-                                :pre (progn
-                                       (exwm-input-line-mode))
-                                :post (progn
-                                        (exwm-input-char-mode)))
-  "
-                                                                                           ╭──────────┐
-      Do                                                                                   │  Window  │
-╭──────────────────────────────────────────────────────────────────────────────────────────┴──────────╯
-  [_0_] delete
-  [_1_] other-window
-
-  [_2_] split-below
-  [_3_] split-right
-  [_g_] grid
-   ^ ^
--------------------------------------------------------------------------------------------------------
-    "
-
-   ("0" delete-window)
-   ("1" delete-other-windows)
-   ("2" split-window-below)
-   ("3" split-window-right)
-   ("g"  hycontrol-windows-grid)
-
-)
-  #+END_SRC
 * Activities
 ** GTD
 #+BEGIN_SRC emacs-lisp
@@ -2006,7 +2362,7 @@ pre-populated with the HEADER, BODY and any associated TAGS."
 
 #+END_SRC
 ** Org-agenda
-*** ACTIVE variables
+*** variables
  #+BEGIN_SRC emacs-lisp
 (setq org-agenda-auto-exclude-function 'bh/org-auto-exclude-function)
 
@@ -2243,7 +2599,7 @@ pre-populated with the HEADER, BODY and any associated TAGS."
 
 (provide 'org-agenda)
  #+END_SRC
-*** ACTIVE org-directory
+*** org-directory
 #+BEGIN_SRC emacs-lisp
 (setq org-directory "~/org/agenda/")
 (setq org-file-inbox (concat org-directory "inbox.org"))
@@ -2252,7 +2608,7 @@ pre-populated with the HEADER, BODY and any associated TAGS."
 (setq org-file-reference (concat org-directory "reference.org"))
 (setq org-file-calendar (concat org-directory "calendar.org"))
 #+END_SRC
-*** ACTIVE org-capture templates
+*** org-capture templates
 #+BEGIN_SRC emacs-lisp
 (setq org-capture-templates
       (quote (("t" "Task" entry (file+headline org-file-inbox "Inbox") "* TODO %? \n:PROPERTIES:\n:CREATED: %T\n:END:" :clock-in t :clock-resume t)
@@ -2280,7 +2636,7 @@ pre-populated with the HEADER, BODY and any associated TAGS."
 (add-hook 'org-capture-prepare-finalize-hook 'org-id-store-link)
 
 #+END_SRC
-*** ACTIVE org-agenda-custom-commands and vars
+*** org-agenda-custom-commands and vars
 #+BEGIN_SRC emacs-lisp
 (setq my/org-agenda-today-view
 '("T" "Today" ((tags "+today"
@@ -2600,11 +2956,11 @@ Callers of this function already widen the buffer view."
 
 
 #+END_SRC
-*** ACTIVE org-export-backends
+*** org-export-backends
 #+BEGIN_SRC emacs-lisp
 (setq org-export-backends '(ascii html icalendar latex org odt))
 #+END_SRC
-*** ACTIVE org-agenda functions
+*** org-agenda functions
 #+BEGIN_SRC emacs-lisp
 (defun my/org-agenda-switch-to()
   "Jumps to a specific task."
@@ -2636,7 +2992,7 @@ Callers of this function already widen the buffer view."
 
 #+END_SRC
 
-*** ACTIVE org-habit
+*** org-habit
 #+BEGIN_SRC emacs-lisp
 (require 'org-habit)
 
@@ -2658,7 +3014,7 @@ Callers of this function already widen the buffer view."
 
 (setq org-hide-emphasis-markers t)
 #+END_SRC
-*** ACTIVE org-attach
+*** org-attach
 #+BEGIN_SRC emacs-lisp
 (setq org-attach-auto-tag nil)
 (setq org-attach-method 'mv)
@@ -2699,7 +3055,7 @@ kill-ring, prompting if not found.  With prefix, prompt for URL."
 
 
 #+END_SRC
-*** ACTIVE org-babel
+*** org-babel
 #+BEGIN_SRC emacs-lisp
 (setq org-confirm-babel-evaluate nil
       org-src-fontify-natively t
@@ -2707,7 +3063,7 @@ kill-ring, prompting if not found.  With prefix, prompt for URL."
       org-src-preserve-indentation t
       org-src-window-setup 'current-window)
 #+END_SRC
-*** ACTIVE org-export
+*** org-export
 #+BEGIN_SRC emacs-lisp
 (setq org-agenda-exporter-settings
       '((ps-number-of-columns 2)
@@ -2717,7 +3073,7 @@ kill-ring, prompting if not found.  With prefix, prompt for URL."
 
 
 #+END_SRC
-* Helper Functions
+* Helpers
 ** helper variables
 #+BEGIN_SRC emacs-lisp
 (setq desktop-environment-screenshot-partial-command "scrot -s screenshot.png")
@@ -3117,22 +3473,22 @@ are exported to a filename derived from the headline text."
 ** misc
 #+BEGIN_SRC emacs-lisp
 (defun my/trim-non-chrome ()
-  (delete-if-not (apply-partially 'string-match "- Google Chrome$")
-                 ido-temp-list))
+    (delete-if-not (apply-partially 'string-match "- Google Chrome$")
+                   ido-temp-list))
 
-(add-hook 'exwm-manage-finish-hook
-          (defun my/exwm-manage-hook ()
-            (when (string-match "Google-chrome" exwm-class-name
-                                (exwm-workspace-move-window 3)
-                                (exwm-layout-hide-mode-line)
-                                (setq ido-make-buffer-list-hook 'my/trim-non-chrome)))))
+  (add-hook 'exwm-manage-finish-hook
+            (defun my/exwm-manage-hook ()
+              (when (string-match "Google-chrome" exwm-class-name)
+                (exwm-workspace-move-window 3)
+;                (exwm-layout-hide-mode-line)
+                (setq ido-make-buffer-list-hook 'my/trim-non-chrome))))
 
-          (add-hook 'exwm-update-title-hook
-                    (defun my/exwm-title-hook ()
-                      (when (string-match "Google-chrome" exwm-class-name)
-                        (exwm-workspace-rename-buffer exwm-title))))
+  (add-hook 'exwm-update-title-hook
+            (defun my/exwm-title-hook ()
+              (when (string-match "Google-chrome" exwm-class-name)
+                (exwm-workspace-rename-buffer exwm-title))))
 
-          (setq browse-url-chrome-arguments '("-new-window"))
+  (setq browse-url-chrome-arguments '("--new-window"))
 
 
           (defun tab-indent-or-complete ()
@@ -3168,11 +3524,33 @@ are exported to a filename derived from the headline text."
 
 #+END_SRC
 
-* Keybindings
+** xref
 #+BEGIN_SRC emacs-lisp
-(global-set-key "\C-c\C-e" 'eval-buffer)
-#+END_SRC
+(custom-set-variables '(xref-show-xrefs-function #'ivy-xref-show-xrefs))
 
+(defun my-xref-show-pos-in-buf--same-window (func &rest args)
+  "Display xref location in the same window. See
+`display-buffer-same-window'."
+  (let ((display-buffer-overriding-action '(display-buffer-same-window)))
+    (apply func args)))
+
+(advice-add 'xref--show-pos-in-buf
+            :around #'my-xref-show-pos-in-buf--same-window)
+
+#+END_SRC
+** unbound Keybindings
+ #+BEGIN_SRC emacs-lisp
+ (define-key winner-mode-map (kbd "C-c <left>") nil)
+ (define-key winner-mode-map (kbd "C-c <right>") nil)
+ (define-key global-map (kbd "C-c <tab>") nil)
+ (define-key yas-minor-mode-map (kbd "C-c &") nil)
+ (define-key global-map (kbd "C-c ,") nil)
+ (define-key global-map (kbd "C-c C-j") nil)
+ (define-key flyspell-mode-map (kbd "C-c $") nil)
+ #+END_SRC
+
+* Commands to bind
+** rg-dwim-current-file
 * Disabled
 ** DISABLED old-code
 #+BEGIN_SRC emacs-lisp
@@ -3549,25 +3927,6 @@ assume a filename and skip displaying Dashboard."
 (setq org-noter-default-notes-file-names '("Notes.org"))
 #+END_SRC
 
-** DISABLED gpastel
-#+BEGIN_SRC emacs-lisp
-(use-package gpastel
-:config
-(exwm-input-set-key (kbd "M-y") #'my/exwm-counsel-yank-pop)
-(defun my/exwm-counsel-yank-pop ()
-  "Same as `counsel-yank-pop' and paste into exwm buffer."
-  (interactive)
-  (let ((inhibit-read-only t)
-        ;; Make sure we send selected yank-pop candidate to
-        ;; clipboard:
-        (yank-pop-change-selection t))
-    (call-interactively #'counsel-yank-pop))
-  (when (derived-mode-p 'exwm-mode)
-    ;; https://github.com/ch11ng/exwm/issues/413#issuecomment-386858496
-    (exwm-input--set-focus (exwm--buffer->id (window-buffer (selected-window))))
-    (exwm-input--fake-key ?\C-v))))
-
-#+END_SRC
 ** DISABLED org-brain
 #+BEGIN_SRC emacs-lisp
 (use-package org-brain
@@ -4008,10 +4367,6 @@ assume a filename and skip displaying Dashboard."
 
 
 #+END_SRC
-** DISABLED objed
-#+BEGIN_SRC emacs-lisp
-(use-package objed)
-#+END_SRC
 ** DISABLED crux
 #+BEGIN_SRC emacs-lisp
 (use-package crux)
@@ -4131,3 +4486,37 @@ assume a filename and skip displaying Dashboard."
       ("c" boxquote-narrow-to-boxquote-content)))))
 
 #+END_SRC
+** DISABLED spray
+#+BEGIN_SRC emacs-lisp
+  (use-package spray :ensure t)
+#+END_SRC
+** DISABLED flycheck
+ #+BEGIN_SRC emacs-lisp
+(defhydra hydra-flycheck (:color blue :hint nil :inherit (hydra-common/heads)
+                                 :pre (progn
+                                        (exwm-input-line-mode))
+                                 :post (progn
+                                         (exwm-input-char-mode)))
+
+
+  "
+                                                                    ╭──────────┐
+   Navigate          Show Errors                  Do                │ Flycheck │
+╭───────────────────────────────────────────────────────────────────┴──────────╯
+   ^_p_^revious     [_l_] list errors           [_t_] toggle Flycheck
+      ^^↑^^         [_d_] clear all errors      [_c_] select checker
+    ^_f_^irst        ^ ^                        [_r_] run via compile
+      ^^↓^^          ^ ^                        [_h_] describe checker
+    ^_n_^ext
+--------------------------------------------------------------------------------
+      "
+  ("c" flycheck-select-checker)
+  ("h" flycheck-describe-checker)
+  ("d" flycheck-clear)
+  ("f" flycheck-first-error)
+  ("l" flycheck-list-errors)
+  ("n" flycheck-next-error :color red)
+  ("p" flycheck-previous-error :color red)
+  ("r" flycheck-compile)
+  ("t" flycheck-mode))
+ #+END_SRC
