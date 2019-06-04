@@ -220,6 +220,17 @@
   (exwm-input-set-key (kbd "s-r") #'exwm-reset)
   (exwm-input-set-key (kbd "s-w") #'exwm-workspace-switch)
 
+  (exwm-input-set-key (kbd "s-l") #'windmove-right)
+  (exwm-input-set-key (kbd "s-k") #'windmove-left)
+  (exwm-input-set-key (kbd "s-i") #'windmove-up)
+  (exwm-input-set-key (kbd "s-o") #'windmove-down)
+
+
+  (exwm-input-set-key (kbd "s-L") #'buf-move-right)
+  (exwm-input-set-key (kbd "s-K") #'buf-move-left)
+  (exwm-input-set-key (kbd "s-I") #'buf-move-up)
+  (exwm-input-set-key (kbd "s-O") #'buf-move-down)
+
   (exwm-input-set-key (kbd "s-x") #'exwm-input-toggle-keyboard))
 
 
@@ -397,8 +408,8 @@
 
 #+END_SRC
 
-** boon
-*** setup
+** DISABLED boon
+*** DISABLED setup
 #+BEGIN_SRC emacs-lisp
     (use-package boon
       :config
@@ -407,7 +418,7 @@
 
   )
 #+END_SRC
-*** boon-objed
+*** DISABLED boon-objed
 #+BEGIN_SRC emacs-lisp
   ;; (defvar boon-objed-map (make-sparse-keymap))
   ;; (append boon-mode-map-alist (cons 'boon-objed-state boon-objed-map))
@@ -431,7 +442,7 @@
          (lisp-mode . (message "%s" "command from lisp mode"))
          (python-mode . (message "%s" "command from python mode"))))
 #+END_SRC
-*** boon-major-mode
+*** DISABLED boon-major-mode
 #+BEGIN_SRC emacs-lisp
   (defun boon-detect-mode (boon-mode-map)
     (let ((boon-mode-command (cdr (assoc major-mode boon-mode-map))))
@@ -482,7 +493,7 @@
   (define-key boon-command-map (kbd "h")     'avy-goto-char)
 
 #+END_SRC
-*** boon-special
+*** DISABLED boon-special
 #+BEGIN_SRC emacs-lisp
   (custom-set-variables
    '(boon-special-mode-list
@@ -497,6 +508,173 @@
        ,,*dashboard*
        ))))
 
+
+#+END_SRC
+
+** new-boon
+#+BEGIN_SRC emacs-lisp
+(use-package boon :ensure t)
+
+(defvar-local boon-objed-state nil "Non-nil when boon objed mode is activated.")
+
+(defun boon-reset-all-mode-states ()
+  (interactive)
+  (mapcar (lambda (boon-mode)
+            (setq boon-mode nil)) boon-mode-map-alist))
+
+(defun boon-set-objed-state ()
+  "Switch to objed state."
+  (boon-set-state 'boon-objed-state))
+
+(defun boon-detect-mode (boon-mode-map)
+  (let ((boon-mode-command (cdr (assoc major-mode boon-mode-map))))
+    (if boon-mode-command (apply boon-mode-command))))
+
+(defun boon-select-major-mode (boon-mode-map)
+  (let ((boon-mode-command (cdr (assoc major-mode boon-mode-map))))
+    (if boon-mode-command (apply boon-mode-command))))
+
+(defun boon-mode-hydra ()
+  (interactive)
+  (boon-select-major-mode boon-major-mode-hydra-list))
+
+(defun em-comment ()
+  (interactive)
+  (objed-comment-or-uncomment-region))
+
+(setq boon-key-list '
+      ((org-mode . (message "%s" "command from org mode"))
+       (lisp-mode . (message "%s" "command from lisp mode"))
+       (python-mode . (message "%s" "command from python mode"))))
+
+(setq boon-major-mode-hydra-list '
+      ((org-mode . (hydra-org/body))
+       (emacs-lisp-mode . (hydra-lisp/body))
+       (clojure-mode . (hydra-clojure/body))
+       (clojurescript-mode . (hydra-clojurescript/body))
+       (js2-mode . (hydra-javascript/body))
+       (rjsx-mode . (hydra-rjsx/body))
+       (json-mode . (hydra-json/body))
+       (sql-mode . (hydra-sql/body))
+       (css-mode . (hydra-css/body))
+       (scss-mode . (hydra-scss/body))
+       (javascript-mode . (hydra-javascript/body))
+       (yaml-mode . (hydra-yaml/body))
+       (php-mode . (hydra-php/body))
+       (c++-mode . (hydra-c/body))
+       (arduino-mode . (hydra-arduino/body))
+       (web-mode . (hydra-web/body))
+       (html-mode . (hydra-html/body))
+       (mhtml-mode . (hydra-html/body))
+       (exwm-mode . (hydra-exwm/body))
+       (python-mode . (hydra-python/body))))
+
+
+(boon-mode)
+
+;; States
+(define-key boon-command-map (kbd "@")   'objed-mode)
+(define-key boon-command-map (kbd "i")   'boon-set-insert-like-state)
+
+;; Hydras Master / Modes
+(define-key boon-command-map (kbd ",") 'hydra-master/body)
+(define-key boon-command-map (kbd "SPC") 'counsel-M-x)
+(define-key boon-command-map (kbd "RET")   'counsel-linux-app)
+
+;; Major Mode Hydra
+(define-key boon-command-map (kbd "m")   'boon-mode-hydra)
+
+;; Enable minor modes
+(define-key boon-command-map (kbd "M")   'hydra-minor/body)
+
+;; Hydras and related commands
+
+(define-key boon-command-map (kbd "u")   'undo)
+(define-key boon-command-map (kbd "y")   '("p paste/yank" . yank))
+
+(define-key boon-command-map (kbd "v")   'hydra-select/body)
+(define-key boon-command-map (kbd "e")   'er/expand-region)
+
+(define-key boon-command-map (kbd "d")   'hydra-delete/body)
+
+
+(define-key boon-command-map (kbd "w")   'hydra-window/body)
+(define-key boon-command-map (kbd "#")   'delete-other-windows)
+
+(define-key boon-command-map (kbd "a")   'hydra-applications/body)
+(define-key boon-command-map (kbd "s")   'hydra-search/body)
+(define-key boon-command-map (kbd "H")   'hydra-help/body)
+(define-key boon-command-map (kbd "p")   'hydra-paste/body)
+(define-key boon-command-map (kbd "W")   'hydra-wrap/body)
+(define-key boon-command-map (kbd "j")   'hydra-jump/body)
+(define-key boon-command-map (kbd "n")     'hydra-narrow/body)
+(define-key boon-command-map (kbd "r")     'hydra-register/body)
+
+;; Non-Hydra Commands
+(define-key boon-command-map (kbd "f")   'counsel-find-file)
+(define-key boon-command-map (kbd "b")   '("b Buffer list" . counsel-switch-buffer))
+(define-key boon-command-map (kbd "q")   'kill-buffer)
+
+(define-key boon-command-map (kbd "_")   'beginning-of-line)
+(define-key boon-command-map (kbd "=")   'back-to-indentation)
+(define-key boon-command-map (kbd "$")   'end-of-line)
+(define-key boon-command-map (kbd "o")   'em-insert-line-below)
+(define-key boon-command-map (kbd "O")   'em-insert-line-above)
+(define-key boon-command-map (kbd "'")   'uncomment-region)
+(define-key boon-command-map (kbd ";")   'comment-region)
+
+(define-key boon-command-map (kbd "S")   'ivy-resume)
+(define-key boon-command-map (kbd "z")   'ivy-resume)
+
+;; (define-key boon-command-map "g" '("g magit" . magit-
+                                   status))
+
+(define-key boon-command-map (kbd "/")     'hui-search-web)
+(define-key boon-command-map (kbd "H")     'avy-goto-word-1)
+(define-key boon-command-map (kbd "h")     'avy-goto-char)
+(define-key boon-command-map "!" 'shell-command)
+
+(define-key boon-command-map "x" 'boon-x-map)
+
+(define-key boon-command-map (kbd "c")   'hydra-copy/body)
+
+;(define-key boon-command-map (kbd "x")   'delete-forward-char)
+
+
+(custom-set-variables
+ '(boon-special-mode-list
+   (quote
+    (
+     ediff-mode
+     magit-mode
+     magit-popup-mode
+     debugger-mode
+     ediff-mode
+     git-rebase-mode
+     mu4e-headers-mode
+     mu4e-view-mode
+     help-mode
+     org-agenda-mode
+     emms-playlist-mode
+     ,*dashboard*
+     ))))
+
+(defun em-push-store-point ()
+  (interactive)
+  (if (not (boundp 'em-store-point-targets))
+      (setq em-store-point-targets ()))
+  (push (point) em-store-point-targets))
+
+(defun em-pop ()
+  (interactive)
+  (goto-char (pop em-store-point-targets))
+  (yank))
+
+(defun em-pop-paste ()
+  (interactive)
+  (copy-region-as-kill (region-beginning) (region-end))
+  (goto-char (pop em-store-point-targets))
+  (yank))
 
 #+END_SRC
 
@@ -1010,7 +1188,6 @@
   (set-face-attribute 'hydra-face-blue nil :foreground "deep sky blue" :weight 'bold))
   #+END_SRC
 *** common
-**** setup
    #+BEGIN_SRC emacs-lisp
 (eval-and-compile
   (defhydra hydra-common  (
@@ -1022,173 +1199,18 @@
                                    (exwm-input-char-mode)))
     ("RET"   counsel-linux-app nil)
     ("SPC" counsel-M-x nil)
-    ("<tab>" counsel-switch-buffer nil)
-    ("DEL"   hydra-master/body)
+    ("<tab>" counsel-switch-buffer "Switch Buffer" :color red)
+    ("DEL"   hydra-master/body "Home")
+
+    ("w"   hydra-buffers/body "Window")
+    ("M"   hydra-minor/body nil)
+    ("m"   boon-mode-hydra nil)
     ("q" nil)
-
-
-
-    ("m"   boon-mode-hydra "mode")
-    ("b"   hydra-buffers/body "buffers")
-    ("/"   hydra-search/body "search")
-    ("\\"   hydra-narrow/body "narrow")
-    (","   hydra-jump/body "jump")
-    ("."   hydra-register/body "register")
-
-
-
     ))
    #+END_SRC
-**** major-mode-hydras
-***** hydra-org
-   #+BEGIN_SRC emacs-lisp :results silent
-  (defhydra hydra-org (:exit t :columns 4
-:inherit (hydra-common/heads))
-
-    "Org mode"
-    ("u" org-up-element "Up element")
-    ("d" org-down-element "Down element")
-    ("b" org-next-block "Next block")
-    ("e" org-export-dispatch "Export")
-    ("t" org-todo "Toggle todo states")
-    ("T" org-babel-tangle "Tangle code")
-    ("c" org-babel-execute-src-block "Run block")
-    ("," outline-show-children "Show node children")
-    ("." org-tree-to-indirect-buffer "Edit in buffer")
-    ("'" org-edit-special "Code buffer"))
-   #+END_SRC
-***** hydra-python
-  #+BEGIN_SRC emacs-lisp :results silent
-  (with-no-warnings
-  (defhydra hydra-python (:exit t :columns 4)
-    "Python"
-    ("#" poporg-dwim "Edit Comment")
-    ("," dumb-jump-back "Jump back")
-    ("." dumb-jump-go "Jump to definition")
-    ("D" hydra-python-django/body "Django")
-    ("L" flycheck-prev-error "Prev lint error")
-    ("T" pythonic-tests-all "Run pythonic test")
-    ("a" pytest-all "Run all tests")
-    ("b" python-shell-send-buffer "Send buffer to python")
-    ("u" em-python-pur "Upgrade pip requirements")
-    ;;("r" python-shell-send-buffer "Send line/region to python")
-    ("r" run-python "REPL")
-    ("d" helm-dash-at-point "Docs")
-    ("c" em-python-execute "Compile / Execute")
-    ("i" dumb-jump-quick-look "Definition Info")
-    ("l" flycheck-next-error "Next lint error")
-    ("t" pythonic-tests-run "Run current test")
-    ("V" flycheck-verify-setup "Verify linting")
-    ("v" em-python-environment "Check environment")
-    ("s" isortify-buffer "Sort imports")
-    ;;("n" flyceck "Run all tests")
-    ("f" blacken-buffer "Format buffer code")))
-  #+END_SRC
-***** hydra-lisp
-  #+BEGIN_SRC emacs-lisp
-  (defhydra hydra-lisp (:exit t :columns 4)
-    "Lisp Mode"
-    ("r" ielm "Interactive REPL")
-    ("." dumb-jump-go "Jump definition")
-    ("v" flycheck-verify-setup "Verify linting")
-    ("f" elisp-format-buffer "Format buffer")
-    ("d" checkdoc "Lint doc strings")
-    ("l" package-lint-current-buffer "Lint code")
-    ("c" emacs-lisp-byte-compile-and-load "Lisp execute"))
-  #+END_SRC
-***** hydra-javascript
-  #+BEGIN_SRC emacs-lisp
-  (defhydra hydra-javascript (:exit t :columns 4)
-    "Javascript"
-    ("," dumb-jump-back "Jump back")
-    ("." dumb-jump-go "Jump to definition")
-    ("l" flycheck-next-error "Next lint error")
-    ("i" npm-mode-npm-init "Initialize NPM")
-    ("f" prettier-js "Format code")
-    ("v" flycheck-verify-setup "Verify linting"))
-  #+END_SRC
-***** hydra-rjsx
-  #+BEGIN_SRC emacs-lisp
-  (defhydra hydra-rjsx (:exit t :columns 4)
-    "Javascript"
-    ("," dumb-jump-back "Jump back")
-    ("." dumb-jump-go "Jump to definition")
-    ("l" flycheck-next-error "Next lint error")
-    ("i" npm-mode-npm-init "Initialize NPM")
-    ("f" prettier-js "Format code")
-    ("r" indium-connect "REPL")
-    ("h" html-to-react "HTML to react")
-    ("v" flycheck-verify-setup "Verify linting"))
-
-  #+END_SRC
-
-***** hydra-css
+**** window
    #+BEGIN_SRC emacs-lisp
-  (defhydra hydra-css (:exit t :columns 4)
-    "Css"
-    ("," dumb-jump-back "Jump back")
-    ("." dumb-jump-go "Jump to definition")
-    ("f" web-beautify-css "Format css"))
-   #+END_SRC
-***** hydra-scss
-   #+BEGIN_SRC emacs-lisp
-  (defhydra hydra-scss (:exit t :columns 4)
-    "Scss"
-    ("," dumb-jump-back "Jump back")
-    ("." dumb-jump-go "Jump to definition")
-    ("f" web-beautify-css "Format css"))
-   #+END_SRC
-***** hydra-web
-   #+BEGIN_SRC emacs-lisp
-  (defhydra hydra-web (:exit t :columns 4)
-    "Web"
-    ("f" web-beautify-html "Format buffer")
-    ("o" browser-url-of-buffer "Open in browser"))
-  #+END_SRC
-***** hydra-html
-   #+BEGIN_SRC emacs-lisp
-  (defhydra hydra-html (:exit t :columns 4)
-    "Html"
-    ("f" web-beautify-html "Format buffer")
-    ("o" browser-url-of-buffer "Open in browser"))
-    #+END_SRC
-
-***** hydra-c
-    #+BEGIN_SRC emacs-lisp
-  (defhydra hydra-c (:exit t :columns 4)
-    "C"
-    ("." dumb-jump-go "Jump to definition")
-    ("," dumb-jump-back "Jump back")
-    ("i" dumb-jump-quick-look "Definition Info")
-    ("f" clang-format-buffer "Format buffer"))
-    #+END_SRC
-***** hydra-json
-  #+BEGIN_SRC emacs-lisp
-  (with-no-warnings
-  (defhydra hydra-json (:exit t :columns 4)
-    "CSV"
-    (";" yafolding-toggle-all "Fold")
-    ("f" csv-align-fields "Format visually")))
-  #+END_SRC
-***** hydra-exwm
-    #+BEGIN_SRC emacs-lisp
-  (defhydra hydra-exwm (:exit t
-                        :columns 4
-                        :color blue
-                        :inherit (hydra-common/heads)
-                        :pre (progn
-                               (exwm-input-line-mode))
-                        :post (progn
-                                (exwm-input-char-mode)))
-
-    "EXWM"
-    ("b" my-counsel-ibuffer-by-exwm-class-name "buffer")
-
-)
-    #+END_SRC
-**** buffers
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-buffers (
+(defhydra hydra-window (
                          :color red
                          :hint  nil
                          :inherit (hydra-common/heads)
@@ -1199,13 +1221,13 @@
                          )
   "
                                                                      ╭─────────┐
-  Window           Switch                    Do                      │ Buffers │
+  Window           Switch                    Do                      │  Window │
 ╭────────────────────────────────────────────────────────────────────┴─────────╯
-     ↑          [_ss_] buffer         [_dw_] delete window
-     _i_          [_sp_] projectile     [_do_] delete other windows
- ← _k_   _l_ →      [_se_] exwm           [_ds_] swap
-     _o_          [_sb_] bookmarks      [_w_] grid
-     ↓          [_st_] torus
+     ↑            [_si_] ibuffer           [_dw_] delete window
+     _i_            [_sp_] projectile        [_do_] delete other windows
+ ← _k_   _l_ →        [_se_] exwm              [_ds_] swap
+     _o_            [_sb_] bookmarks         [_g_] grid
+     ↓                                   [_st_] torus
 
    ^ ^
 --------------------------------------------------------------------------------
@@ -1229,13 +1251,13 @@
   ("do" delete-other-windows)
   ("ds" ace-swap-window)
 
-  ("ss" my/switch-to-last-buffer)
   ("sp" counsel-projectile-switch-to-buffer)
   ("sb" hydra-bookmarks/body :color blue)
   ("st" hydra-torus/body :color blue)
   ("se" my-counsel-ibuffer-by-exwm-class-name)
+  ("si" ibuffer)
 
-  ("w" hycontrol-windows-grid)
+  ("g" hycontrol-windows-grid)
   )
    #+END_SRC
 ***** torus
@@ -1416,8 +1438,154 @@
   ("w" swiper-multi))
 
    #+END_SRC
+**** major-mode-hydras
+***** hydra-org
+   #+BEGIN_SRC emacs-lisp :results silent
+  (defhydra hydra-org (:exit t :columns 4
+:inherit (hydra-common/heads))
+
+    "Org mode"
+    ("u" org-up-element "Up element")
+    ("d" org-down-element "Down element")
+    ("b" org-next-block "Next block")
+    ("e" org-export-dispatch "Export")
+    ("t" org-todo "Toggle todo states")
+    ("T" org-babel-tangle "Tangle code")
+    ("c" org-babel-execute-src-block "Run block")
+    ("," outline-show-children "Show node children")
+    ("." org-tree-to-indirect-buffer "Edit in buffer")
+    ("'" org-edit-special "Code buffer"))
+   #+END_SRC
+***** hydra-python
+  #+BEGIN_SRC emacs-lisp :results silent
+  (with-no-warnings
+  (defhydra hydra-python (:exit t :columns 4)
+    "Python"
+    ("#" poporg-dwim "Edit Comment")
+    ("," dumb-jump-back "Jump back")
+    ("." dumb-jump-go "Jump to definition")
+    ("D" hydra-python-django/body "Django")
+    ("L" flycheck-prev-error "Prev lint error")
+    ("T" pythonic-tests-all "Run pythonic test")
+    ("a" pytest-all "Run all tests")
+    ("b" python-shell-send-buffer "Send buffer to python")
+    ("u" em-python-pur "Upgrade pip requirements")
+    ;;("r" python-shell-send-buffer "Send line/region to python")
+    ("r" run-python "REPL")
+;    ("d" helm-dash-at-point "Docs")
+    ("c" em-python-execute "Compile / Execute")
+    ("i" dumb-jump-quick-look "Definition Info")
+    ("l" flycheck-next-error "Next lint error")
+    ("t" pythonic-tests-run "Run current test")
+    ("V" flycheck-verify-setup "Verify linting")
+    ("v" em-python-environment "Check environment")
+    ("s" isortify-buffer "Sort imports")
+    ;;("n" flyceck "Run all tests")
+    ("f" blacken-buffer "Format buffer code")))
+  #+END_SRC
+***** hydra-lisp
+  #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-lisp (:exit t :columns 4)
+    "Lisp Mode"
+    ("r" ielm "Interactive REPL")
+    ("." dumb-jump-go "Jump definition")
+    ("v" flycheck-verify-setup "Verify linting")
+    ("f" elisp-format-buffer "Format buffer")
+    ("d" checkdoc "Lint doc strings")
+    ("l" package-lint-current-buffer "Lint code")
+    ("c" emacs-lisp-byte-compile-and-load "Lisp execute"))
+  #+END_SRC
+***** hydra-javascript
+  #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-javascript (:exit t :columns 4)
+    "Javascript"
+    ("," dumb-jump-back "Jump back")
+    ("." dumb-jump-go "Jump to definition")
+    ("l" flycheck-next-error "Next lint error")
+    ("i" npm-mode-npm-init "Initialize NPM")
+    ("f" prettier-js "Format code")
+    ("v" flycheck-verify-setup "Verify linting"))
+  #+END_SRC
+***** hydra-rjsx
+  #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-rjsx (:exit t :columns 4)
+    "Javascript"
+    ("," dumb-jump-back "Jump back")
+    ("." dumb-jump-go "Jump to definition")
+    ("l" flycheck-next-error "Next lint error")
+    ("i" npm-mode-npm-init "Initialize NPM")
+    ("f" prettier-js "Format code")
+    ("r" indium-connect "REPL")
+    ("h" html-to-react "HTML to react")
+    ("v" flycheck-verify-setup "Verify linting"))
+
+  #+END_SRC
+
+***** hydra-css
+   #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-css (:exit t :columns 4)
+    "Css"
+    ("," dumb-jump-back "Jump back")
+    ("." dumb-jump-go "Jump to definition")
+    ("f" web-beautify-css "Format css"))
+   #+END_SRC
+***** hydra-scss
+   #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-scss (:exit t :columns 4)
+    "Scss"
+    ("," dumb-jump-back "Jump back")
+    ("." dumb-jump-go "Jump to definition")
+    ("f" web-beautify-css "Format css"))
+   #+END_SRC
+***** hydra-web
+   #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-web (:exit t :columns 4)
+    "Web"
+    ("f" web-beautify-html "Format buffer")
+    ("o" browser-url-of-buffer "Open in browser"))
+  #+END_SRC
+***** hydra-html
+   #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-html (:exit t :columns 4)
+    "Html"
+    ("f" web-beautify-html "Format buffer")
+    ("o" browser-url-of-buffer "Open in browser"))
+    #+END_SRC
+
+***** hydra-c
+    #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-c (:exit t :columns 4)
+    "C"
+    ("." dumb-jump-go "Jump to definition")
+    ("," dumb-jump-back "Jump back")
+    ("i" dumb-jump-quick-look "Definition Info")
+    ("f" clang-format-buffer "Format buffer"))
+    #+END_SRC
+***** hydra-json
+  #+BEGIN_SRC emacs-lisp
+  (with-no-warnings
+  (defhydra hydra-json (:exit t :columns 4)
+    "CSV"
+    (";" yafolding-toggle-all "Fold")
+    ("f" csv-align-fields "Format visually")))
+  #+END_SRC
+***** hydra-exwm
+    #+BEGIN_SRC emacs-lisp
+  (defhydra hydra-exwm (:exit t
+                        :columns 4
+                        :color blue
+                        :inherit (hydra-common/heads)
+                        :pre (progn
+                               (exwm-input-line-mode))
+                        :post (progn
+                                (exwm-input-char-mode)))
+
+    "EXWM"
+    ("b" my-counsel-ibuffer-by-exwm-class-name "buffer")
+
+)
+    #+END_SRC
 *** master
-**** setup
   #+BEGIN_SRC emacs-lisp
 (defhydra hydra-master (
                         :color blue
@@ -1430,13 +1598,12 @@
                                                                          ╭───────┐
                                                                          │ Home  │
 ╭────────────────────────────────────────────────────────────────────────┴───────╯
-  [_p_] Projects   [_o_] Organization   [_f_] Files   [_e_] Emacs
+  [_o_] Organization   [_p_] Projects   [_f_] Files   [_e_] Emacs
 
 -----------------------------------------------------------------------------------
       "
-
-      ("p" hydra-projects/body nil)
       ("o" hydra-organization/body nil)
+      ("p" hydra-projects/body nil)
       ("f" hydra-file/body nil)
       ("e" hydra-emacs/body nil)
 )
@@ -1453,12 +1620,12 @@
                                                                      ╭────────────┐
      Files             Search          Buffer             Do         │ Projectile │
    ╭─────────────────────────────────────────────────────────────────┴────────────╯
-     [_f_] file          [_a_] ag          [_b_] switch         [_g_] magit
-     [_l_] file dwim     [_r_] rg          [_v_] show all       [_p_] switch
-     [_r_] recent file   [_s_] occur       [_V_] ibuffer        [_P_] commander
-     [_d_] dir           [_S_] replace     [_K_] kill all       [_i_] info
-     [_o_] other         [_t_] find tag
-     [_u_] test file     [_T_] make tags
+     [_f_] file          [_sa_] ag          [_b_] switch         [_g_] magit
+     [_l_] file dwim     [_sr_] rg          [_v_] show all       [_p_] switch
+     [_r_] recent file   [_so_] occur       [_V_] ibuffer        [_P_] commander
+     [_d_] dir           [_sR_] replace     [_K_] kill all       [_i_] info
+     [_o_] other         [_st_] find tag
+     [_u_] test file     [_sT_] make tags
                                                                          ╭────────┐
      Other Window      Run             Cache              Do             │ Fixmee │
    ╭──────────────────────────────────────────────────╯ ╭────────────────┴────────╯
@@ -1471,8 +1638,8 @@
          "
 
   ("p"   projectile-switch-project)
-  ("a"   counsel-projectile-ag)
-  ("r"   counsel-projectile-rg)
+  ("sa"   counsel-projectile-ag)
+  ("sr"   counsel-projectile-rg)
   ("b"   counsel-projectile-switch-to-buffer)
   ("B"   counsel-projectile-switch-to-buffer-other-window)
   ("d"   counsel-projectile-find-dir)
@@ -1484,7 +1651,7 @@
 
   ("c"   projectile-run-async-shell-command-in-root)
   ("C"   projectile-run-command-in-root)
-  ("g"   projectile-vc)
+  ("g"   hydra-git/body nil)
   ("i"   projectile-project-info)
   ("kc"  projectile-invalidate-cache)
   ("kd"  projectile-remove-known-project)
@@ -1495,11 +1662,11 @@
   ("o"   projectile-find-other-file)
   ("O"   projectile-find-other-file-other-window)
   ("P"   projectile-commander)
-  ("<tab>"   projectile-recentf)
-  ("s"   projectile-multi-occur)
-  ("S"   projectile-replace)
-  ("t"   projectile-find-tag)
-  ("T"   projectile-regenerate-tags)
+  ("r"   projectile-recentf)
+  ("so"   projectile-multi-occur)
+  ("sR"   projectile-replace)
+  ("st"   projectile-find-tag)
+  ("sT"   projectile-regenerate-tags)
   ("u"   projectile-find-test-file)
   ("U"   projectile-test-project)
   ("v"   projectile-display-buffer)
@@ -1528,17 +1695,15 @@
  ╭───────────────────────────────────────────────────────────────┴──────────────╯
    [_a_] agenda      [_c_] capture             [_m_] mail      [_x_] speed type
    [_l_] agenda list [_p_] pomodoro            [_t_] contacts
-   [_d_] calendar    [_s_] search headings     [_h_] add location
-    ^ ^              [_g_] open location gmaps
+   [_d_] calendar    [_h_] search headings
     ^ ^              [_f_] archive subtree
+    ^ ^
  --------------------------------------------------------------------------------
        "
      ("a" org-agenda)
      ("c" org-capture)
-     ("s" counsel-org-agenda-headlines)
+     ("h" counsel-org-agenda-headlines)
      ("d" cfw:open-org-calendar)
-     ("g" org-location-google-maps)
-     ("h" org-address-google-geocode-set)
      ("l" org-agenda-list)
      ("f" org-archive-subtree)
      ("m" mu4e)
@@ -1630,19 +1795,19 @@
                                                                         ╭──────┐
      Ivy                    Dired            Hydras                     │ File │
 ╭───────────────────────────────────────────────────────────────────────┴──────╯
-  [_f_] open file            [_d_] dired     [_t_] text
-  [_e_] open file extern                   [_s_] spell
-                                         [_n_] narrow
-                                         [_g_] git
+  [_f_] open file            [_d_] dired     [_ht_] text
+  [_e_] open file extern                   [_hs_] spell
+                                         [_hn_] narrow
+                                         [_hg_] git
 --------------------------------------------------------------------------------
       "
   ("f" counsel-find-file)
   ("e" counsel-find-file-extern)
   ("d" dired)
-  ("n" hydra-narrow/body nil :color blue)
-  ("s" hydra-spell/body nil  :color blue)
-  ("t" hydra-text/body nil   :color blue)
-  ("g" hydra-git/body nil   :color blue)
+  ("hn" hydra-narrow/body nil :color blue)
+  ("hs" hydra-spell/body nil  :color blue)
+  ("ht" hydra-text/body nil   :color blue)
+  ("hg" hydra-git/body nil   :color blue)
 )
     #+END_SRC
 ***** narrow
@@ -1767,6 +1932,121 @@
   ("t" git-timemachine))
      #+END_SRC
 
+*** misc
+**** hydra-select
+ #+BEGIN_SRC emacs-lisp
+(defhydra hydra-select (:exit t :columns 4)
+    "EM - Select"
+    ("v" set-mark-command "Start Cursor")
+    ("b" mark-whole-buffer "Whole buffer")
+    ("f" mark-defun "Function")
+    ("-" em/set-mark-first-char "Start First char")
+    ("_" em/set-mark-line-start "Start Line")
+    ("l" em/set-mark-line "Current Line")
+    ("p" er/mark-inside-pairs "Pairs / Parenthesis")
+    ("t" (lambda () (interactive)(set-mark (point))(isearch-forward)) "Till")
+    ("w" er/mark-word "Word / Symbol")
+    ("s" mc--mark-symbol-at-point "Word / Symbol"))
+ #+END_SRC
+**** hydra-minor
+#+BEGIN_SRC emacs-lisp
+ (defhydra hydra-minor (:exit t :columns 4)
+     "Minor modes"
+     ("r" spray-mode "Speed read")
+     ("n" em/narrow-or-widen-dwim "Narrow / Widen")
+     ("i" iedit-mode "Iedit mode"))
+#+END_SRC
+**** hydra-move
+ #+BEGIN_SRC emacs-lisp
+(defhydra hydra-move (:exit t :columns 4)
+     "EM - Move (travel) text"
+     ("u" (transpose-lines 1) "Up")
+     ("d" (transpose-lines -1) "Down")
+     ("i" indent-according-to-mode "Indent obeying mode")
+     ("l" lispy-forward-slurp-sexp "Slurp left")
+     ("L" lispy-backwards-slurp-sexp "Slurp right")
+     ("b" lispy-forward-slurp-sexp "Barf left")
+     ("B" lispy-backwards-slurp-sexp "Barf ritgh"))
+ #+END_SRC
+**** hydra-wrap
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-wrap (:exit t :columns 4)
+    "EM - wrap"
+    ("q" em/sp-quote-symbol "Quote symbol"))
+#+END_SRC
+**** hydra-delete
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-delete (:exit t :columns 4)
+  "EM - Delete / Cut shortcuts"
+  ("$" kill-line "Till line end")
+  ("d" whole-line-or-region-kill-region "Whole line")
+  ("w" kill-word "Current word")
+  ("r" kill-region "Delete Region")
+  ("s" sp-kill-symbol "Current symbol")
+  ("c" delete-char "Current character")
+  ("<SPC>" fixup-whitespace "Delete spaces")
+  ("f" em-delete-function "Till charater")
+  ("i" em-delete-inside "Inside")
+  ("u" zop-up-to-char "Untill charater")
+  ("\"" objed-kill-string "Kill String")
+  ("U" (zop-up-to-char -1) "Untill backwards")
+  ("a" zop-to-char "After character")
+  ("A" (zop-to-char -1) "After character backwards"))
+#+END_SRC
+**** hydra-paste
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-paste (:exit t :columns 4)
+  "EM - Paste"
+  ("p" yank "Paste")
+  ("s" (yank-pop -1) "Pop")
+  ("l" my/exwm-counsel-yank-pop "History")
+)
+
+
+
+#+END_SRC
+**** hydra-copy
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-copy (:exit t :columns 4)
+  "EM - Copy"
+  ("c" whole-line-or-region-copy-region-as-kill "Line / Region")
+  ("s" em/copy-symbol "Symbol")
+  ("i" em-copy-inside "Inside")
+  ("p" em-pop-paste "Paste Previous")
+  ("w" sp-kill-word "Word")
+  ("b" em-copy-all "Buffer")
+  ("f" em-copy-function "Function")
+  ("d" em-duplicate-line "Duplicate line"))
+
+#+END_SRC
+**** hydra-applications
+#+BEGIN_SRC emacs-lisp
+  (defhydra hydra-applications (:exit t :columns 4)
+    "EM - Applications"
+    ("p" counsel-list-processes "Show Processes")
+    ("r" elfeed "RSS Feeds"))
+
+  (defhydra hydra-elfeed-search-mode (:exit t :columns 4)
+    "EM - Elfeed"
+    ("f" elfeed-search-fetch "Fetch feed")
+    ("u" elfeed-search-update "Update feed")
+    ("o" elfeed-search-show-entry "Show entry"))
+
+
+#+END_SRC
+**** hydra-help
+#+BEGIN_SRC emacs-lisp
+  (defhydra hydra-help (:exit t :columns 4)
+    "EM - Help"
+    ("f" counsel-apropos "Function search")
+    ("k" view-lossage "View Keystrokes")
+    ("c" find-function "Function code")
+    ("P" esup "Profile")
+    ("h" helpful-at-point "Help at point")
+    ("p" find-function-at-point "Function at Point")
+    ("l" find-library "Library source"))
+
+#+END_SRC
 * Activities
 ** GTD
 #+BEGIN_SRC emacs-lisp
@@ -3550,7 +3830,7 @@ are exported to a filename derived from the headline text."
  #+END_SRC
 
 * Commands to bind
-** rg-dwim-current-file
+** indent-according-to-mode
 * Disabled
 ** DISABLED old-code
 #+BEGIN_SRC emacs-lisp
