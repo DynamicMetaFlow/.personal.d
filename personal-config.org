@@ -16,7 +16,7 @@
 
 * TODO Personal Configuration
 ** Modules
-*** EXWM window manager
+*** ACTIVE EXWM window manager
 **** config
   #+BEGIN_SRC emacs-lisp
 (use-package exwm
@@ -349,15 +349,7 @@
                (exwm-init))
              t)
   #+END_SRC
-*** objed
- #+BEGIN_SRC emacs-lisp
-  (use-package objed)
-
-(define-key objed-user-map "f" nil)
-(define-key objed-user-map "fd" 'xref-find-definitions)
-(define-key objed-user-map "fr" 'xref-find-references)
- #+END_SRC
-*** boon
+*** ACTIVE boon
 **** package
   #+BEGIN_SRC emacs-lisp
   (use-package boon :ensure t)
@@ -497,7 +489,15 @@
 
 #+END_SRC
 
-*** torus
+*** ACTIVE objed
+ #+BEGIN_SRC emacs-lisp
+  (use-package objed)
+
+(define-key objed-user-map "f" nil)
+(define-key objed-user-map "fd" 'xref-find-definitions)
+(define-key objed-user-map "fr" 'xref-find-references)
+ #+END_SRC
+*** ACTIVE torus
  #+BEGIN_SRC emacs-lisp
     (use-package torus
       :init
@@ -559,7 +559,7 @@
 
  #+END_SRC
 
-*** emms
+*** ACTIVE emms
  #+BEGIN_SRC emacs-lisp
  (use-package emms
  :ensure t
@@ -576,7 +576,7 @@
     (emms-playing-time 1))
  #+END_SRC
 
-*** pdf-tools
+*** ACTIVE pdf-tools
   #+BEGIN_SRC emacs-lisp
 (use-package pdf-tools :ensure t
   :config
@@ -585,7 +585,7 @@
   (setq-default pdf-view-display-size 'fit-page))
   #+END_SRC
 
-*** Hyperbole
+*** ACTIVE hyperbole
  #+BEGIN_SRC emacs-lisp
 (use-package hyperbole
   :ensure t
@@ -616,7 +616,39 @@
 
 
  #+END_SRC
-*** howm
+*** ACTIVE howm
+**** package
+    #+BEGIN_SRC emacs-lisp
+(use-package howm
+  :demand t
+  :init
+  (setq howm-template
+":HIDDEN:
+,#+PARENTS:
+,#+CHILDREN:
+,#+FRIENDS:
+
+:RELATED:
+%file
+%title
+
+:RESOURCES:
+
+:END:
+,#+TITLE: %cursor
+%fname
+%date
+,#+CATEGORY:
+,#+KEYWORDS:
+
+  ")
+
+:config
+(define-key howm-view-summary-mode-map (kbd "M-C-m") 'howm-open-new-frame-summary)
+(define-key howm-view-summary-mode-map [tab] 'my/howm-view-summary-open))
+
+
+    #+END_SRC
 **** functions
    #+BEGIN_SRC emacs-lisp
 (defvar howm-view-title-header "#+TITLE:")
@@ -852,182 +884,7 @@
 
 
    #+END_SRC
-**** package
-    #+BEGIN_SRC emacs-lisp
-(use-package howm
-  :demand t
-  :init
-  (setq howm-template
-":HIDDEN:
-,#+PARENTS:
-,#+CHILDREN:
-,#+FRIENDS:
-
-:RELATED:
-%file
-%title
-
-:RESOURCES:
-
-:END:
-,#+TITLE: %cursor
-%fname
-%date
-,#+CATEGORY:
-,#+KEYWORDS:
-
-  ")
-
-:config
-(define-key howm-view-summary-mode-map (kbd "M-C-m") 'howm-open-new-frame-summary)
-(define-key howm-view-summary-mode-map [tab] 'my/howm-view-summary-open))
-
-
-    #+END_SRC
-*** projectile
-   #+BEGIN_SRC emacs-lisp
-(use-package projectile
-  :custom
-  (projectile-use-git-grep t)
-  (projectile-create-missing-test-files t)
-  (projectile-completion-system 'ivy)
-  (projectile-switch-project-action  #'projectile-commander)
-  (projectile-discover-projects-in-search-path "~/org/projects")
-  :config
-  (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
-  (projectile-mode +1)
-  (counsel-projectile-mode +1)
-  (def-projectile-commander-method ?S
-    "Run a search in the project"
-    (counsel-projectile-rg))
-  (def-projectile-commander-method ?s
-    "Open a *eshell* buffer for the project."
-    (projectile-run-eshell))
-  (def-projectile-commander-method ?d
-    "Open project root in dired."
-    (projectile-dired))
-  (def-projectile-commander-method ?g
-    "Show magit status."
-    (magit-status)))
-
-(use-package counsel-projectile
-  :after ivy projectile
-  :bind (("C-c s" . counsel-projectile-rg)))
-
-(use-package ibuffer-projectile
-                                        ;:bind ("C-x C-b" . ibuffer)
-  :config
-  (add-hook 'ibuffer-hook
-            (lambda ()
-              (ibuffer-projectile-set-filter-groups)
-              (unless (eq ibuffer-sorting-mode 'alphabetic)
-                (ibuffer-do-sort-by-alphabetic)))))
-
-
-
-   #+END_SRC
-*** ivy-xref
- #+BEGIN_SRC emacs-lisp
-  (use-package ivy-xref
-    :ensure t
-    :init (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
- #+END_SRC
-*** DISABLED goto-last-point
- #+BEGIN_SRC emacs-lisp
-  (use-package goto-last-point
-    :ensure t
-    :demand t
-    :config (goto-last-point-mode))
- #+END_SRC
-*** DISABLED goto-last-change
- #+BEGIN_SRC emacs-lisp
-  (use-package goto-last-change
-    :ensure t
-    :bind
-    (:map boon-goto-map
-          ("SPC" . goto-last-change)))
- #+END_SRC
-*** DISABLED edit-indirect
- #+BEGIN_SRC emacs-lisp
-  (use-package edit-indirect)
- #+END_SRC
-*** gpastel
- #+BEGIN_SRC emacs-lisp
-  (use-package gpastel
-  :config
-  (exwm-input-set-key (kbd "M-y") #'my/exwm-counsel-yank-pop)
-  (defun my/exwm-counsel-yank-pop ()
-    "Same as `counsel-yank-pop' and paste into exwm buffer."
-    (interactive)
-    (let ((inhibit-read-only t)
-          (yank-pop-change-selection t))
-      (call-interactively #'counsel-yank-pop))
-    (when (derived-mode-p 'exwm-mode)
-      (exwm-input--set-focus (exwm--buffer->id (window-buffer (selected-window))))
-      (exwm-input--fake-key ?\C-v))))
-
- #+END_SRC
-
-*** telephone-line
- #+BEGIN_SRC emacs-lisp
-  (use-package telephone-line
-    :config
-    (telephone-line-defsegment my-vc-info ()
-    (when vc-mode
-    (cond
-    ((string-match "Git[:-]" vc-mode)
-    (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
-    (concat "" (format " %s" branch))))
-    ((string-match "SVN-" vc-mode)
-    (let ((revision (cadr (split-string vc-mode "-"))))
-    (concat "" (format "SVN-%s" revision))))
-    (t (format "%s" vc-mode)))))
-
-    (telephone-line-defsegment* telephone-line-boon-mode-segment ()
-         (let ((tag (cond
-                     (boon-command-state  "CMD")
-                     (boon-insert-state   "INS")
-                     (boon-special-state  "SPC")
-                     (boon-objed-state    "OBJ")
-                     )))
-           (if telephone-line-evil-use-short-tag
-               (seq-take tag 1)
-             tag)))
-
-
-    ;; (telephone-line-defsegment* my-airline-position-segment (&optional lines columns)
-    ;;   (let* ((l (number-to-string (if lines lines 1)))
-    ;;          (c (number-to-string (if columns columns 2))))
-    ;;     (if (eq major-mode 'paradox-menu-mode)
-    ;;         (telephone-line-raw mode-line-front-space t)
-    ;;         (concat " " "%" l "l:%" c "c"))))
-
-    ;; (setq tel
-        (setq telephone-line-lhs
-          '((evil   . (telephone-line-boon-mode-segment))
-            (accent . (my-vc-info
-                       telephone-line-process-segment))
-            (nil    . (telephone-line-buffer-segment
-                       telephone-line-projectile-segment))))
-
-    (setq telephone-line-rhs
-          '((nil    . (telephone-line-flycheck-segment
-                       telephone-line-misc-info-segment))
-
-            (accent . (telephone-line-major-mode-segment))
-            (nil    . (telephone-line-hud-segment))))
-                       ;; my-airline-position-segment))))
-
-    (setq display-time-format "%l:%M %p")
-    (setq display-time-default-load-average nil)
-    (setq display-time-use-mail-icon t)
-    (setq display-time-mail-file t)
-
-    (display-time-mode t)
-
-    (telephone-line-mode 1))
- #+END_SRC
-*** hydra
+*** ACTIVE hydra
 **** package
    #+BEGIN_SRC emacs-lisp
 (use-package hydra
@@ -1958,14 +1815,6 @@
     ("l" find-library "Library source"))
 
  #+END_SRC
-*** DISABLED eval-in-repl
-#+BEGIN_SRC emacs-lisp
-(use-package eval-in-repl)
-#+END_SRC
-*** DISABLED javascript-mode
-#+BEGIN_SRC emacs-lisp
-(use-package js3-mode)
-#+END_SRC
 ** Activities
 *** GTD
  #+BEGIN_SRC emacs-lisp
@@ -3291,7 +3140,86 @@ kill-ring, prompting if not found.  With prefix, prompt for URL."
 
  #+END_SRC
 ** Helpers
-*** helper variables
+*** defun
+  #+BEGIN_SRC emacs-lisp
+(defun my/exwm-counsel-yank-pop ()
+    "Same as `counsel-yank-pop' and paste into exwm buffer."
+    (interactive)
+    (let ((inhibit-read-only t)
+          (yank-pop-change-selection t))
+      (call-interactively #'counsel-yank-pop))
+    (when (derived-mode-p 'exwm-mode)
+      (exwm-input--set-focus (exwm--buffer->id (window-buffer (selected-window))))
+      (exwm-input--fake-key ?\C-v)))
+
+
+(defun my/insert-mode ()
+  (interactive)
+  (setq cursor-type 'bar)
+  (boon-mode -1))
+
+
+(defun my/objed-mode ()
+  (interactive)
+  (boon-mode -1)
+  (setq cursor-type 'bar)
+  (objed-mode +1)
+  (objed-activate))
+
+(defun my/boon-set-command-state ()
+  (interactive)
+  (boon-mode +1)
+  (objed-mode -1))
+
+  (defun em-comment ()
+    (interactive)
+    (objed-comment-or-uncomment-region))
+
+  (defun em-push-store-point ()
+    (interactive)
+    (if (not (boundp 'em-store-point-targets))
+        (setq em-store-point-targets ()))
+    (push (point) em-store-point-targets))
+
+  (defun em-pop ()
+    (interactive)
+    (goto-char (pop em-store-point-targets))
+    (yank))
+
+  (defun em-pop-paste ()
+    (interactive)
+    (copy-region-as-kill (region-beginning) (region-end))
+    (goto-char (pop em-store-point-targets))
+    (yank))
+
+
+(defun std::pacman-pkg-info ()
+  (interactive)
+  (let* ((completions (->> "pacman -Q"
+                           (shell-command-to-string)
+                           (s-trim)
+                           (s-lines)
+                           (--map (car (s-split " " it :no-nulls)))))
+         (name (completing-read "Package: " completions)))
+    (switch-to-buffer (get-buffer-create "*Package Info*"))
+    (erase-buffer)
+    (-> (format "pacman -Qi %s" name)
+        (shell-command-to-string)
+        (s-trim)
+        (insert))
+    (goto-char 0)
+    (conf-mode)))
+
+  #+END_SRC
+
+
+
+   :RELATED:
+   :END:
+
+   :RESOURCES:
+   :END:
+*** variables
  #+BEGIN_SRC emacs-lisp
  (setq org-use-speed-commands
 	   (lambda () (or (eq (point) 1)
@@ -3821,75 +3749,39 @@ are exported to a filename derived from the headline text."
  (define-key global-map (kbd "C-c C-j") nil)
  (define-key flyspell-mode-map (kbd "C-c $") nil)
   #+END_SRC
-*** defun
-  #+BEGIN_SRC emacs-lisp
-(defun my/insert-mode ()
-  (interactive)
-  (setq cursor-type 'bar)
-  (boon-mode -1))
-
-
-(defun my/objed-mode ()
-  (interactive)
-  (boon-mode -1)
-  (setq cursor-type 'bar)
-  (objed-mode +1)
-  (objed-activate))
-
-(defun my/boon-set-command-state ()
-  (interactive)
-  (boon-mode +1)
-  (objed-mode -1))
-
-  (defun em-comment ()
-    (interactive)
-    (objed-comment-or-uncomment-region))
-
-  (defun em-push-store-point ()
-    (interactive)
-    (if (not (boundp 'em-store-point-targets))
-        (setq em-store-point-targets ()))
-    (push (point) em-store-point-targets))
-
-  (defun em-pop ()
-    (interactive)
-    (goto-char (pop em-store-point-targets))
-    (yank))
-
-  (defun em-pop-paste ()
-    (interactive)
-    (copy-region-as-kill (region-beginning) (region-end))
-    (goto-char (pop em-store-point-targets))
-    (yank))
-
-
-(defun std::pacman-pkg-info ()
-  (interactive)
-  (let* ((completions (->> "pacman -Q"
-                           (shell-command-to-string)
-                           (s-trim)
-                           (s-lines)
-                           (--map (car (s-split " " it :no-nulls)))))
-         (name (completing-read "Package: " completions)))
-    (switch-to-buffer (get-buffer-create "*Package Info*"))
-    (erase-buffer)
-    (-> (format "pacman -Qi %s" name)
-        (shell-command-to-string)
-        (s-trim)
-        (insert))
-    (goto-char 0)
-    (conf-mode)))
-
-  #+END_SRC
-
-
-
-   :RELATED:
-   :END:
-
-   :RESOURCES:
-   :END:
 ** Disabled
+*** DISABLED javascript-mode
+#+BEGIN_SRC emacs-lisp
+(use-package js3-mode)
+#+END_SRC
+
+*** DISABLED eval-in-repl
+#+BEGIN_SRC emacs-lisp
+(use-package eval-in-repl)
+#+END_SRC
+
+*** DISABLED edit-indirect
+ #+BEGIN_SRC emacs-lisp
+  (use-package edit-indirect)
+ #+END_SRC
+
+*** DISABLED goto-last-change
+ #+BEGIN_SRC emacs-lisp
+  (use-package goto-last-change
+    :ensure t
+    :bind
+    (:map boon-goto-map
+          ("SPC" . goto-last-change)))
+ #+END_SRC
+
+*** DISABLED goto-last-point
+ #+BEGIN_SRC emacs-lisp
+  (use-package goto-last-point
+    :ensure t
+    :demand t
+    :config (goto-last-point-mode))
+ #+END_SRC
+
 *** DISABLED old-code
  #+BEGIN_SRC emacs-lisp
 ;; (define-key org-agenda-mode-map (kbd "TAB") #'my/org-agenda-goto-narrow)
@@ -4602,12 +4494,6 @@ assume a filename and skip displaying Dashboard."
 (use-package writeroom-mode :ensure t)
  #+END_SRC
 
-*** DISABLED themes
- #+BEGIN_SRC emacs-lisp
-(use-package base16-theme
-  :ensure t)
-
- #+END_SRC
 *** DISABLED annotate
  #+BEGIN_SRC emacs-lisp
 (use-package annotate)
@@ -4940,10 +4826,10 @@ assume a filename and skip displaying Dashboard."
  CLOCK: [2019-05-01 Wed 12:14]--[2019-05-01 Wed 12:15] =>  0:01
  :END:
 
-** HOLD Map keybindings                                                :HOLD:
+** HOLD Keybindings to map                                             :HOLD:
 Keybindings to assign
 *** TODO indent-according-to-mode
-** TODO Define context-aware keys in Emacs
+** HOLD Define context-aware keys in Emacs                             :HOLD:
    :PROPERTIES:
    :ID:       d4f4f43b-cee1-4fb3-a153-46b6ee06a70f
    :END:
@@ -5020,7 +4906,3 @@ Keybindings to assign
 
 #+END_SRC
 ** DONE Read over documentation of objed
-* Tinker
-#+BEGIN_SRC emacs-lisp :results silent
-
-#+END_SRC
