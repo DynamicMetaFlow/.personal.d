@@ -10,7 +10,7 @@
 #+PROPERTY: header-args :results silent :tangle personal-config.el
 #+EXPORT_EXCLUDE_TAGS: noexport
 #+HTML_HEAD_EXTRA: <style>div#content { max-width: 2000px; }</style>
-#+CATEGORY: emacs
+#+SEQ_TODO: TODO NEXT ACTIVE | DISABLED
 :END:
 #+TITLE: Personal Configuration
 
@@ -455,6 +455,7 @@ Keybindings to assign
 **** boon-major-mode
   #+BEGIN_SRC emacs-lisp
 (defvar-local boon-objed-state nil "Non-nil when boon objed mode is activated.")
+
     (defun boon-select-major-mode (boon-mode-map)
     (let ((boon-mode-command (cdr (assoc major-mode boon-mode-map))))
       (if boon-mode-command (apply boon-mode-command))))
@@ -1589,6 +1590,9 @@ optional list of changes as its last argument."
      (key-chord-define boon-command-map "rr"  'hydra-register/body)
      (key-chord-define boon-command-map "gg"  'hydra-git/body)
      (key-chord-define boon-command-map "hh"  'hydra-help/body)
+     (key-chord-define boon-command-map "ff"  'hydra-file/body)
+
+(key-chord-mode +1)
 
 
       )
@@ -1596,6 +1600,10 @@ optional list of changes as its last argument."
 (use-package bind-chord)
 (use-package use-package-chords)
   #+END_SRC
+*** elmacro
+ #+BEGIN_SRC emacs-lisp
+ (use-package elmacro)
+ #+END_SRC
 *** howm
 ***** functions
     #+BEGIN_SRC emacs-lisp
@@ -1871,6 +1879,96 @@ optional list of changes as its last argument."
   (unless noninteractive
     (pdf-tools-install))
   (setq-default pdf-view-display-size 'fit-page))
+  #+END_SRC
+
+*** hyperbole
+ #+BEGIN_SRC emacs-lisp
+(use-package hyperbole :ensure t)
+ #+END_SRC
+
+*** helpful
+ #+BEGIN_SRC emacs-lisp
+(use-package helpful)
+ #+END_SRC
+*** emms
+  #+BEGIN_SRC emacs-lisp
+ (use-package emms
+ :ensure t
+ :config
+ (require 'emms)
+    (emms-all)
+    (emms-default-players)
+    (setq emms-playlist-buffer-name "*Music*")
+    (setq emms-info-asynchronously t)
+    (setq emms-info-functions '(emms-info-libtag))
+    (emms-mode-line 0)
+    (emms-playing-time 1))
+
+  #+END_SRC
+*** org-pomodoro
+#+BEGIN_SRC emacs-lisp
+ (use-package org-pomodoro)
+#+END_SRC
+*** torus
+  #+BEGIN_SRC emacs-lisp
+    (use-package torus
+      :init
+  (defun torus-read (filename)
+    "Read main torus variables from FILENAME as Lisp code."
+    (interactive
+     (list
+      (read-file-name
+       "Torus file : "
+       (file-name-as-directory torus-dirname))))
+    (let*
+        ((file-basename (file-name-nondirectory filename))
+         (minus-len-ext (- (min (length torus-extension)
+                                (length filename))))
+         (buffer))
+      (unless (equal (cl-subseq filename minus-len-ext) torus-extension)
+        (setq filename (concat filename torus-extension)))
+      (when (torus--update-input-history file-basename)
+        (if (file-exists-p filename)
+            (progn
+              (setq buffer (find-file-noselect filename))
+              (eval-buffer buffer)
+              (kill-buffer buffer))
+          (message "File %s does not exist." filename))))
+    ;; Also saved in file
+    ;; (torus--update-meta)
+    ;; (torus--build-index)
+    ;; (torus--build-meta-index)
+    (torus--jump))
+      (setq torus-prefix-key (kbd "C-x t"))
+
+      :bind-keymap ("C-x t" . torus-map)
+      :bind (
+             :map torus-map
+             ("t" . torus-copy-to-circle))
+      :hook ((emacs-startup . torus-start)
+             (kill-emacs . torus-quit))
+      :custom (
+               (torus-binding-level 1)
+               (torus-verbosity 1)
+               (torus-dirname (concat user-emacs-directory (file-name-as-directory "torus")))
+               (torus-load-on-startup t)
+               (torus-save-on-exit t)
+               (torus-autoread-file (concat torus-dirname "last.el"))
+               (torus-autowrite-file torus-autoread-file)
+               (torus-backup-number 5)
+               (torus-history-maximum-elements 30)
+               (torus-maximum-horizontal-split 3)
+               (torus-maximum-vertical-split 4)
+               (torus-display-tab-bar t)
+               (torus-separator-torus-circle " >> ")
+               (torus-separator-circle-location " > ")
+               (torus-prefix-separator "/")
+               (torus-join-separator " & "))
+      :config
+      (torus-init)
+      (torus-install-default-bindings)
+    )
+
   #+END_SRC
 
 ** Activities
@@ -3829,11 +3927,10 @@ are exported to a filename derived from the headline text."
  (define-key yas-minor-mode-map (kbd "C-c &") nil)
  (define-key global-map (kbd "C-c ,") nil)
  (define-key global-map (kbd "C-c C-j") nil)
- (define-key flyspell-mode-map (kbd "C-c $") nil)
   #+END_SRC
-* DISABLED Disabled
+* Disabled
 ** DISABLED boon-hydra bindings
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 ;; (define-key boon-command-map (kbd "A")  'hydra-agenda/body)
 ;; (define-key boon-command-map (kbd "W")  'hydra-window/body)
 ;; (define-key boon-command-map (kbd "J")  'hydra-jump/body)
@@ -3847,7 +3944,6 @@ are exported to a filename derived from the headline text."
 ;; (define-key boon-command-map (kbd "R")  'hydra-register/body)
 ;; (define-key boon-command-map (kbd "G")  'hydra-git/body)
 ;; (define-key boon-command-map (kbd "H")  'hydra-help/body)
-
 #+END_SRC
 ** DISABLED boon Keybindings
 #+BEGIN_SRC emacs-lisp
@@ -4953,5 +5049,192 @@ assume a filename and skip displaying Dashboard."
   :config
   (setq shackle-default-rule '(:same t))
   (shackle-mode))
+
+#+END_SRC
+** DISABLED telephone-line
+ #+BEGIN_SRC emacs-lisp
+  (use-package telephone-line
+    :config
+    (telephone-line-defsegment my-vc-info ()
+    (when vc-mode
+    (cond
+    ((string-match "Git[:-]" vc-mode)
+    (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
+    (concat "" (format " %s" branch))))
+    ((string-match "SVN-" vc-mode)
+    (let ((revision (cadr (split-string vc-mode "-"))))
+    (concat "" (format "SVN-%s" revision))))
+    (t (format "%s" vc-mode)))))
+
+    (telephone-line-defsegment* telephone-line-boon-mode-segment ()
+         (let ((tag (cond
+                     (boon-command-state  "CMD")
+                     (boon-insert-state   "INS")
+                     (boon-special-state  "SPC")
+                     (boon-objed-state    "OBJ")
+                     )))
+           (if telephone-line-evil-use-short-tag
+               (seq-take tag 1)
+             tag)))
+
+
+    ;; (telephone-line-defsegment* my-airline-position-segment (&optional lines columns)
+    ;;   (let* ((l (number-to-string (if lines lines 1)))
+    ;;          (c (number-to-string (if columns columns 2))))
+    ;;     (if (eq major-mode 'paradox-menu-mode)
+    ;;         (telephone-line-raw mode-line-front-space t)
+    ;;         (concat " " "%" l "l:%" c "c"))))
+
+    ;; (setq tel
+        (setq telephone-line-lhs
+          '((evil   . (telephone-line-boon-mode-segment))
+            (accent . (my-vc-info
+                       telephone-line-process-segment))
+            (nil    . (telephone-line-buffer-segment
+                       telephone-line-projectile-segment))))
+
+    (setq telephone-line-rhs
+          '((nil    . (telephone-line-flycheck-segment
+                       telephone-line-misc-info-segment))
+
+            (accent . (telephone-line-major-mode-segment))
+            (nil    . (telephone-line-hud-segment))))
+                       ;; my-airline-position-segment))))
+
+    (setq display-time-format "%l:%M %p")
+    (setq display-time-default-load-average nil)
+    (setq display-time-use-mail-icon t)
+    (setq display-time-mail-file t)
+
+    (display-time-mode t)
+
+    (telephone-line-mode 1))
+ #+END_SRC
+** DISABLED dashboard
+ #+BEGIN_SRC emacs-lisp
+ (use-package dashboard
+   :init
+   ;(dashboard-setup-startup-hook)
+   :config
+   (setq dashboard-center-content t)
+   (setq dashboard-startup-banner ()  )
+ ;  (add-to-list 'dashboard-items '(agenda) t)
+   (setq dashboard-items '())
+
+ (add-to-list 'dashboard-item-generators  '(custom . dashboard-insert-custom))
+ (add-to-list 'dashboard-items '(custom) t)
+
+     (defvar all-the-icons-scale-factor)
+ (defvar all-the-icons-default-adjust)
+ (defun dashboard-insert-custom (list-size)
+   (let ((all-the-icons-scale-factor 2.00)
+         (all-the-icons-default-adjust -0.00))
+     (mapc (lambda (btn)
+             (when btn
+               (cl-destructuring-bind (label icon fn) btn
+                 (insert
+                  (with-temp-buffer
+                    (insert-text-button
+                     (concat (all-the-icons-octicon icon :face 'font-lock-keyword-face)
+                             (propertize (concat " " label) 'face 'font-lock-keyword-face))
+                     'action `(lambda (_) ,fn)
+                     'follow-link t)
+                    (dashboard-center (- dashboard--width 2) (buffer-string)))
+                  "\n\n"))))
+           `( ("Open project" "briefcase"
+              (call-interactively (or (command-remapping #'projectile-switch-project)
+                                      #'projectile-switch-project)))
+
+              ("Bookmarks" "bookmark"
+              (call-interactively (or (command-remapping #'bookmark-jump)
+                                      #'bookmark-jump)))
+
+              ,(when (fboundp 'org-agenda-list)
+              '("Agenda for this week" "calendar"
+                (call-interactively #'org-agenda-list)))
+
+
+              ("Capture" "comment"
+               (call-interactively (or (command-remapping #'org-capture)
+                                       #'org-capture)))
+           ))))
+
+
+ (defvar dashboard--width 80)
+ (defvar dashboard--height 0)
+ (defvar dashboard--old-fringe-indicator fringe-indicator-alist)
+ (defun dashboard-center (len s)
+   (concat (make-string (ceiling (max 0 (- len (length s))) 2) ? )
+           s))
+
+
+ (defun avy-dashboard-button (char &optional arg)
+     "Jump to the currently visible CHAR.
+   The window scope is determined by `avy-all-windows' (ARG negates it)."
+     (interactive (list (read-char "char: " t)
+                        current-prefix-arg))
+
+     (avy-with avy-goto-char
+       (avy-jump
+        (if (= 13 char)
+            "\n"
+          (regexp-quote (string char)))
+        :window-flip arg))
+     (push-button arg))
+
+ (define-key dashboard-mode-map "n" #'dashboard/next-button)
+ (define-key dashboard-mode-map "p" #'dashboard/previous-button)
+
+ (define-key dashboard-mode-map [right] #'dashboard/next-button)
+ (define-key dashboard-mode-map [left] #'dashboard/previous-button)
+ (define-key dashboard-mode-map [down] #'dashboard/next-button)
+ (define-key dashboard-mode-map [up] #'dashboard/previous-button)
+
+
+ (define-key dashboard-mode-map "s" #'org-save-all-org-buffers)
+ (define-key dashboard-mode-map [tab] #'avy-dashboard-button)
+
+
+ (define-derived-mode dashboard-mode special-mode
+   (format "Dashboard")
+   "Major mode for the BMACS dashboard buffer."
+   (read-only-mode +1)
+   (global-linum-mode -1)
+   (page-break-lines-mode +1)
+   (setq truncate-lines t)
+   (setq whitespace-style nil)
+   (setq global-whitespace-mode nil)
+   (setq whitespace-mode nil)
+   (setq electric-indent-mode -1)
+   (setq show-trailing-whitespace nil)
+
+   (cl-loop for (car . _cdr) in fringe-indicator-alist
+            collect (cons car nil) into alist
+            finally do (setq fringe-indicator-alist alist)))
+
+ (defun dashboard/next-button ()
+   (interactive)
+   (ignore-errors (goto-char (next-button (point)))))
+ (defun dashboard/previous-button ()
+   (interactive)
+   (ignore-errors (goto-char (previous-button (point))))))
+
+ #+END_SRC
+
+** DISABLED org-brain
+#+BEGIN_SRC emacs-lisp
+ (use-package org-brain
+   :config
+   (setq org-id-track-globally t)
+   (setq org-id-locations-file "~/.emacs.d/.org-id-locations")
+   (setq org-brain-visualize-default-choices 'all)
+   (setq org-brain-title-max-length 12))
+
+#+END_SRC
+** DISABLED org-web-tools
+#+BEGIN_SRC emacs-lisp
+ (use-package org-web-tools
+ :init
+ (setq org-web-tools-attach-archive-retry 15))
 
 #+END_SRC
