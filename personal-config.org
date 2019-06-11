@@ -1,82 +1,21 @@
 :HIDDEN:
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
-
 #+HTML_HEAD: <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 #+HTML_HEAD: <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-#+HTML_HEAD: <script type="text/javascript" src="http://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.js"></script>
-#+HTML_HEAD: <script type="text/javascript" src="http://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
+#+HTML_HEAD: <link href="css/style.css" rel="stylesheet" type="text/css" />
+#+HTML_HEAD_EXTRA: <style>div#content { max-width: 2000px; }</style>
+
+#+EXPORT_FILE_NAME: index.html
+#+EXPORT_EXCLUDE_TAGS: noexport
 
 #+PROPERTY: header-args :results silent :tangle personal-config.el
-#+EXPORT_EXCLUDE_TAGS: noexport
-#+HTML_HEAD_EXTRA: <style>div#content { max-width: 2000px; }</style>
-#+SEQ_TODO: TODO NEXT ACTIVE | DISABLED
 :END:
 #+TITLE: Personal Configuration
+#+SEQ_TODO: TODO NEXT ACTIVE | DISABLED
 
-* TODO Maintenance
-** TODO Keybindings to map
-Keybindings to assign
-*** DONE ivy-push-view
-*** DONE ivy-pop-view
-*** DONE ivy-switch-view
-** TODO Configure eink screen
-*** TODO Customize poet theme to be compatible with eink screen
-    :PROPERTIES:
-    :CREATED:  <2019-05-20 Mon 21:50>
-    :ID:       9f89ab79-6db4-488e-9c43-8a689f1df915
-    :END:
-*** TODO Review [[https://github.com/mnp/dispwatch][GitHub - mnp/dispwatch: Emacs - Watch the current display for changes (ie plu...]]
-    :PROPERTIES:
-    :CREATED:  <2019-05-20 Mon 22:18>
-    :ID:       36e7f0b0-73ee-4b64-8aa4-3ba2b474c4be
-    :END:
-    :LOGBOOK:
-    CLOCK: [2019-05-20 Mon 22:18]--[2019-05-20 Mon 22:19] =>  0:01
-    :END:
-*** TODO [[https://github.com/Lemonbreezes/exwmsw][GitHub - Lemonbreezes/exwmsw: Monitor-independent workspaces for EXWM]]
-    :PROPERTIES:
-    :CREATED:  <2019-06-07 Fri 14:18>
-    :ID:       61add96e-3808-498a-8afa-abc4ddbf8730
-    :END:
-    :LOGBOOK:
-    CLOCK: [2019-06-07 Fri 14:18]--[2019-06-07 Fri 14:19] =>  0:01
-    :END:
-** TODO Create literate configation of system dotfiles
-   :PROPERTIES:
-   :TASK:
-   :ID:       c407f939-5ce0-4635-98e3-1a77e894bfb4
-   :END:
-** DONE Setup boon keybindings for the insert and normal mode that has objed mode as part of it
-** DONE Read over documentation of objed
-* Reference
-** Define context-aware keys in Emacs
-   :PROPERTIES:
-   :ID:       d4f4f43b-cee1-4fb3-a153-46b6ee06a70f
-   :END:
-[[http://endlessparentheses.com/define-context-aware-keys-in-emacs.html][Define context-aware keys in Emacs · Endless Parentheses]]
-
-
-
- :RELATED:
- :END:
-
- :RESOURCES:
- :END:
-** EXWM and keychord
-   :PROPERTIES:
-   :CREATED:  <2019-05-29 Wed 11:21>
-   :ID:       760ddd05-c598-481e-9e09-5142a8821507
-   :END:
-   :LOGBOOK:
-   CLOCK: [2019-05-29 Wed 11:21]--[2019-05-29 Wed 11:22] =>  0:01
-   :END:
-[[https://github.com/eush77/dotfiles/blob/7b0d623b03d1884d26c2b2e873bd1e366e61cbbf/emacs/.emacs.d/config/config-exwm.el][dotfiles/config-exwm.el at 7b0d623b03d1884d26c2b2e873bd1e366e61cbbf · eush77/...]]
-* Configuration
-** Modules
-*** EXWM window manager
-**** setup
-  #+BEGIN_SRC emacs-lisp
+* Modules
+** EXWM window manager
+*** setup
+ #+BEGIN_SRC emacs-lisp
 (use-package exwm
   :config
 ;  (server-start)
@@ -196,18 +135,18 @@ Keybindings to assign
 
 
   (window-divider-mode))
-    #+END_SRC
-**** packages
-***** xelb
-  #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+*** packages
+**** xelb
+ #+BEGIN_SRC emacs-lisp
    (use-package xelb)
-  #+END_SRC
-***** exwm-edit
-  #+BEGIN_SRC emacs-lisp
+ #+END_SRC
+**** exwm-edit
+ #+BEGIN_SRC emacs-lisp
    (use-package exwm-edit)
-  #+END_SRC
-**** keybindings
-  #+BEGIN_SRC emacs-lisp
+ #+END_SRC
+*** keybindings
+ #+BEGIN_SRC emacs-lisp
 (setq exwm-input-line-mode-passthrough t)
 
 (defun exwm-input-line-mode ()
@@ -317,9 +256,9 @@ Keybindings to assign
   (exwm-input-set-key (kbd "s-x") #'exwm-input-toggle-keyboard))
 
 
-  #+END_SRC
-**** randr
-  #+BEGIN_SRC emacs-lisp
+ #+END_SRC
+*** randr
+ #+BEGIN_SRC emacs-lisp
    (setq exwm-randr-workspace-output-plist '(1 "eDP1" 0 "HDMI2" 1 "VGA1"))
 
    (add-hook 'exwm-randr-screen-change-hook
@@ -327,9 +266,9 @@ Keybindings to assign
                  (start-process-shell-command
                   "xrandr" nil "xrandr --output HDMI2 --left-of VGA1 --auto")))
 
-  #+END_SRC
-**** ibuffer
-  #+BEGIN_SRC emacs-lisp
+ #+END_SRC
+*** ibuffer
+ #+BEGIN_SRC emacs-lisp
    (setq ibuffer-saved-filter-groups
      (quote (("default"
        ("EXWM" (mode . exwm-mode))))))
@@ -404,9 +343,9 @@ Keybindings to assign
                        (funcall get-buffers-function)))))
        (counsel-ibuffer)))
 
-  #+END_SRC
-**** autostart
-  #+BEGIN_SRC emacs-lisp
+ #+END_SRC
+*** autostart
+ #+BEGIN_SRC emacs-lisp
    (defun app/autostart (application)
      "Add an application to autostart."
      (add-hook 'exwm-init-hook
@@ -442,18 +381,19 @@ Keybindings to assign
                (my-exwm-keybindings)
                (exwm-init)
              t))
-  #+END_SRC
+ #+END_SRC
 
-*** boon
-**** setup
-  #+BEGIN_SRC emacs-lisp
- (use-package boon
-      :config
-      (require 'boon-qwerty)
-      (boon-mode))
-  #+END_SRC
-**** boon-major-mode
-  #+BEGIN_SRC emacs-lisp
+** boon
+*** setup
+ #+BEGIN_SRC emacs-lisp
+(use-package boon
+  :config
+  (require 'boon-qwerty)
+  (boon-mode))
+
+ #+END_SRC
+*** boon-major-mode
+ #+BEGIN_SRC emacs-lisp
 (defvar-local boon-objed-state nil "Non-nil when boon objed mode is activated.")
 
     (defun boon-select-major-mode (boon-mode-map)
@@ -509,9 +449,9 @@ Keybindings to assign
        ,*dashboard*
        ))))
 
-  #+END_SRC
-**** boon-objed
- #+BEGIN_SRC emacs-lisp
+ #+END_SRC
+*** boon-objed
+#+BEGIN_SRC emacs-lisp
   (defun boon-reset-all-mode-states ()
     (interactive)
     (mapcar (lambda (boon-mode)
@@ -612,10 +552,9 @@ optional list of changes as its last argument."
 
 
 
- #+END_SRC
-**** keybindings
- #+BEGIN_SRC emacs-lisp
-
+#+END_SRC
+*** keybindings
+#+BEGIN_SRC emacs-lisp
 (define-key boon-command-map (kbd "SPC") 'counsel-M-x)
 (define-key boon-command-map (kbd "<s-return>") 'counsel-linux-app)
 (define-key global-map [escape] 'my/boon-set-command-state)
@@ -630,22 +569,26 @@ optional list of changes as its last argument."
 (define-key boon-command-map (kbd "/")  'hui-search-web)
 (define-key boon-command-map (kbd "b")  'ivy-switch-buffer)
 
- #+END_SRC
-*** objed
-  #+BEGIN_SRC emacs-lisp
-(use-package objed)
+(define-key boon-command-map (kbd "g")  'magit-status)
+
+#+END_SRC
+** objed
+#+BEGIN_SRC emacs-lisp
+(use-package objed
+:commands objed-mode
+:config
 ;(define-key objed-user-map "f" nil)
 (define-key objed-user-map "d" 'xref-find-definitions)
 (define-key objed-user-map "r" 'xref-find-references)
 
 (define-key objed-op-map "j" 'counsel-imenu)
 (define-key objed-op-map "f" 'counsel-find-file)
-(define-key objed-op-map "b" 'ivy-switch-buffer)
+(define-key objed-op-map "b" 'ivy-switch-buffer))
 
-  #+END_SRC
-*** hydra
-**** setup
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** hydra
+*** setup
+#+BEGIN_SRC emacs-lisp
 (use-package hydra
   :ensure t
   :defer 0.1
@@ -677,9 +620,9 @@ optional list of changes as its last argument."
 
   (setq lv-use-separator t)
   (set-face-attribute 'hydra-face-blue nil :foreground "deep sky blue" :weight 'bold))
- #+END_SRC
-**** common
-   #+BEGIN_SRC emacs-lisp
+#+END_SRC
+*** common
+  #+BEGIN_SRC emacs-lisp
 (eval-and-compile
   (defhydra hydra-common  (
                            :color blue
@@ -702,10 +645,10 @@ optional list of changes as its last argument."
 
 
     ))
-   #+END_SRC
+  #+END_SRC
 
-**** master
-  #+BEGIN_SRC emacs-lisp
+*** master
+ #+BEGIN_SRC emacs-lisp
 (defhydra hydra-master (
                         :color blue
                         :column 2
@@ -731,9 +674,9 @@ optional list of changes as its last argument."
 
 
       )
-    #+END_SRC
-**** projects
-   #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+*** projects
+  #+BEGIN_SRC emacs-lisp
 (defhydra hydra-projects (:color blue :hint nil
                                 :pre (progn
                                        (exwm-input-line-mode))
@@ -801,9 +744,9 @@ optional list of changes as its last argument."
 
 (define-key projectile-mode-map (kbd "C-c o") #'hydra-project/body)
 
-   #+END_SRC
-**** agenda
-    #+BEGIN_SRC emacs-lisp
+  #+END_SRC
+*** agenda
+   #+BEGIN_SRC emacs-lisp
 (defhydra hydra-agenda (
                         :color blue
                         :pre (progn
@@ -845,9 +788,9 @@ optional list of changes as its last argument."
 
 
 )
-    #+END_SRC
-**** emacs
-    #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+*** emacs
+   #+BEGIN_SRC emacs-lisp
 (defhydra hydra-emacs (:color blue :hint nil :inherit (hydra-common/heads)
                               :pre (progn
                                      (exwm-input-line-mode))
@@ -886,10 +829,10 @@ optional list of changes as its last argument."
   ("e" save-buffers-kill-emacs)
   ("s" hydra-system/body nil)
 )
-    #+END_SRC
+   #+END_SRC
 
-**** terminal
-   #+BEGIN_SRC emacs-lisp
+*** terminal
+  #+BEGIN_SRC emacs-lisp
   (defhydra hydra-terminal (:color blue :hint nil :inherit (hydra-common/heads)
                                  :pre (progn
                                         (exwm-input-line-mode))
@@ -917,10 +860,10 @@ optional list of changes as its last argument."
       ("p" multi-term-previous)
       ("d" multi-term-dedicated-toggle))
 
-   #+END_SRC
+  #+END_SRC
 
-**** file
-    #+BEGIN_SRC emacs-lisp
+*** file
+   #+BEGIN_SRC emacs-lisp
 (defhydra hydra-file (:color blue :hint nil :inherit (hydra-common/heads)
                              :pre (progn
                                     (exwm-input-line-mode))
@@ -944,9 +887,9 @@ optional list of changes as its last argument."
   ("ht" hydra-text/body nil   :color blue)
   ("hg" hydra-git/body nil   :color blue)
 )
-    #+END_SRC
-**** narrow
-   #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+*** narrow
+  #+BEGIN_SRC emacs-lisp
 (defhydra hydra-narrow (:color blue :hint nil :inherit (hydra-common/heads)
                                :pre (progn
                                       (exwm-input-line-mode))
@@ -970,10 +913,10 @@ optional list of changes as its last argument."
       ("c" org-narrow-to-block)
       ("r" narrow-to-region)
       ("N" widen))
-   #+END_SRC
+  #+END_SRC
 
-**** spell
-    #+BEGIN_SRC emacs-lisp
+*** spell
+   #+BEGIN_SRC emacs-lisp
 (defhydra hydra-spell (:color blue :hint nil :inherit (hydra-common/heads)
                               :pre (progn
                                      (exwm-input-line-mode))
@@ -997,10 +940,10 @@ optional list of changes as its last argument."
   ("p" flyspell-prog-mode)
   ("k" flyspell-correct-word-generic)
   ("n" flyspell-goto-next-error))
-    #+END_SRC
+   #+END_SRC
 
-**** text
-   #+BEGIN_SRC emacs-lisp
+*** text
+  #+BEGIN_SRC emacs-lisp
 (defhydra hydra-text (:color blue :hint nil :inherit (hydra-common/heads)
                              :pre (progn
                                     (exwm-input-line-mode))
@@ -1045,10 +988,10 @@ optional list of changes as its last argument."
   ("U" untabify)
   ("q" hydra-boxquote/body)
   ("x" comment-box))
-   #+END_SRC
+  #+END_SRC
 
-**** git
-    #+BEGIN_SRC emacs-lisp
+*** git
+   #+BEGIN_SRC emacs-lisp
 (defhydra hydra-git (:color blue :hint nil :inherit (hydra-common/heads)
                             :pre (progn
                                    (exwm-input-line-mode))
@@ -1069,10 +1012,10 @@ optional list of changes as its last argument."
   ("l" magit-log-buffer-file)
   ("s" magit-status)
   ("t" git-timemachine))
-    #+END_SRC
+   #+END_SRC
 
-**** select
- #+BEGIN_SRC emacs-lisp
+*** select
+#+BEGIN_SRC emacs-lisp
 (defhydra hydra-select (:exit t :columns 4)
     "Select"
     ("v" set-mark-command "Start Cursor")
@@ -1085,9 +1028,9 @@ optional list of changes as its last argument."
     ("t" (lambda () (interactive)(set-mark (point))(isearch-forward)) "Till")
     ("w" er/mark-word "Word / Symbol")
     ("s" mc--mark-symbol-at-point "Word / Symbol"))
- #+END_SRC
-**** delete
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+*** delete
+#+BEGIN_SRC emacs-lisp
 (defhydra hydra-delete (:exit t :columns 4)
   "Delete / Cut shortcuts"
   ("$" kill-line "Till line end")
@@ -1104,9 +1047,9 @@ optional list of changes as its last argument."
   ("U" (zop-up-to-char -1) "Untill backwards")
   ("a" zop-to-char "After character")
   ("A" (zop-to-char -1) "After character backwards"))
- #+END_SRC
-**** paste
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+*** paste
+#+BEGIN_SRC emacs-lisp
 (defhydra hydra-paste (:exit t :columns 4)
   "Paste"
   ("p" yank "Paste")
@@ -1116,9 +1059,9 @@ optional list of changes as its last argument."
 
 
 
- #+END_SRC
-**** copy
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+*** copy
+#+BEGIN_SRC emacs-lisp
 (defhydra hydra-copy (:exit t :columns 4)
   "Copy"
   ("c" whole-line-or-region-copy-region-as-kill "Line / Region")
@@ -1130,9 +1073,9 @@ optional list of changes as its last argument."
   ("f" em-copy-function "Function")
   ("d" em-duplicate-line "Duplicate line"))
 
- #+END_SRC
-**** help
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+*** help
+#+BEGIN_SRC emacs-lisp
   (defhydra hydra-help (:exit t :columns 4)
     "Help"
     ("f" counsel-apropos "Function search")
@@ -1143,9 +1086,9 @@ optional list of changes as its last argument."
     ("p" find-function-at-point "Function at Point")
     ("l" find-library "Library source"))
 
- #+END_SRC
-**** jump
-    #+BEGIN_SRC emacs-lisp
+#+END_SRC
+*** jump
+   #+BEGIN_SRC emacs-lisp
 (defhydra hydra-jump (:color blue :hint nil :inherit (hydra-common/heads)
                              :pre (progn
                                     (exwm-input-line-mode))
@@ -1177,9 +1120,9 @@ optional list of changes as its last argument."
   ("v" avy-copy-region)
   ("i" avy-isearch)
 )
-    #+END_SRC
-**** register
-   #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+*** register
+  #+BEGIN_SRC emacs-lisp
 (defhydra hydra-register (:color blue :hint nil :inherit (hydra-common/heads)
                                  :pre (progn
                                         (exwm-input-line-mode))
@@ -1204,10 +1147,10 @@ optional list of changes as its last argument."
   ("o" view-echo-area-messages)
   ("r" evil-show-registers)
   ("u" undo-tree-visualize))
-   #+END_SRC
+  #+END_SRC
 
-**** search
-   #+BEGIN_SRC emacs-lisp
+*** search
+  #+BEGIN_SRC emacs-lisp
 (defhydra hydra-search (:color blue :hint nil :inherit (hydra-common/heads)
                                :pre (progn
                                       (exwm-input-line-mode))
@@ -1240,10 +1183,10 @@ optional list of changes as its last argument."
   ("s" counsel-semantic)
   ("w" swiper-multi))
 
-   #+END_SRC
+  #+END_SRC
 
-**** torus
-   #+BEGIN_SRC emacs-lisp
+*** torus
+  #+BEGIN_SRC emacs-lisp
 (defhydra hydra-torus (
                        :color red
                        :hint nil
@@ -1294,10 +1237,10 @@ optional list of changes as its last argument."
 
 )
 
-   #+END_SRC
+  #+END_SRC
 
-**** bookmarks
-   #+BEGIN_SRC emacs-lisp
+*** bookmarks
+  #+BEGIN_SRC emacs-lisp
 (defhydra hydra-bookmarks (
                            :color red
                            :hint nil
@@ -1320,10 +1263,10 @@ optional list of changes as its last argument."
   ("j" bookmark-jump)
   ("m" bookmark-set)
   ("s" bookmark-save))
-   #+END_SRC
+  #+END_SRC
 
-**** applications
- #+BEGIN_SRC emacs-lisp
+*** applications
+#+BEGIN_SRC emacs-lisp
   (defhydra hydra-applications (:exit t :columns 4)
     "Applications"
     ("p" counsel-list-processes "Show Processes")
@@ -1336,9 +1279,9 @@ optional list of changes as its last argument."
     ("o" elfeed-search-show-entry "Show entry"))
 
 
- #+END_SRC
-**** window
-   #+BEGIN_SRC emacs-lisp
+#+END_SRC
+*** window
+  #+BEGIN_SRC emacs-lisp
 (defhydra hydra-window (
                         :color red
                         :hint  nil
@@ -1396,11 +1339,11 @@ optional list of changes as its last argument."
 
 
   )
-   #+END_SRC
+  #+END_SRC
 
-**** major-modes
-***** org
- #+BEGIN_SRC emacs-lisp :results silent
+*** major-modes
+**** org
+#+BEGIN_SRC emacs-lisp :results silent
 (defhydra hydra-org (:exit t :columns 4
 :inherit (hydra-common/heads))
 
@@ -1415,9 +1358,9 @@ optional list of changes as its last argument."
 ("," outline-show-children "Show node children")
 ("." org-tree-to-indirect-buffer "Edit in buffer")
 ("'" org-edit-special "Code buffer"))
- #+END_SRC
-***** python
- #+BEGIN_SRC emacs-lisp :results silent
+#+END_SRC
+**** python
+#+BEGIN_SRC emacs-lisp :results silent
 (with-no-warnings
 (defhydra hydra-python (:exit t :columns 4)
 "Python"
@@ -1442,9 +1385,9 @@ optional list of changes as its last argument."
 ("s" isortify-buffer "Sort imports")
 ;;("n" flyceck "Run all tests")
 ("f" blacken-buffer "Format buffer code")))
- #+END_SRC
-***** lisp
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+**** lisp
+#+BEGIN_SRC emacs-lisp
 (defhydra hydra-lisp (:exit t :columns 4)
 "Lisp"
 ("r" ielm "Interactive REPL")
@@ -1454,9 +1397,9 @@ optional list of changes as its last argument."
 ("d" checkdoc "Lint doc strings")
 ("l" package-lint-current-buffer "Lint code")
 ("c" emacs-lisp-byte-compile-and-load "Lisp execute"))
- #+END_SRC
-***** javascript
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+**** javascript
+#+BEGIN_SRC emacs-lisp
 (defhydra hydra-javascript (:exit t :columns 4)
 "Javascript"
 ("," dumb-jump-back "Jump back")
@@ -1465,9 +1408,9 @@ optional list of changes as its last argument."
 ("i" npm-mode-npm-init "Initialize NPM")
 ("f" prettier-js "Format code")
 ("v" flycheck-verify-setup "Verify linting"))
- #+END_SRC
-***** rjsx
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+**** rjsx
+#+BEGIN_SRC emacs-lisp
 (defhydra hydra-rjsx (:exit t :columns 4)
 "Javascript"
 ("," dumb-jump-back "Jump back")
@@ -1479,58 +1422,58 @@ optional list of changes as its last argument."
 ("h" html-to-react "HTML to react")
 ("v" flycheck-verify-setup "Verify linting"))
 
- #+END_SRC
+#+END_SRC
 
-***** css
- #+BEGIN_SRC emacs-lisp
+**** css
+#+BEGIN_SRC emacs-lisp
 (defhydra hydra-css (:exit t :columns 4)
 "Css"
 ("," dumb-jump-back "Jump back")
 ("." dumb-jump-go "Jump to definition")
 ("f" web-beautify-css "Format css"))
- #+END_SRC
-***** scss
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+**** scss
+#+BEGIN_SRC emacs-lisp
 (defhydra hydra-scss (:exit t :columns 4)
 "Scss"
 ("," dumb-jump-back "Jump back")
 ("." dumb-jump-go "Jump to definition")
 ("f" web-beautify-css "Format css"))
- #+END_SRC
-***** web
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+**** web
+#+BEGIN_SRC emacs-lisp
 (defhydra hydra-web (:exit t :columns 4)
 "Web"
 ("f" web-beautify-html "Format buffer")
 ("o" browser-url-of-buffer "Open in browser"))
- #+END_SRC
-***** html
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+**** html
+#+BEGIN_SRC emacs-lisp
 (defhydra hydra-html (:exit t :columns 4)
 "Html"
 ("f" web-beautify-html "Format buffer")
 ("o" browser-url-of-buffer "Open in browser"))
- #+END_SRC
+#+END_SRC
 
-***** c
- #+BEGIN_SRC emacs-lisp
+**** c
+#+BEGIN_SRC emacs-lisp
 (defhydra hydra-c (:exit t :columns 4)
 "C"
 ("." dumb-jump-go "Jump to definition")
 ("," dumb-jump-back "Jump back")
 ("i" dumb-jump-quick-look "Definition Info")
 ("f" clang-format-buffer "Format buffer"))
- #+END_SRC
-***** json
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+**** json
+#+BEGIN_SRC emacs-lisp
 (with-no-warnings
 (defhydra hydra-json (:exit t :columns 4)
 "CSV"
 (";" yafolding-toggle-all "Fold")
 ("f" csv-align-fields "Format visually")))
- #+END_SRC
-***** exwm
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+**** exwm
+#+BEGIN_SRC emacs-lisp
 (defhydra hydra-exwm (:exit t
                 :columns 4
                 :color blue
@@ -1560,17 +1503,17 @@ optional list of changes as its last argument."
 
 
 )
- #+END_SRC
-**** minor-modes
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+*** minor-modes
+#+BEGIN_SRC emacs-lisp
  (defhydra hydra-minor (:exit t :columns 4)
      "Minor modes"
      ("r" spray-mode "Speed read")
      ("n" em/narrow-or-widen-dwim "Narrow / Widen")
      ("i" iedit-mode "Iedit mode"))
- #+END_SRC
-*** key-chord
-  #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** key-chord
+ #+BEGIN_SRC emacs-lisp
    (use-package key-chord
      :ensure t
      :config
@@ -1593,32 +1536,38 @@ optional list of changes as its last argument."
 
 (use-package bind-chord)
 (use-package use-package-chords)
-  #+END_SRC
-*** elmacro
- #+BEGIN_SRC emacs-lisp
- (use-package elmacro)
  #+END_SRC
-*** pdf-tools
-  #+BEGIN_SRC emacs-lisp
+** elmacro
+#+BEGIN_SRC emacs-lisp
+ (use-package elmacro
+:commands elmacro-mode)
+#+END_SRC
+** pdf-tools
+ #+BEGIN_SRC emacs-lisp
 (use-package pdf-tools :ensure t
+  :defer 0.1
   :config
   (unless noninteractive
     (pdf-tools-install))
   (setq-default pdf-view-display-size 'fit-page))
-  #+END_SRC
-
-*** hyperbole
- #+BEGIN_SRC emacs-lisp
-(use-package hyperbole :ensure t)
  #+END_SRC
 
-*** helpful
- #+BEGIN_SRC emacs-lisp
-(use-package helpful)
- #+END_SRC
-*** howm
-***** functions
-    #+BEGIN_SRC emacs-lisp
+** hyperbole
+#+BEGIN_SRC emacs-lisp
+(use-package hyperbole
+  :defer 0.1
+)
+#+END_SRC
+
+** helpful
+#+BEGIN_SRC emacs-lisp
+(use-package helpful
+  :defer 0.1
+)
+#+END_SRC
+** howm
+**** functions
+   #+BEGIN_SRC emacs-lisp
 (defvar howm-view-title-header "#+TITLE:")
 
 (defvar howm-view-header-format
@@ -1851,11 +1800,10 @@ optional list of changes as its last argument."
     (insert "#+INCLUDE: \"" current-buffer "\" :only-contents t :lines \"10-\"\n\n")))
 
 
-    #+END_SRC
-***** package
-     #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+**** package
+    #+BEGIN_SRC emacs-lisp
 (use-package howm
-  :demand t
   :init
   (setq howm-template
 ":HIDDEN:
@@ -1883,12 +1831,12 @@ optional list of changes as its last argument."
 (define-key howm-view-summary-mode-map [tab] 'my/howm-view-summary-open))
 
 
-     #+END_SRC
-*** emms
-  #+BEGIN_SRC emacs-lisp
+    #+END_SRC
+** emms
+ #+BEGIN_SRC emacs-lisp
  (use-package emms
- :ensure t
- :config
+ :commands emms
+  :config
  (require 'emms)
     (emms-all)
     (emms-default-players)
@@ -1898,10 +1846,11 @@ optional list of changes as its last argument."
     (emms-mode-line 0)
     (emms-playing-time 1))
 
-  #+END_SRC
-*** torus
-  #+BEGIN_SRC emacs-lisp
+ #+END_SRC
+** torus
+ #+BEGIN_SRC emacs-lisp
     (use-package torus
+      :defer 0.1
       :init
   (defun torus-read (filename)
     "Read main torus variables from FILENAME as Lisp code."
@@ -1959,14 +1908,16 @@ optional list of changes as its last argument."
       (torus-install-default-bindings)
     )
 
-  #+END_SRC
+ #+END_SRC
 
-*** org-pomodoro
+** org-pomodoro
 #+BEGIN_SRC emacs-lisp
- (use-package org-pomodoro)
+ (use-package org-pomodoro
+:commands org-pomodoro
+)
 #+END_SRC
-** Activities
-*** GTD
+* Activities
+** GTD
 #+BEGIN_SRC emacs-lisp
  (defvar org-default-projects-dir   "~/org/projects"                     "Primary GTD directory")
  (defvar org-default-zettelkasten-dir "~/org/notes"                     "Directory of notes modeled after Zettelkasten includes an Archive, and Notes")
@@ -2473,8 +2424,8 @@ pre-populated with the HEADER, BODY and any associated TAGS."
 
 (provide 'gtd)
 #+END_SRC
-*** Journal
- #+BEGIN_SRC emacs-lisp
+** Journal
+#+BEGIN_SRC emacs-lisp
 (setq journal-author "Alexander Soto")
 
 ;; This is the base folder where all your "books"
@@ -2557,10 +2508,10 @@ pre-populated with the HEADER, BODY and any associated TAGS."
 
 (provide 'journal)
 
- #+END_SRC
-*** Org-agenda
-**** variables
-  #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** Org-agenda
+*** variables
+ #+BEGIN_SRC emacs-lisp
 (setq org-agenda-auto-exclude-function 'bh/org-auto-exclude-function)
 
 (setq org-agenda-clock-consistency-checks
@@ -2795,20 +2746,18 @@ pre-populated with the HEADER, BODY and any associated TAGS."
       (org-narrow-to-subtree))))
 
 
-
-(provide 'org-agenda)
-  #+END_SRC
-**** org-directory
- #+BEGIN_SRC emacs-lisp
+ #+END_SRC
+*** org-directory
+#+BEGIN_SRC emacs-lisp
 (setq org-directory "~/org/agenda/")
 (setq org-file-inbox (concat org-directory "inbox.org"))
 (setq org-file-brain (concat org-directory "notes/inbox.org"))
 (setq org-file-journal (concat org-directory "/archive/journal/journal.org"))
 (setq org-file-reference (concat org-directory "reference.org"))
 (setq org-file-calendar (concat org-directory "calendar.org"))
- #+END_SRC
-**** org-capture templates
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+*** org-capture templates
+#+BEGIN_SRC emacs-lisp
 (setq org-capture-templates
       (quote (("t" "Task" entry (file+headline org-file-inbox "Inbox") "* TODO %? \n:PROPERTIES:\n:CREATED: %T\n:END:" :clock-in t :clock-resume t)
               ("n" "Note" entry (file+headline org-file-inbox "Inbox") (file "~/.emacs.d/templates/zettel.tmplt")  :clock-in t :clock-resume t)
@@ -2834,349 +2783,343 @@ pre-populated with the HEADER, BODY and any associated TAGS."
 
 (add-hook 'org-capture-prepare-finalize-hook 'org-id-store-link)
 
- #+END_SRC
-**** org-agenda-custom-commands and vars
- #+BEGIN_SRC emacs-lisp
-(setq my/org-agenda-today-view
-      '("T" "Today" ((tags "+today"
-                           ((org-agenda-overriding-header "Today")
-                            (org-tags-match-list-sublevels nil))))))
-
-(add-to-list 'org-agenda-custom-commands `,my/org-agenda-today-view)
+#+END_SRC
+*** org-agenda-custom-commands and vars
+#+BEGIN_SRC emacs-lisp
+   (setq my/org-agenda-today-view
+         '("T" "Today" ((tags "+today"
+                              ((org-agenda-overriding-header "Today")
+                               (org-tags-match-list-sublevels nil))))))
 
 
-(setq org-agenda-timegrid-use-ampm t)
-(setq org-agenda-inhibit-startup t)
-(setq org-agenda-use-tag-inheritance nil)
+   (setq org-agenda-timegrid-use-ampm t)
+   (setq org-agenda-inhibit-startup t)
+   (setq org-agenda-use-tag-inheritance nil)
 
-(setq org-agenda-span 'day)
+   (setq org-agenda-span 'day)
 
-(setq org-agenda-files (apply 'append
-                              (mapcar
-                               (lambda (directory)
-                                 (directory-files-recursively
-                                  directory org-agenda-file-regexp))
-                               '("~/org/agenda" "~/org/projects" "~/org/meta/" "~/.personal.d/" "~/.emacs.d/"))))
+   (setq org-agenda-files (apply 'append
+                                 (mapcar
+                                  (lambda (directory)
+                                    (directory-files-recursively
+                                     directory org-agenda-file-regexp))
+                                  '("~/org/agenda" "~/org/projects" "~/org/meta/" "~/.personal.d/" "~/.emacs.d/"))))
 
-(setq org-agenda-follow-indirect t)
+   (setq org-agenda-follow-indirect t)
 
-(setq org-agenda-dim-blocked-tasks nil)
+   (setq org-agenda-dim-blocked-tasks nil)
 
-(setq org-agenda-compact-blocks t)
+   (setq org-agenda-compact-blocks t)
 
-(setq org-agenda-window-setup 'current-window)
+   (setq org-agenda-window-setup 'current-window)
 
-(defvar org-timeline-files nil
-  "The files to be included in `org-timeline-all-files'. Follows
-  the same rules as `org-agenda-files'")
+   (defvar org-timeline-files nil
+     "The files to be included in `org-timeline-all-files'. Follows
+        the same rules as `org-agenda-files'")
 
-(setq org-timeline-files '("~/org/agenda/archive"))
-
-
-(setq
- org-agenda-custom-commands
- (quote
-  (("S" "Scheduled"
-    ((agenda ""
-             ((org-agenda-start-day "+0")
-              (org-agenda-span 14)
-              (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("DONE" "CANCELLED" "HOLD")))
-              ))))
-
-   ("n" "Next Tasks" tags-todo "-CANCELLED/!NEXT"
-    ((org-agenda-overriding-header
-      (concat "Next Tasks"
-              (if bh/hide-scheduled-and-waiting-next-tasks
-                  ""
-                " (including WAITING and SCHEDULED tasks)")))
-     (org-tags-match-list-sublevels t)
-     (org-agenda-todo-ignore-scheduled
-      bh/hide-scheduled-and-waiting-next-tasks)
-     (org-agenda-todo-ignore-deadlines
-      bh/hide-scheduled-and-waiting-next-tasks)
-     (org-agenda-sorting-strategy
-      '(priority-down todo-state-down effort-up category-keep))))
-
-   ("p" "Projects" ((tags-todo "-HOLD-CANCELLED/!"
-                               ((org-agenda-overriding-header "Projects")
-                                (org-agenda-skip-function 'bh/skip-non-projects)
-                                (org-tags-match-list-sublevels 'indented)
-                                (org-agenda-sorting-strategy
-                                 '(priority-down category-keep))))
-
-                    (tags-todo "-CANCELLED/!NEXT"
-                               ((org-agenda-overriding-header
-                                 (concat "Next Tasks"
-                                         (if bh/hide-scheduled-and-waiting-next-tasks
-                                             ""
-                                           " (including WAITING and SCHEDULED tasks)")))
-                                (org-agenda-skip-function
-                                 'bh/skip-projects-and-habits-and-single-tasks)
-                                (org-tags-match-list-sublevels t)
-                                (org-agenda-todo-ignore-scheduled
-                                 bh/hide-scheduled-and-waiting-next-tasks)
-                                (org-agenda-todo-ignore-deadlines
-                                 bh/hide-scheduled-and-waiting-next-tasks)
-                                        ;                 (org-agenda-todo-ignore-with-date
-                                        ;                  bh/hide-scheduled-and-waiting-next-tasks)
-                                (org-agenda-sorting-strategy
-                                 '(todo-state-down effort-up category-keep))))
-
-                    (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
-                               ((org-agenda-overriding-header
-                                 (concat "Subtasks"
-                                         (if bh/hide-scheduled-and-waiting-next-tasks
-                                             ""
-                                           " (including WAITING and SCHEDULED tasks)")))
-                                (org-agenda-skip-function 'bh/skip-non-project-tasks)
-                                (org-agenda-todo-ignore-scheduled
-                                 bh/hide-scheduled-and-waiting-next-tasks)
-                                (org-agenda-todo-ignore-deadlines
-                                 bh/hide-scheduled-and-waiting-next-tasks)
-                                (org-agenda-sorting-strategy
-                                 '(priority-down category-keep))))
+   (setq org-timeline-files '("~/org/agenda/archive"))
 
 
+   (defun bh/skip-non-tasks ()
+     "Show non-project tasks.
+   Skip project and sub-project tasks, habits, and project related tasks."
+     (save-restriction
+       (widen)
+       (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+         (cond
+          ((bh/is-task-p)
+           nil)
+         (t
+          next-headline)))))
+
+
+   (defun bh/is-project-p ()
+     "Any task with a todo keyword subtask"
+     (save-restriction
+       (widen)
+       (let ((has-subtask)
+             (subtree-end (save-excursion (org-end-of-subtree t)))
+             (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
+         (save-excursion
+           (forward-line 1)
+           (while (and (not has-subtask)
+                       (< (point) subtree-end)
+                       (re-search-forward "^\*+ " subtree-end t))
+             (when (member (org-get-todo-state) org-todo-keywords-1)
+               (setq has-subtask t))))
+         (and is-a-task has-subtask))))
+
+   (defun bh/is-project-subtree-p ()
+     "Any task with a todo keyword that is in a project subtree.
+   Callers of this function already widen the buffer view."
+     (let ((task (save-excursion (org-back-to-heading 'invisible-ok)
+                                 (point))))
+       (save-excursion
+         (bh/find-project-task)
+         (if (equal (point) task)
+             nil
+           t))))
+
+   (defun bh/is-task-p ()
+     "Any task with a todo keyword and no subtask"
+     (save-restriction
+       (widen)
+       (let ((has-subtask)
+             (subtree-end (save-excursion (org-end-of-subtree t)))
+             (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
+         (save-excursion
+           (forward-line 1)
+           (while (and (not has-subtask)
+                       (< (point) subtree-end)
+                       (re-search-forward "^\*+ " subtree-end t))
+             (when (member (org-get-todo-state) org-todo-keywords-1)
+               (setq has-subtask t))))
+         (and is-a-task (not has-subtask)))))
+
+
+   (defvar bh/hide-scheduled-and-waiting-next-tasks t)
+
+   (defun bh/skip-non-stuck-projects ()
+     "Skip trees that are not stuck projects"
+     ;; (bh/list-sublevels-for-projects-indented)
+     (save-restriction
+       (widen)
+       (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+         (if (bh/is-project-p)
+             (let* ((subtree-end (save-excursion (org-end-of-subtree t)))
+                    (has-next ))
+               (save-excursion
+                 (forward-line 1)
+                 (while (and (not has-next) (< (point) subtree-end) (re-search-forward "^\\*+ NEXT " subtree-end t))
+                   (unless (member "WAITING" (org-get-tags))
+                     (setq has-next t))))
+               (if has-next
+                   next-headline
+                 nil)) ; a stuck project, has subtasks but no next task
+           next-headline))))
+
+   (defun bh/skip-non-projects ()
+     "Skip trees that are not projects"
+     ;; (bh/list-sublevels-for-projects-indented)
+     (if (save-excursion (bh/skip-non-stuck-projects))
+         (save-restriction
+           (widen)
+           (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+             (cond
+              ((bh/is-project-p)
+               nil)
+              ((and (bh/is-project-subtree-p) (not (bh/is-task-p)))
+               nil)
+              (t
+               subtree-end))))
+       (save-excursion (org-end-of-subtree t))))
+
+   (defun bh/skip-projects-and-habits-and-single-tasks ()
+     "Skip trees that are projects, tasks that are habits, single non-project tasks"
+     (save-restriction
+       (widen)
+       (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+         (cond
+          ((org-is-habit-p)
+           next-headline)
+          ((and bh/hide-scheduled-and-waiting-next-tasks
+                (member "WAITING" (org-get-tags)))
+           next-headline)
+          ((bh/is-project-p)
+           next-headline)
+          ((and (bh/is-task-p) (not (bh/is-project-subtree-p)))
+           next-headline)
+          (t
+           nil)))))
+
+   (defun bh/skip-project-tasks ()
+     "Show non-project tasks.
+     Skip project and sub-project tasks, habits, and project related tasks."
+     (save-restriction
+       (widen)
+       (let* ((subtree-end (save-excursion (org-end-of-subtree t))))
+         (cond
+          ((bh/is-project-p)
+           subtree-end)
+          ((org-is-habit-p)
+           subtree-end)
+          ((bh/is-project-subtree-p)
+           subtree-end)
+          (t
+           nil)))))
+
+   (defun bh/skip-non-project-tasks ()
+     "Show project tasks.
+                   Skip project and sub-project tasks, habits, and loose non-project tasks."
+     (save-restriction
+       (widen)
+       (let* ((subtree-end (save-excursion (org-end-of-subtree t)))
+              (next-headline (save-excursion (or (outline-next-heading) (point-max)))))
+         (cond
+          ((bh/is-project-p)
+           next-headline)
+          ((org-is-habit-p)
+           subtree-end)
+          ((and (bh/is-project-subtree-p)
+                (member (org-get-todo-state) (list "NEXT")))
+           subtree-end)
+          ((not (bh/is-project-subtree-p))
+           subtree-end)
+          (t
+           nil)))))
+
+   (defun bh/clock-in-to-next (kw)
+     "Switch a task from TODO to NEXT when clocking in.
+                   Skips capture tasks, projects, and subprojects.
+                   Switch projects and subprojects from NEXT back to TODO"
+     (when (not (and (boundp 'org-capture-mode) org-capture-mode))
+       (cond
+        ((and (member (org-get-todo-state) (list "TODO"))
+              (bh/is-task-p))
+         "NEXT")
+        ((and (member (org-get-todo-state) (list "NEXT"))
+              (bh/is-project-p))
+         "TODO"))))
+
+   (defun bh/find-project-task ()
+     "Move point to the parent (project) task if any"
+     (save-restriction
+       (widen)
+       (let ((parent-task (save-excursion (org-back-to-heading 'invisible-ok) (point))))
+         (while (org-up-heading-safe)
+           (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
+             (setq parent-task (point))))
+         (goto-char parent-task)
+         parent-task)))
+
+   (defun bh/verify-refile-target ()
+     "Exclude todo keywords with a done state from refile targets"
+     (not (member (nth 2 (org-heading-components)) org-done-keywords)))
+
+   (setq org-agenda-custom-commands
+          (quote
+           (("S"
+   "Scheduled"
+            ((agenda ""
+                     ((org-agenda-start-day "+0")
+                      (org-agenda-span 14)
+                      (org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("DONE" "CANCELLED" "HOLD")))
+                      ))))
+
+           ("n" "Next Tasks" tags-todo "-CANCELLED/!NEXT"
+            ((org-agenda-overriding-header
+              (concat "Next Tasks"
+                      (if bh/hide-scheduled-and-waiting-next-tasks
+                          ""
+                        " (including WAITING and SCHEDULED tasks)")))
+             (org-tags-match-list-sublevels t)
+             (org-agenda-todo-ignore-scheduled
+              bh/hide-scheduled-and-waiting-next-tasks)
+             (org-agenda-todo-ignore-deadlines
+              bh/hide-scheduled-and-waiting-next-tasks)
+             (org-agenda-sorting-strategy
+              '(priority-down todo-state-down effort-up category-keep))))
+
+           ("p" "Projects" ((tags-todo "-HOLD-CANCELLED/!"
+                                       ((org-agenda-overriding-header "Projects")
+                                        (org-agenda-skip-function 'bh/skip-non-projects)
+                                        (org-tags-match-list-sublevels 'indented)
+                                        (org-agenda-sorting-strategy
+                                         '(priority-down category-keep))))
+
+                            (tags-todo "-CANCELLED/!NEXT"
+                                       ((org-agenda-overriding-header
+                                         (concat "Next Tasks"
+                                                 (if bh/hide-scheduled-and-waiting-next-tasks
+                                                     ""
+                                                   " (including WAITING and SCHEDULED tasks)")))
+                                        (org-agenda-skip-function
+                                         'bh/skip-projects-and-habits-and-single-tasks)
+                                        (org-tags-match-list-sublevels t)
+                                        (org-agenda-todo-ignore-scheduled
+                                         bh/hide-scheduled-and-waiting-next-tasks)
+                                        (org-agenda-todo-ignore-deadlines
+                                         bh/hide-scheduled-and-waiting-next-tasks)
+                                           ;                 (org-agenda-todo-ignore-with-date
+                                           ;                  bh/hide-scheduled-and-waiting-next-tasks)
+                                        (org-agenda-sorting-strategy
+                                         '(todo-state-down effort-up category-keep))))
+
+                            (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
+                                       ((org-agenda-overriding-header
+                                         (concat "Subtasks"
+                                                 (if bh/hide-scheduled-and-waiting-next-tasks
+                                                     ""
+                                                   " (including WAITING and SCHEDULED tasks)")))
+                                        (org-agenda-skip-function 'bh/skip-non-project-tasks)
+                                        (org-agenda-todo-ignore-scheduled
+                                         bh/hide-scheduled-and-waiting-next-tasks)
+                                        (org-agenda-todo-ignore-deadlines
+                                         bh/hide-scheduled-and-waiting-next-tasks)
+                                        (org-agenda-sorting-strategy
+                                         '(priority-down category-keep))))
+
+                            nil))
+
+           ("t" "Tasks" ((tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!-NEXT"
+                                    ((org-agenda-overriding-header
+                                      (concat "Actions"
+                                              (if bh/hide-scheduled-and-waiting-next-tasks
+                                                  ""
+                                                " (including WAITING and SCHEDULED tasks)")))
+                                     (org-agenda-skip-function 'bh/skip-project-tasks)
+                                     (org-agenda-todo-ignore-scheduled
+                                      bh/hide-scheduled-and-waiting-next-tasks)
+                                     (org-agenda-todo-ignore-deadlines
+                                      bh/hide-scheduled-and-waiting-next-tasks)
+                                     (org-agenda-sorting-strategy
+                                      '(priority-down category-keep))))))
+
+           ("s" "Someday/Maybe" ((tags-todo "-CANCELLED/!" ((org-agenda-overriding-header "Stuck Projects")
+                                                            (org-agenda-skip-function 'bh/skip-non-stuck-projects)
+                                                            (org-agenda-sorting-strategy
+                                                             '(priority-down))))
+
+
+                                 (tags-todo "-CANCELLED-WAITING/+HOLD"
+                                            ((org-agenda-overriding-header
+                                              (concat "Someday/Maybe"
+                                                      (if bh/hide-scheduled-and-waiting-next-tasks
+                                                          ""
+                                                        " (including WAITING and SCHEDULED tasks)")))
+                                             (org-agenda-skip-function 'bh/skip-non-tasks)
+                                             (org-tags-match-list-sublevels nil)
+                                             (org-agenda-todo-ignore-scheduled
+                                              bh/hide-scheduled-and-waiting-next-tasks)
+                                             (org-agenda-todo-ignore-deadlines
+                                              bh/hide-scheduled-and-waiting-next-tasks)
+                                             (org-agenda-sorting-strategy '(priority-down todo-state-down category-keep))))))
+
+
+           ("w" "Waiting" ((tags "-REFILE/+WAITING"
+                                 ((org-agenda-overriding-header "Waiting for")
+                                  (org-tags-match-list-sublevels nil)))))
+
+           ("d" "Delegated" ((tags "-REFILE/+DELEGATE"
+                                   ((org-agenda-overriding-header "Delegated")
+                                    (org-tags-match-list-sublevels nil)))))
+
+
+           ("c" "Completed" ((tags "-REFILE/+DONE"
+                                   ((org-agenda-overriding-header "Done")
+                                    (org-tags-match-list-sublevels nil)))))
+
+           )))
 
 
 
-                    nil))
-
-   ("t" "Tasks" ((tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!-NEXT"
-                            ((org-agenda-overriding-header
-                              (concat "Actions"
-                                      (if bh/hide-scheduled-and-waiting-next-tasks
-                                          ""
-                                        " (including WAITING and SCHEDULED tasks)")))
-                             (org-agenda-skip-function 'bh/skip-project-tasks)
-                             (org-agenda-todo-ignore-scheduled
-                              bh/hide-scheduled-and-waiting-next-tasks)
-                             (org-agenda-todo-ignore-deadlines
-                              bh/hide-scheduled-and-waiting-next-tasks)
-                             (org-agenda-sorting-strategy
-                              '(priority-down category-keep))))))
-
-   ("s" "Someday/Maybe" ((tags-todo "-CANCELLED/!" ((org-agenda-overriding-header "Stuck Projects")
-                                                    (org-agenda-skip-function 'bh/skip-non-stuck-projects)
-                                                    (org-agenda-sorting-strategy
-                                                     '(priority-down))))
-
-
-   (tags-todo "-CANCELLED-WAITING/+HOLD"
-              ((org-agenda-overriding-header
-                (concat "Someday/Maybe"
-                        (if bh/hide-scheduled-and-waiting-next-tasks
-                            ""
-                          " (including WAITING and SCHEDULED tasks)")))
-               (org-agenda-skip-function 'bh/skip-non-tasks)
-               (org-tags-match-list-sublevels nil)
-               (org-agenda-todo-ignore-scheduled
-                bh/hide-scheduled-and-waiting-next-tasks)
-               (org-agenda-todo-ignore-deadlines
-                bh/hide-scheduled-and-waiting-next-tasks)
-               (org-agenda-sorting-strategy '(priority-down todo-state-down category-keep))))))
-
-
-   ("w" "Waiting" ((tags "-REFILE/+WAITING"
-                         ((org-agenda-overriding-header "Waiting for")
-                          (org-tags-match-list-sublevels nil)))))
-
-   ("d" "Delegated" ((tags "-REFILE/+DELEGATE"
-                           ((org-agenda-overriding-header "Delegated")
-                            (org-tags-match-list-sublevels nil)))))
-
-
-   ("c" "Completed" ((tags "-REFILE/+DONE"
-                           ((org-agenda-overriding-header "Done")
-                            (org-tags-match-list-sublevels nil)))))
-
-   )))
-
-(defun bh/skip-non-tasks ()
-  "Show non-project tasks.
-Skip project and sub-project tasks, habits, and project related tasks."
-  (save-restriction
-    (widen)
-    (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
-      (cond
-      ((bh/is-task-p)
-        nil)
-      (t
-        next-headline)))))
-
-
-(defun bh/is-project-p ()
-  "Any task with a todo keyword subtask"
-  (save-restriction
-    (widen)
-    (let ((has-subtask)
-          (subtree-end (save-excursion (org-end-of-subtree t)))
-          (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
-      (save-excursion
-        (forward-line 1)
-        (while (and (not has-subtask)
-                    (< (point) subtree-end)
-                    (re-search-forward "^\*+ " subtree-end t))
-          (when (member (org-get-todo-state) org-todo-keywords-1)
-            (setq has-subtask t))))
-      (and is-a-task has-subtask))))
-
-(defun bh/is-project-subtree-p ()
-  "Any task with a todo keyword that is in a project subtree.
-Callers of this function already widen the buffer view."
-  (let ((task (save-excursion (org-back-to-heading 'invisible-ok)
-                              (point))))
-    (save-excursion
-      (bh/find-project-task)
-      (if (equal (point) task)
-          nil
-        t))))
-
-(defun bh/is-task-p ()
-  "Any task with a todo keyword and no subtask"
-  (save-restriction
-    (widen)
-    (let ((has-subtask)
-          (subtree-end (save-excursion (org-end-of-subtree t)))
-          (is-a-task (member (nth 2 (org-heading-components)) org-todo-keywords-1)))
-      (save-excursion
-        (forward-line 1)
-        (while (and (not has-subtask)
-                    (< (point) subtree-end)
-                    (re-search-forward "^\*+ " subtree-end t))
-          (when (member (org-get-todo-state) org-todo-keywords-1)
-            (setq has-subtask t))))
-      (and is-a-task (not has-subtask)))))
-
-
-(defvar bh/hide-scheduled-and-waiting-next-tasks t)
-
-(defun bh/skip-non-stuck-projects ()
-  "Skip trees that are not stuck projects"
-  ;; (bh/list-sublevels-for-projects-indented)
-  (save-restriction
-    (widen)
-    (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
-      (if (bh/is-project-p)
-          (let* ((subtree-end (save-excursion (org-end-of-subtree t)))
-                 (has-next ))
-            (save-excursion
-              (forward-line 1)
-              (while (and (not has-next) (< (point) subtree-end) (re-search-forward "^\\*+ NEXT " subtree-end t))
-                (unless (member "WAITING" (org-get-tags))
-                  (setq has-next t))))
-            (if has-next
-                next-headline
-              nil)) ; a stuck project, has subtasks but no next task
-        next-headline))))
-
-(defun bh/skip-non-projects ()
-  "Skip trees that are not projects"
-  ;; (bh/list-sublevels-for-projects-indented)
-  (if (save-excursion (bh/skip-non-stuck-projects))
-      (save-restriction
-        (widen)
-        (let ((subtree-end (save-excursion (org-end-of-subtree t))))
-          (cond
-           ((bh/is-project-p)
-            nil)
-           ((and (bh/is-project-subtree-p) (not (bh/is-task-p)))
-            nil)
-           (t
-            subtree-end))))
-    (save-excursion (org-end-of-subtree t))))
-
-(defun bh/skip-projects-and-habits-and-single-tasks ()
-  "Skip trees that are projects, tasks that are habits, single non-project tasks"
-  (save-restriction
-    (widen)
-    (let ((next-headline (save-excursion (or (outline-next-heading) (point-max)))))
-      (cond
-       ((org-is-habit-p)
-        next-headline)
-       ((and bh/hide-scheduled-and-waiting-next-tasks
-             (member "WAITING" (org-get-tags)))
-        next-headline)
-       ((bh/is-project-p)
-        next-headline)
-       ((and (bh/is-task-p) (not (bh/is-project-subtree-p)))
-        next-headline)
-       (t
-        nil)))))
-
-(defun bh/skip-project-tasks ()
-  "Show non-project tasks.
-                Skip project and sub-project tasks, habits, and project related tasks."
-  (save-restriction
-    (widen)
-    (let* ((subtree-end (save-excursion (org-end-of-subtree t))))
-      (cond
-       ((bh/is-project-p)
-        subtree-end)
-       ((org-is-habit-p)
-        subtree-end)
-       ((bh/is-project-subtree-p)
-        subtree-end)
-       (t
-        nil)))))
-
-(defun bh/skip-non-project-tasks ()
-  "Show project tasks.
-                Skip project and sub-project tasks, habits, and loose non-project tasks."
-  (save-restriction
-    (widen)
-    (let* ((subtree-end (save-excursion (org-end-of-subtree t)))
-           (next-headline (save-excursion (or (outline-next-heading) (point-max)))))
-      (cond
-       ((bh/is-project-p)
-        next-headline)
-       ((org-is-habit-p)
-        subtree-end)
-       ((and (bh/is-project-subtree-p)
-             (member (org-get-todo-state) (list "NEXT")))
-        subtree-end)
-       ((not (bh/is-project-subtree-p))
-        subtree-end)
-       (t
-        nil)))))
-
-
-(defun bh/clock-in-to-next (kw)
-  "Switch a task from TODO to NEXT when clocking in.
-                Skips capture tasks, projects, and subprojects.
-                Switch projects and subprojects from NEXT back to TODO"
-  (when (not (and (boundp 'org-capture-mode) org-capture-mode))
-    (cond
-     ((and (member (org-get-todo-state) (list "TODO"))
-           (bh/is-task-p))
-      "NEXT")
-     ((and (member (org-get-todo-state) (list "NEXT"))
-           (bh/is-project-p))
-      "TODO"))))
-
-(defun bh/find-project-task ()
-  "Move point to the parent (project) task if any"
-  (save-restriction
-    (widen)
-    (let ((parent-task (save-excursion (org-back-to-heading 'invisible-ok) (point))))
-      (while (org-up-heading-safe)
-        (when (member (nth 2 (org-heading-components)) org-todo-keywords-1)
-          (setq parent-task (point))))
-      (goto-char parent-task)
-      parent-task)))
-
-(defun bh/verify-refile-target ()
-  "Exclude todo keywords with a done state from refile targets"
-  (not (member (nth 2 (org-heading-components)) org-done-keywords)))
-
-
- #+END_SRC
-**** org-export-backends
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+*** org-export-backends
+#+BEGIN_SRC emacs-lisp
 (setq org-export-backends '(ascii html icalendar latex org odt))
- #+END_SRC
-**** org-agenda functions
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+*** org-agenda functions
+#+BEGIN_SRC emacs-lisp
 (defun my/org-agenda-switch-to()
   "Jumps to a specific task."
   (interactive)
@@ -3205,12 +3148,10 @@ Callers of this function already widen the buffer view."
 ;; Record time and note when a task is refiled
 (defvar org-blocks-hidden nil)
 
- #+END_SRC
+#+END_SRC
 
-**** org-habit
- #+BEGIN_SRC emacs-lisp
-(require 'org-habit)
-
+*** org-habit
+#+BEGIN_SRC emacs-lisp
 (add-to-list 'org-modules 'org-habit)
 
 (setq org-modules '(org-habit
@@ -3228,9 +3169,9 @@ Callers of this function already widen the buffer view."
 (setq org-hide-leading-stars t)
 
 (setq org-hide-emphasis-markers t)
- #+END_SRC
-**** org-attach
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+*** org-attach
+#+BEGIN_SRC emacs-lisp
 (setq org-attach-auto-tag nil)
 (setq org-attach-method 'mv)
 
@@ -3269,17 +3210,17 @@ kill-ring, prompting if not found.  With prefix, prompt for URL."
         (delete-directory temp-dir)))))
 
 
- #+END_SRC
-**** org-babel
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+*** org-babel
+#+BEGIN_SRC emacs-lisp
 (setq org-confirm-babel-evaluate nil
       org-src-fontify-natively t
       org-src-tab-acts-natively t
       org-src-preserve-indentation t
       org-src-window-setup 'current-window)
- #+END_SRC
-**** org-export
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+*** org-export
+#+BEGIN_SRC emacs-lisp
 (setq org-agenda-exporter-settings
       '((ps-number-of-columns 2)
         (ps-landscape-mode t)
@@ -3287,11 +3228,11 @@ kill-ring, prompting if not found.  With prefix, prompt for URL."
         (htmlize-output-type 'css)))
 
 
- #+END_SRC
+#+END_SRC
 
-** Helpers
-*** defun
-  #+BEGIN_SRC emacs-lisp
+* Helpers
+** defun
+ #+BEGIN_SRC emacs-lisp
 (defun goto-button (heading loc)
     (widen)
     (goto-char(point-min))
@@ -3377,17 +3318,17 @@ kill-ring, prompting if not found.  With prefix, prompt for URL."
     (goto-char 0)
     (conf-mode)))
 
-  #+END_SRC
+ #+END_SRC
 
 
 
-   :RELATED:
-   :END:
+  :RELATED:
+  :END:
 
-   :RESOURCES:
-   :END:
-*** variables
- #+BEGIN_SRC emacs-lisp
+  :RESOURCES:
+  :END:
+** variables
+#+BEGIN_SRC emacs-lisp
 (exwm-input-set-key (kbd "M-y") #'my/exwm-counsel-yank-pop)
 
 (setq emms-source-file-default-directory "/home/alexander/org/data/c0/80320c-060b-4348-a413-ee7d8ed40dd6/")
@@ -3440,9 +3381,9 @@ kill-ring, prompting if not found.  With prefix, prompt for URL."
 
 (setq grep-command "rg")
 
- #+END_SRC
-*** appointments and notifications
-  #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** appointments and notifications
+ #+BEGIN_SRC emacs-lisp
 (setq appt-display-diary nil)
 (appt-activate t)
 (setq appt-display-interval 5)
@@ -3505,9 +3446,9 @@ kill-ring, prompting if not found.  With prefix, prompt for URL."
 ;; If we leave Emacs running overnight - reset the appointments one minute after midnight
 (run-at-time "24:01" nil 'bh/org-agenda-to-appt)
 
-  #+END_SRC
-*** window-snapshots
- #+BEGIN_SRC emacs-lisp
+ #+END_SRC
+** window-snapshots
+#+BEGIN_SRC emacs-lisp
  (defvar window-snapshots '())
 
  (defun save-window-snapshot ()
@@ -3532,9 +3473,9 @@ kill-ring, prompting if not found.  With prefix, prompt for URL."
        (message "Snapshot %s not found" snapshot-name))))
 
 
- #+END_SRC
-*** buffer
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** buffer
+#+BEGIN_SRC emacs-lisp
  (defun save-buffer-always ()
    "Save the buffer even if it is not modified."
    (interactive)
@@ -3576,9 +3517,9 @@ kill-ring, prompting if not found.  With prefix, prompt for URL."
                        (buffer-list)))
   (delete-other-windows))
 
- #+END_SRC
-*** window
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** window
+#+BEGIN_SRC emacs-lisp
 (defun delete-window-balance ()
   "Delete window and rebalance the remaining ones."
   (interactive)
@@ -3613,9 +3554,9 @@ kill-ring, prompting if not found.  With prefix, prompt for URL."
         (set-window-configuration (get-register register))
         (set-register register nil)))))
 
- #+END_SRC
-*** editing
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** editing
+#+BEGIN_SRC emacs-lisp
  (defun copy-line ()
   (interactive)
   (save-excursion
@@ -3635,9 +3576,9 @@ kill-ring, prompting if not found.  With prefix, prompt for URL."
         (call-interactively #'goto-line))
     (linum-mode -1)))
 
- #+END_SRC
-*** flycheck
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** flycheck
+#+BEGIN_SRC emacs-lisp
 (defun toggle-flycheck-error-list ()
     "Toggle flycheck's error list window.
 If the error list is visible, hide it.  Otherwise, show it."
@@ -3655,9 +3596,9 @@ If the error list is visible, hide it.  Otherwise, show it."
 
 (defun disable-fylcheck-in-org-src-block ()
   (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
- #+END_SRC
-*** test-emacs
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** test-emacs
+#+BEGIN_SRC emacs-lisp
 (defun test-emacs ()
   "Test if emacs starts correctly."
   (interactive)
@@ -3683,10 +3624,10 @@ If the error list is visible, hide it.  Otherwise, show it."
           (insert output)
           (search-backward "ERROR!"))))))
 
- #+END_SRC
+#+END_SRC
 
-*** time
- #+BEGIN_SRC emacs-lisp
+** time
+#+BEGIN_SRC emacs-lisp
 (defun my/insert-created-timestamp()
    "Insert a CREATED property using org-expiry.el for TODO entries"
    (org-entry-put nil "CREATED" (format-time-string "<%Y-%m-%d %a %H:%M>"))
@@ -3695,23 +3636,23 @@ If the error list is visible, hide it.  Otherwise, show it."
    (org-end-of-line)
    (insert " "))
 
- #+END_SRC
-*** archive
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** archive
+#+BEGIN_SRC emacs-lisp
 (defun org-archive-done-tasks ()
    (interactive)
    (org-map-entries 'org-archive-subtree "/DONE" 'file))
 
- #+END_SRC
-*** org-insert-link
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** org-insert-link
+#+BEGIN_SRC emacs-lisp
 (defun org-insert-link-with-default-description (file-name)
   (interactive (list (read-file-name "File: ")))
   (org-insert-link file-name file-name (file-name-nondirectory file-name)))
 
- #+END_SRC
-*** expansion
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** expansion
+#+BEGIN_SRC emacs-lisp
 (defun check-expansion ()
   (save-excursion
     (if (looking-at "\\_>") t
@@ -3723,9 +3664,9 @@ If the error list is visible, hide it.  Otherwise, show it."
 (defun do-yas-expand ()
   (let ((yas/fallback-behavior 'return-nil))
     (yas/expand)))
- #+END_SRC
-*** export-headlines
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** export-headlines
+#+BEGIN_SRC emacs-lisp
 (defun my/org-export-headlines-to-org ()
   "Export all subtrees that are *not* tagged with :noexport: to
 separate files.
@@ -3753,9 +3694,9 @@ are exported to a filename derived from the headline text."
            (set-buffer-modified-p modifiedp)))
        "-noexport" 'region-start-level))))
 
- #+END_SRC
-*** org-id
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** org-id
+#+BEGIN_SRC emacs-lisp
 (defun my/org-add-ids-to-headlines-in-file ()
   "Add CUSTOM_ID properties to all headlines in the
    current file which do not already have one."
@@ -3780,23 +3721,23 @@ are exported to a filename derived from the headline text."
         (org-entry-put pom "EXPORT_FILENAME" id)
         (org-id-add-location id (buffer-file-name (buffer-base-buffer)))
         id)))))
- #+END_SRC
-*** nov
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** nov
+#+BEGIN_SRC emacs-lisp
 (defun my-nov-font-setup ()
   (face-remap-add-relative 'variable-pitch :family "Liberation Serif"
                            :height 1.0))
- #+END_SRC
-*** org-mode-hooks
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** org-mode-hooks
+#+BEGIN_SRC emacs-lisp
 (defun my-org-mode-hooks ()
   (visual-line-mode)
   (turn-on-auto-fill)
   (turn-on-flyspell)
   (outline-minor-mode))
- #+END_SRC
-*** misc
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** misc
+#+BEGIN_SRC emacs-lisp
 (defun my/trim-non-chrome ()
     (delete-if-not (apply-partially 'string-match "- Google Chrome$")
                    ido-temp-list))
@@ -3831,9 +3772,9 @@ are exported to a filename derived from the headline text."
             (interactive)
             (isearch-yank-internal (lambda () (forward-symbol 1) (point))))
 
- #+END_SRC
-*** save-hist
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** save-hist
+#+BEGIN_SRC emacs-lisp
 
 (setq savehist-additional-variables
       '(kill-ring
@@ -3849,10 +3790,10 @@ are exported to a filename derived from the headline text."
 
 (savehist-mode 1)
 
- #+END_SRC
+#+END_SRC
 
-*** xref
- #+BEGIN_SRC emacs-lisp
+** xref
+#+BEGIN_SRC emacs-lisp
 (custom-set-variables '(xref-show-xrefs-function #'ivy-xref-show-xrefs))
 
 (defun my-xref-show-pos-in-buf--same-window (func &rest args)
@@ -3864,9 +3805,9 @@ are exported to a filename derived from the headline text."
 (advice-add 'xref--show-pos-in-buf
             :around #'my-xref-show-pos-in-buf--same-window)
 
- #+END_SRC
-*** agenda
- #+BEGIN_SRC emacs-lisp
+#+END_SRC
+** agenda
+#+BEGIN_SRC emacs-lisp
 (defun my/scheduled ()
   (interactive)
   (org-agenda nil "S")
@@ -3910,73 +3851,73 @@ are exported to a filename derived from the headline text."
   (org-agenda nil "c")
   )
 
- #+END_SRC
+#+END_SRC
 
-*** unbound Keybindings
-  #+BEGIN_SRC emacs-lisp
+** unbound Keybindings
+ #+BEGIN_SRC emacs-lisp
  (define-key winner-mode-map (kbd "C-c <left>") nil)
  (define-key winner-mode-map (kbd "C-c <right>") nil)
  (define-key global-map (kbd "C-c <tab>") nil)
  (define-key yas-minor-mode-map (kbd "C-c &") nil)
  (define-key global-map (kbd "C-c ,") nil)
  (define-key global-map (kbd "C-c C-j") nil)
-  #+END_SRC
+ #+END_SRC
 * Disabled
 ** DISABLED boon-hydra bindings
 #+BEGIN_SRC emacs-lisp :tangle no
-;; (define-key boon-command-map (kbd "A")  'hydra-agenda/body)
-;; (define-key boon-command-map (kbd "W")  'hydra-window/body)
-;; (define-key boon-command-map (kbd "J")  'hydra-jump/body)
-;; (define-key boon-command-map (kbd "T")  'hydra-torus/body)
-;; (define-key boon-command-map (kbd "S")  'hydra-select/body)
-;; (define-key boon-command-map (kbd "C")  'hydra-copy/body)
-;; (define-key boon-command-map (kbd "Y")  'hydra-paste/body)
-;; (define-key boon-command-map (kbd "K")  'hydra-delete/body)
-;; (define-key boon-command-map (kbd "E")  'hydra-emacs/body)
-;; (define-key boon-command-map (kbd "N")  'hydra-narrow/body)
-;; (define-key boon-command-map (kbd "R")  'hydra-register/body)
-;; (define-key boon-command-map (kbd "G")  'hydra-git/body)
-;; (define-key boon-command-map (kbd "H")  'hydra-help/body)
+ ;; (define-key boon-command-map (kbd "A")  'hydra-agenda/body)
+ ;; (define-key boon-command-map (kbd "W")  'hydra-window/body)
+ ;; (define-key boon-command-map (kbd "J")  'hydra-jump/body)
+ ;; (define-key boon-command-map (kbd "T")  'hydra-torus/body)
+ ;; (define-key boon-command-map (kbd "S")  'hydra-select/body)
+ ;; (define-key boon-command-map (kbd "C")  'hydra-copy/body)
+ ;; (define-key boon-command-map (kbd "Y")  'hydra-paste/body)
+ ;; (define-key boon-command-map (kbd "K")  'hydra-delete/body)
+ ;; (define-key boon-command-map (kbd "E")  'hydra-emacs/body)
+ ;; (define-key boon-command-map (kbd "N")  'hydra-narrow/body)
+ ;; (define-key boon-command-map (kbd "R")  'hydra-register/body)
+ ;; (define-key boon-command-map (kbd "G")  'hydra-git/body)
+ ;; (define-key boon-command-map (kbd "H")  'hydra-help/body)
 #+END_SRC
 ** DISABLED boon Keybindings
 #+BEGIN_SRC emacs-lisp
-(define-key boon-command-map (kbd "SPC") 'counsel-M-x)
-(define-key boon-command-map (kbd "RET") 'counsel-linux-app)
+ (define-key boon-command-map (kbd "SPC") 'counsel-M-x)
+ (define-key boon-command-map (kbd "RET") 'counsel-linux-app)
 
 
-(define-key boon-command-map (kbd "a")  'hydra-agenda/body)
-(define-key boon-command-map (kbd "b")  '("b Buffer list" . counsel-switch-buffer))
-(define-key boon-command-map (kbd "c")  'boon-c-god)
-(define-key boon-command-map (kbd "C")  'hydra-copy/body)
-(define-key boon-command-map (kbd "d")  'hydra-delete/body)
-; (define-key boon-command-map (kbd "e")   'hydra-emacs/body)
-(define-key boon-command-map (kbd "f")  'hydra-file/body)
-;(define-key boon-command-map (kbd "g")  'hydra-bookmarks/body)
-(define-key boon-command-map (kbd "g") '("g magit" . magit-status))
-(define-key boon-command-map (kbd "h")  'avy-goto-char)
-; (define-key boon-command-map (kbd "H")   'hydra-help/body)
-(define-key boon-command-map (kbd "i")  'my/insert-mode)
-(define-key boon-command-map (kbd "j")  'hydra-jump/body)
-;(define-key boon-command-map (kbd "k"))
-;(define-key boon-command-map (kbd "l"))
+ (define-key boon-command-map (kbd "a")  'hydra-agenda/body)
+ (define-key boon-command-map (kbd "b")  '("b Buffer list" . counsel-switch-buffer))
+ (define-key boon-command-map (kbd "c")  'boon-c-god)
+ (define-key boon-command-map (kbd "C")  'hydra-copy/body)
+ (define-key boon-command-map (kbd "d")  'hydra-delete/body)
+ ; (define-key boon-command-map (kbd "e")   'hydra-emacs/body)
+ (define-key boon-command-map (kbd "f")  'hydra-file/body)
+ ;(define-key boon-command-map (kbd "g")  'hydra-bookmarks/body)
+ (define-key boon-command-map (kbd "g") '("g magit" . magit-status))
+ (define-key boon-command-map (kbd "h")  'avy-goto-char)
+ ; (define-key boon-command-map (kbd "H")   'hydra-help/body)
+ (define-key boon-command-map (kbd "i")  'my/insert-mode)
+ (define-key boon-command-map (kbd "j")  'hydra-jump/body)
+ ;(define-key boon-command-map (kbd "k"))
+ ;(define-key boon-command-map (kbd "l"))
 
-(define-key boon-command-map (kbd "n")  'hydra-narrow/body)
-;(define-key boon-command-map (kbd "o")  'my/objed-mode)
-(define-key boon-command-map (kbd "P")  'hydra-paste/body)
-(define-key boon-command-map (kbd "q")  'kill-buffer)
-(define-key boon-command-map (kbd "R")  'hydra-register/body)
-(define-key boon-command-map (kbd "s")  'hydra-search/body)
-(define-key boon-command-map (kbd "S")  'ivy-resume)
-(define-key boon-command-map (kbd "t")  'hydra-torus/body)
-(define-key boon-command-map (kbd "u")  'undo)
-(define-key boon-command-map (kbd "v")  'hydra-select/body)
-(define-key boon-command-map (kbd "w")  'hydra-window/body)
-;  (define-key boon-command-map (kbd "W")   'hydra-wrap/body)
-(define-key boon-command-map (kbd "x")  'boon-x-map)
-(define-key boon-command-map (kbd "y")  '("p paste/yank" . yank))
-(define-key boon-command-map (kbd "z")  'ivy-resume)
+ (define-key boon-command-map (kbd "n")  'hydra-narrow/body)
+ ;(define-key boon-command-map (kbd "o")  'my/objed-mode)
+ (define-key boon-command-map (kbd "P")  'hydra-paste/body)
+ (define-key boon-command-map (kbd "q")  'kill-buffer)
+ (define-key boon-command-map (kbd "R")  'hydra-register/body)
+ (define-key boon-command-map (kbd "s")  'hydra-search/body)
+ (define-key boon-command-map (kbd "S")  'ivy-resume)
+ (define-key boon-command-map (kbd "t")  'hydra-torus/body)
+ (define-key boon-command-map (kbd "u")  'undo)
+ (define-key boon-command-map (kbd "v")  'hydra-select/body)
+ (define-key boon-command-map (kbd "w")  'hydra-window/body)
+ ;  (define-key boon-command-map (kbd "W")   'hydra-wrap/body)
+ (define-key boon-command-map (kbd "x")  'boon-x-map)
+ (define-key boon-command-map (kbd "y")  '("p paste/yank" . yank))
+ (define-key boon-command-map (kbd "z")  'ivy-resume)
 
-(define-key global-map [escape]  'my/boon-set-command-state)
+ (define-key global-map [escape]  'my/boon-set-command-state)
 
 
 
@@ -3984,1141 +3925,285 @@ are exported to a filename derived from the headline text."
 
 ** DISABLED javascript-mode
 #+BEGIN_SRC emacs-lisp
-(use-package js3-mode)
+ (use-package js3-mode)
 #+END_SRC
 
 ** DISABLED eval-in-repl
 #+BEGIN_SRC emacs-lisp
-(use-package eval-in-repl)
+ (use-package eval-in-repl)
 #+END_SRC
 
 ** DISABLED edit-indirect
 #+BEGIN_SRC emacs-lisp
-  (use-package edit-indirect)
+   (use-package edit-indirect)
 #+END_SRC
 
 ** DISABLED goto-last-change
 #+BEGIN_SRC emacs-lisp
-  (use-package goto-last-change
-    :ensure t
-    :bind
-    (:map boon-goto-map
-          ("SPC" . goto-last-change)))
+   (use-package goto-last-change
+     :ensure t
+     :bind
+     (:map boon-goto-map
+           ("SPC" . goto-last-change)))
 #+END_SRC
 
 ** DISABLED goto-last-point
 #+BEGIN_SRC emacs-lisp
-  (use-package goto-last-point
-    :ensure t
-    :demand t
-    :config (goto-last-point-mode))
+   (use-package goto-last-point
+     :ensure t
+     :demand t
+     :config (goto-last-point-mode))
 #+END_SRC
 
 ** DISABLED old-code
 #+BEGIN_SRC emacs-lisp
-;; (define-key org-agenda-mode-map (kbd "TAB") #'my/org-agenda-goto-narrow)
-;; (define-key org-agenda-mode-map (kbd "s-RET") #'my/org-agenda-switch-to)
-(define-key org-agenda-mode-map (kbd ";") #'org-agenda-workflow)
-(define-key org-agenda-mode-map (kbd "i") #'org-agenda-clock-in)
-(define-key org-agenda-mode-map (kbd "I") #'org-pomodoro)
-(define-key org-agenda-mode-map (kbd "o") #'org-agenda-clock-out)
-(define-key org-agenda-mode-map (kbd "k") #'org-capture)
+ ;; (define-key org-agenda-mode-map (kbd "TAB") #'my/org-agenda-goto-narrow)
+ ;; (define-key org-agenda-mode-map (kbd "s-RET") #'my/org-agenda-switch-to)
+ (define-key org-agenda-mode-map (kbd ";") #'org-agenda-workflow)
+ (define-key org-agenda-mode-map (kbd "i") #'org-agenda-clock-in)
+ (define-key org-agenda-mode-map (kbd "I") #'org-pomodoro)
+ (define-key org-agenda-mode-map (kbd "o") #'org-agenda-clock-out)
+ (define-key org-agenda-mode-map (kbd "k") #'org-capture)
 
-(define-key org-brain-visualize-mode-map (kbd "SPC") #'link-hint-open-link)
-(define-key org-brain-visualize-mode-map (kbd "TAB") 'my/org-brain-goto-current)
+ (define-key org-brain-visualize-mode-map (kbd "SPC") #'link-hint-open-link)
+ (define-key org-brain-visualize-mode-map (kbd "TAB") 'my/org-brain-goto-current)
 
-(define-key org-brain-visualize-mode-map (kbd "s") 'org-brain-save-and-update)
+ (define-key org-brain-visualize-mode-map (kbd "s") 'org-brain-save-and-update)
 
-(define-key org-brain-visualize-mode-map "c" 'my/org-brain-add-child)
-(define-key org-brain-visualize-mode-map "C" 'org-brain-add-child)
+ (define-key org-brain-visualize-mode-map "c" 'my/org-brain-add-child)
+ (define-key org-brain-visualize-mode-map "C" 'org-brain-add-child)
 
 
- (define-key global-map (kbd "C-1") 'bjm/org-capture-todo)
+  (define-key global-map (kbd "C-1") 'bjm/org-capture-todo)
+  (define-key global-map (kbd "C-2") 'bjm/org-capture-zettel)
+  (define-key global-map (kbd "C-3") 'bjm/org-capture-event)
+  (define-key global-map (kbd "C-4") 'howm-create)
+  (define-key global-map (kbd "<f1>") 'my/org-brain-visualize-current)
+
+
  (define-key global-map (kbd "C-2") 'bjm/org-capture-zettel)
- (define-key global-map (kbd "C-3") 'bjm/org-capture-event)
- (define-key global-map (kbd "C-4") 'howm-create)
- (define-key global-map (kbd "<f1>") 'my/org-brain-visualize-current)
+ (define-key global-map (kbd "C-4") 'bjm/org-capture-journal)
 
-
-(define-key global-map (kbd "C-2") 'bjm/org-capture-zettel)
-(define-key global-map (kbd "C-4") 'bjm/org-capture-journal)
-
-(define-prefix-command 'my-digit-map)
-(global-set-key (kbd "C-2") 'my-digit-map)
-(define-key 'my-digit-map (kbd "p") 'howm-parent-to)
-(define-key 'my-digit-map (kbd "c") 'howm-child-to)
-(define-key 'my-digit-map (kbd "f") 'howm-friendship-to)
-(define-key 'my-digit-map (kbd "C") 'howm-create)
-(define-key 'my-digit-map (kbd "2") 'bjm/org-capture-zettel)
+ (define-prefix-command 'my-digit-map)
+ (global-set-key (kbd "C-2") 'my-digit-map)
+ (define-key 'my-digit-map (kbd "p") 'howm-parent-to)
+ (define-key 'my-digit-map (kbd "c") 'howm-child-to)
+ (define-key 'my-digit-map (kbd "f") 'howm-friendship-to)
+ (define-key 'my-digit-map (kbd "C") 'howm-create)
+ (define-key 'my-digit-map (kbd "2") 'bjm/org-capture-zettel)
 
 #+END_SRC
 ** DISABLED notdeft
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "~/.emacs.d/lisp/notdeft-0.6.20190210")
- (load "notdeft-example")
+ (add-to-list 'load-path "~/.emacs.d/lisp/notdeft-0.6.20190210")
+  (load "notdeft-example")
 
-(load-file (expand-file-name
-                      "~/.emacs.d/lisp/notdeft-0.6.20190210/notdeft.el"
-                      user-emacs-directory))
+ (load-file (expand-file-name
+                       "~/.emacs.d/lisp/notdeft-0.6.20190210/notdeft.el"
+                       user-emacs-directory))
 
 
-(setq notdeft-directories '("~/org/notes"))
-(setq notdeft-extension "org")
+ (setq notdeft-directories '("~/org/notes"))
+ (setq notdeft-extension "org")
 
- (defun toggle-window-dedicated ()
-        "Toggle whether the current active window is dedicated or not.
- Code founded by peterfoldi
- https://stackoverflow.com/questions/29332242/is-there-a-way-to-fix-window-buffer-in-emacs-for-cider-error-repl/33082302#33082302"
-   (interactive)
-   (message
-    (if (let (window (get-buffer-window (current-buffer)))
-      (set-window-dedicated-p window
-                      (not (window-dedicated-p window))))
-        "Window '%s' is dedicated"
-      "Window '%s' is normal")
-    (current-buffer)))
+  (defun toggle-window-dedicated ()
+         "Toggle whether the current active window is dedicated or not.
+  Code founded by peterfoldi
+  https://stackoverflow.com/questions/29332242/is-there-a-way-to-fix-window-buffer-in-emacs-for-cider-error-repl/33082302#33082302"
+    (interactive)
+    (message
+     (if (let (window (get-buffer-window (current-buffer)))
+       (set-window-dedicated-p window
+                       (not (window-dedicated-p window))))
+         "Window '%s' is dedicated"
+       "Window '%s' is normal")
+     (current-buffer)))
 
-(defun notdeft-new-file-named (pfx title &optional data)
-  "Create a new file, prompting for a title.
-The prefix argument PFX is as for `notdeft-new-file'.
-Query for a TITLE when invoked as a command.
-Initialize the file with DATA, or TITLE if not given.
-Return the filename of the created file."
-  (interactive "P\nsNew title: ")
-  (let ((notename (concat (format-time-string "%Y-%m-%dT%H.%M.%S") (notdeft-title-to-notename title))))
-    (notdeft-sub-new-file (or data title) notename pfx)))
+ (defun notdeft-new-file-named (pfx title &optional data)
+   "Create a new file, prompting for a title.
+ The prefix argument PFX is as for `notdeft-new-file'.
+ Query for a TITLE when invoked as a command.
+ Initialize the file with DATA, or TITLE if not given.
+ Return the filename of the created file."
+   (interactive "P\nsNew title: ")
+   (let ((notename (concat (format-time-string "%Y-%m-%dT%H.%M.%S") (notdeft-title-to-notename title))))
+     (notdeft-sub-new-file (or data title) notename pfx)))
 
 
 #+END_SRC
 ** DISABLED deft
 #+BEGIN_SRC emacs-lisp
-(use-package deft
-:commands (deft)
-:init
-(setq deft-directory "~/org/notes/"
-                deft-extensions '("org" "md" "txt")
-                deft-default-extension "org"
-                deft-use-filename-as-title t))
+ (use-package deft
+ :commands (deft)
+ :init
+ (setq deft-directory "~/org/notes/"
+                 deft-extensions '("org" "md" "txt")
+                 deft-default-extension "org"
+                 deft-use-filename-as-title t))
 
-(defun notdeft-new-file (pfx)
-  "Create a new file quickly.
-Create it with an automatically generated name, one based
-on the `notdeft-filter-string' filter string if it is non-nil.
-With a prefix argument PFX, offer a choice of NotDeft
-directories, when there is more than one of them.
-With two prefix arguments, also offer a choice of filename
-extensions when `notdeft-secondary-extensions' is non-empty.
-Return the filename of the created file."
-  (interactive "P")
-  (let ((data (and notdeft-filter-string
-                   (concat notdeft-filter-string "\n\n")))
-        (notename
-         (and notdeft-filter-string
-              (notdeft-title-to-notename notdeft-filter-string))))
-    (notdeft-sub-new-file data (concat (format-time-string "%Y-%m-%d-%H%M ") notename)) pfx))
+ (defun notdeft-new-file (pfx)
+   "Create a new file quickly.
+ Create it with an automatically generated name, one based
+ on the `notdeft-filter-string' filter string if it is non-nil.
+ With a prefix argument PFX, offer a choice of NotDeft
+ directories, when there is more than one of them.
+ With two prefix arguments, also offer a choice of filename
+ extensions when `notdeft-secondary-extensions' is non-empty.
+ Return the filename of the created file."
+   (interactive "P")
+   (let ((data (and notdeft-filter-string
+                    (concat notdeft-filter-string "\n\n")))
+         (notename
+          (and notdeft-filter-string
+               (notdeft-title-to-notename notdeft-filter-string))))
+     (notdeft-sub-new-file data (concat (format-time-string "%Y-%m-%d-%H%M ") notename)) pfx))
 
 
 #+END_SRC
 ** DISABLED eyebrowse
 #+BEGIN_SRC emacs-lisp :tangle no
-(setq eyebrowse-keymap-prefix (kbd "C-SPC e"))
-(use-package eyebrowse
-  :config
-  (setq eyebrowse-new-workspace t)
-  (eyebrowse-mode t))
+ (setq eyebrowse-keymap-prefix (kbd "C-SPC e"))
+ (use-package eyebrowse
+   :config
+   (setq eyebrowse-new-workspace t)
+   (eyebrowse-mode t))
 
 #+END_SRC
 ** DISABLED multiple-cursors
 #+BEGIN_SRC emacs-lisp
-(use-package multiple-cursors
-  :commands multiple-cursors-mode
-  :config
-  (bind-keys :map mc/keymap
-             ("C-c m" . nil))
-  :bind (
-;         ("s-i" . mc/mark-next-like-this)
-;	 ("s-I" . mc/mark-previous-like-this)
-         ("C-c m e" . mc/mark-more-like-this-extended)
-         ("C-c m m" . mc/mark-all-like-this-dwim)
-         ("C-c m c" . mc/edit-lines)))
+ (use-package multiple-cursors
+   :commands multiple-cursors-mode
+   :config
+   (bind-keys :map mc/keymap
+              ("C-c m" . nil))
+   :bind (
+ ;         ("s-i" . mc/mark-next-like-this)
+ ;	 ("s-I" . mc/mark-previous-like-this)
+          ("C-c m e" . mc/mark-more-like-this-extended)
+          ("C-c m m" . mc/mark-all-like-this-dwim)
+          ("C-c m c" . mc/edit-lines)))
 #+END_SRC
 ** DISABLED demo-it
 #+BEGIN_SRC emacs-lisp
-(use-package demo-it)
+ (use-package demo-it)
 #+END_SRC
 ** DISABLED tangle
 #+BEGIN_SRC emacs-lisp
-(defun tangle-on-save-org-mode-file()
-  (when (equal major-mode 'org-mode)
-    (org-babel-tangle)))
+ (defun tangle-on-save-org-mode-file()
+   (when (equal major-mode 'org-mode)
+     (org-babel-tangle)))
 
-(defun my/org-toggle-tangle-on-save ()
-  "Toggle tangling code blocks on save"
-  (interactive)
-  (if (get 'my/org-toggle-tangle-on-save 'state)
-      (progn
-        (message "%s" "Org tangle on save Disabled")
-        (remove-hook 'after-save-hook 'tangle-on-save-org-mode-file)
-        (put 'my/org-toggle-tangle-on-save 'state nil))
-    (progn
-      (message "%s" "Org tangle on save Enabled")
-      (add-hook 'after-save-hook 'tangle-on-save-org-mode-file)
-      (put 'my/org-toggle-tangle-on-save 'state t))))
+ (defun my/org-toggle-tangle-on-save ()
+   "Toggle tangling code blocks on save"
+   (interactive)
+   (if (get 'my/org-toggle-tangle-on-save 'state)
+       (progn
+         (message "%s" "Org tangle on save Disabled")
+         (remove-hook 'after-save-hook 'tangle-on-save-org-mode-file)
+         (put 'my/org-toggle-tangle-on-save 'state nil))
+     (progn
+       (message "%s" "Org tangle on save Enabled")
+       (add-hook 'after-save-hook 'tangle-on-save-org-mode-file)
+       (put 'my/org-toggle-tangle-on-save 'state t))))
 
 #+END_SRC
 ** DISABLED persp-mode
 #+BEGIN_SRC emacs-lisp
-(use-package persp-mode :demand t
-  :config
-  (setq wg-morph-on nil
-        persp-autokill-buffer-on-remove 'kill-weak
-        persp-nil-name "nil"
-        persp-nil-hidden t
-        persp-auto-save-fname "autosave"
-        persp-auto-resume-time 1
-        persp-auto-save-opt 1
-        persp-save-dir (concat dotfiles-etc-dir "workspaces/"))
+ (use-package persp-mode :demand t
+   :config
+   (setq wg-morph-on nil
+         persp-autokill-buffer-on-remove 'kill-weak
+         persp-nil-name "nil"
+         persp-nil-hidden t
+         persp-auto-save-fname "autosave"
+         persp-auto-resume-time 1
+         persp-auto-save-opt 1
+         persp-save-dir (concat dotfiles-etc-dir "workspaces/"))
 
-  (defun +workspaces*track-last-persp (switch-fun &rest args)
-    (let ((before-persp (safe-persp-name (get-current-persp)))
-          (after-persp (apply switch-fun args)))
-      (when (not (string= before-persp after-persp))
-        (setq +workspaces-last-persp before-persp))))
-  (advice-add #'persp-switch :around #'+workspaces*track-last-persp)
-  (add-hook 'my/post-init-hook #'(lambda () (persp-mode 1))))
+   (defun +workspaces*track-last-persp (switch-fun &rest args)
+     (let ((before-persp (safe-persp-name (get-current-persp)))
+           (after-persp (apply switch-fun args)))
+       (when (not (string= before-persp after-persp))
+         (setq +workspaces-last-persp before-persp))))
+   (advice-add #'persp-switch :around #'+workspaces*track-last-persp)
+   (add-hook 'my/post-init-hook #'(lambda () (persp-mode 1))))
 
 
-(defvar +workspaces-last-persp nil
-  "A variable that contains the last accessed perspective")
+ (defvar +workspaces-last-persp nil
+   "A variable that contains the last accessed perspective")
 
-(defun +workspace-exists-p (name)
-  "Returns t if NAME is the name of an existing workspace."
-  (when (symbolp name)
-    (setq name (symbol-name name)))
-  (unless (stringp name)
-    (error "Expected a string, got a %s" (type-of name)))
-  (member name (persp-names-current-frame-fast-ordered)))
+ (defun +workspace-exists-p (name)
+   "Returns t if NAME is the name of an existing workspace."
+   (when (symbolp name)
+     (setq name (symbol-name name)))
+   (unless (stringp name)
+     (error "Expected a string, got a %s" (type-of name)))
+   (member name (persp-names-current-frame-fast-ordered)))
 
-(defun +workspace-switch-last ()
-  "Switches to the last workspace"
-  (interactive)
-  (if (+workspace-exists-p +workspaces-last-persp)
-      (persp-switch +workspaces-last-persp)
-    (error "No previous workspace.")))
+ (defun +workspace-switch-last ()
+   "Switches to the last workspace"
+   (interactive)
+   (if (+workspace-exists-p +workspaces-last-persp)
+       (persp-switch +workspaces-last-persp)
+     (error "No previous workspace.")))
 
-(defun +workspace-switch-project ()
-  (interactive)
-  (ivy-read "Switch to Project Perspective: "
-            (if (projectile-project-p)
-                (cons (abbreviate-file-name (projectile-project-root))
-                      (projectile-relevant-known-projects))
-              projectile-known-projects)
-            :action (lambda (project)
-                      (persp-switch project)
-                      (let ((projectile-completion-system 'ivy))
-                        (projectile-switch-project-by-name project)))))
+ (defun +workspace-switch-project ()
+   (interactive)
+   (ivy-read "Switch to Project Perspective: "
+             (if (projectile-project-p)
+                 (cons (abbreviate-file-name (projectile-project-root))
+                       (projectile-relevant-known-projects))
+               projectile-known-projects)
+             :action (lambda (project)
+                       (persp-switch project)
+                       (let ((projectile-completion-system 'ivy))
+                         (projectile-switch-project-by-name project)))))
 
 
 #+END_SRC
 ** DISABLED hideshow
 #+BEGIN_SRC emacs-lisp
-(use-package hideshow :demand t ; built-in
-  :commands (hs-minor-mode hs-toggle-hiding hs-already-hidden-p hs-hide-level hs-show-all)
-  :config
-  (add-hook 'prog-mode-hook #'hs-minor-mode)
-  (setq hs-hide-comments-when-hiding-all nil))
+ (use-package hideshow :demand t ; built-in
+   :commands (hs-minor-mode hs-toggle-hiding hs-already-hidden-p hs-hide-level hs-show-all)
+   :config
+   (add-hook 'prog-mode-hook #'hs-minor-mode)
+   (setq hs-hide-comments-when-hiding-all nil))
 #+END_SRC
 ** DISABLED neotree
 #+BEGIN_SRC emacs-lisp
-(use-package neotree
-  :ensure t
-  :config
-  (global-set-key "\M-n" 'neotree-toggle)
-  (setq neo-theme 'icons))
+ (use-package neotree
+   :ensure t
+   :config
+   (global-set-key "\M-n" 'neotree-toggle)
+   (setq neo-theme 'icons))
 #+END_SRC
 ** DISABLED desktop
  #+BEGIN_SRC emacs-lisp :tangle no
-  (require 'desktop)
+   (require 'desktop)
 
-  (setq desktop-save 1
-        desktop-load-locked-desktop t
-        desktop-dirname user-emacs-directory
-        desktop-restore-frames t
-        desktop-restore-eager 4
-        ;; Don't save remote files and/or *gpg files.
-        desktop-files-not-to-save "\\(^/[^/:]*:\\|(ftp)$\\)\\|\\(\\.gpg$\\)")
-  (desktop-save-mode 1)
+   (setq desktop-save 1
+         desktop-load-locked-desktop t
+         desktop-dirname user-emacs-directory
+         desktop-restore-frames t
+         desktop-restore-eager 4
+         ;; Don't save remote files and/or *gpg files.
+         desktop-files-not-to-save "\\(^/[^/:]*:\\|(ftp)$\\)\\|\\(\\.gpg$\\)")
+   (desktop-save-mode 1)
 
 
  #+END_SRC
 ** DISABLED dashboard
 #+BEGIN_SRC emacs-lisp
-(defun dashboard-setup-startup-hook ()
-  "Setup post initialization hooks.
-If a command line argument is provided,
-assume a filename and skip displaying Dashboard."
-  (if (< (length command-line-args) 2 )
-      (progn
-        (add-hook 'after-init-hook (lambda ()
-                                     ;; Display useful lists of items
-                                     (dashboard-insert-startupify-lists))))))
+ (defun dashboard-setup-startup-hook ()
+   "Setup post initialization hooks.
+ If a command line argument is provided,
+ assume a filename and skip displaying Dashboard."
+   (if (< (length command-line-args) 2 )
+       (progn
+         (add-hook 'after-init-hook (lambda ()
+                                      ;; Display useful lists of items
+                                      (dashboard-insert-startupify-lists))))))
 
-(defun dashboard-insert-custom (list-size)
-  (let ((all-the-icons-scale-factor 2.00)
-        (all-the-icons-default-adjust -0.00))
-    (mapc (lambda (btn)
-            (when btn
-              (cl-destructuring-bind (label icon fn) btn
-                (insert
-                 (with-temp-buffer
-                   (insert-text-button
-                    (concat (all-the-icons-faicon  icon :face 'font-lock-keyword-face)
-                            (propertize (concat " " label) 'face 'font-lock-keyword-face))
-                    'action `(lambda (_) ,fn)
-                    'follow-link t)
-                   (dashboard-center (- dashboard--width 2) (buffer-string)))
-                 "\n\n"))))
-          `(
-
-            ("Collect Thoughts" "inbox"
-             (call-interactively (or (command-remapping #'counsel-org-capture)
-                                     #'counsel-org-capture)))
-
-            ("Process Thoughts" "long-arrow-right"
-             (call-interactively (or (command-remapping #'org-boxes-workflow)
-                                     #'org-boxes-workflow)))
-
-            ("Projects" "tasks"
-             (call-interactively (or (command-remapping #'my/projects)
-                                     #'my/projects)))
-            ("Actions" "check-square"
-             (call-interactively (or (command-remapping #'my/actions)
-                                     #'my/actions)))
-            ("Next Tasks" "clipboard"
-             (call-interactively (or (command-remapping #'my/next-tasks)
-                                     #'my/next-tasks)))
-            ("Delegated" "user"
-             (call-interactively (or (command-remapping #'my/delegated)
-                                     #'my/delegated)))
-            ("Waiting" "hourglass-end"
-             (call-interactively (or (command-remapping #'my/waiting)
-                                     #'my/waiting)))
-            ("Someday/Maybe" "question-circle"
-             (call-interactively (or (command-remapping #'my/someday)
-                                     #'my/someday)))
-            ("Scheduled" "calendar"
-             (call-interactively (or (command-remapping #'my/scheduled)
-                                     #'my/scheduled)))
-            ("Done" "check"
-             (call-interactively (or (command-remapping #'my/completed)
-                                     #'my/completed)))
-            ("Reference" "archive"
-             (call-interactively (or (command-remapping #'howm-list-all)
-                                     #'howm-list-all)))
-
-
-            ))))
-
-(defun go-to-dashboard ()
-  (interactive)
-  (switch-to-buffer "*dashboard*"))
-
-  (global-set-key (kbd "<f12>") 'go-to-dashboard)
-
-;  (define-key dashboard-mode-map "/" #'hui-search-web)
-
-
-
-
-#+END_SRC
-** DISABLED elisp-demos
-#+BEGIN_SRC emacs-lisp
-(use-package elisp-demos
-:config
-(advice-add 'describe-function-1 :after #'elisp-demos-advice-describe-function-1)
-(advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update)
-)
-#+END_SRC
-** DISABLED org-noter
-#+BEGIN_SRC emacs-lisp
-(setq org-noter-notes-search-path '("~/org/notes"))
-(setq org-noter-always-create-frame nil)
-(setq org-noter-notes-window-location nil)
-(setq org-noter-default-notes-file-names '("Notes.org"))
-#+END_SRC
-
-** DISABLED org-brain
-#+BEGIN_SRC emacs-lisp
-(use-package org-brain
-  :ensure t
-  :config
-  (setq org-brain-path "~/org/notes"
-        org-id-track-globally t
-        org-id-locations-file "~/.emacs.d/.org-id-locations"
-        org-brain-visualize-default-choices 'root
-        org-brain-wander-interval 6
-        org-brain-data-file "/home/alexander/org/notes/.org-brain-data.el")
-
-  (defun my/brain ()
-    (interactive)
-    (org-brain-visualize "zettelkasten")
-    (delete-other-windows))
-
-  (defun my/org-add-ids-to-headlines-in-file ()
-    "Add ID properties to all headlines in the current file which
-     do not already have one."
-    (interactive)
-    (org-map-entries 'org-id-get-create))
-
-  (defun org-brain-entry-at-pt ()
-    "Get current org-brain entry.
-    In `org-mode' this is the current headline, or the file.
-    In `org-brain-visualize' just return `org-brain--vis-entry'."
-    (cond ((eq major-mode 'org-mode)
-           (if (ignore-errors (org-get-heading))
-               (if-let ((id (org-entry-get nil "ID")))
-                   (org-brain-entry-from-id id)
-                 (error "Current headline have no ID"))
-             (org-brain-path-entry-name (buffer-file-name))))
-          ((eq major-mode 'org-brain-visualize-mode)
-           org-brain--vis-entry)
-          (t
-           (error "Not in org-mode or org-brain-visualize"))))
-
-  (defun my/refile-to-zettelkasten (entry)
-    "Convert headline ENTRY to a file entry.
-    Prompt for name of the new file.
-    If interactive, also prompt for ENTRY."
-    (interactive (list (org-brain-entry-at-pt)))
-    (let* (level
-           (title (org-brain-title entry))
-           (new-entry (concat (format-time-string "%Y-%m-%dT%H.%M.%S")))
-           (path (org-brain-entry-path new-entry)))
-      (when (file-exists-p path)
-        (error "That file already exists"))
-      (let ((parents (org-brain-parents entry))
-            (external-parents (org-brain--linked-property-entries entry "PARENTS"))
-            (children (org-brain--linked-property-entries entry "CHILDREN"))
-            (friends (org-brain-friends entry))
-            (hl-text (org-with-point-at (org-brain-entry-marker entry)
-                       (setq level (org-outline-level))
-                       (org-get-entry))))
-        (dolist (parent external-parents)
-          (org-brain-remove-relationship parent entry))
-        (dolist (child children)
-          (org-brain-remove-relationship entry child))
-        (dolist (friend friends)
-          (org-brain-remove-friendship entry friend))
-        (org-with-point-at (org-brain-entry-marker entry)
-          (org-cut-subtree)
-          (pop kill-ring)
-          (save-buffer))
-        (make-directory (file-name-directory path) t)
-        (with-temp-file path
-          (insert ":HIDDEN:\n")
-          (insert "#+PARENTS: \n")
-          (insert "#+CHILDREN: \n")
-          (insert "#+FRIENDS: \n")
-          (insert ":END: \n")
-          (insert (format "#+TITLE: %s\n" title))
-          (insert (concat "#+DATE: " (format-time-string "[%Y-%m-%d %H:%M]\n")))
-          (delay-mode-hooks
-            (org-mode)
-            (goto-char (point-min))
-            (forward-line 8)
-            (insert (format "#+KEYWORDS: \n\n"))
-            (forward-line 9)
-            (insert (format "%s\n" hl-text))
-            (insert "\n")
-            (goto-char (point-min))
-            (re-search-forward org-property-drawer-re)
-            (replace-match "")
-            (goto-char (point-max))
-            (let ((level-regex "^"))
-              (dotimes (_i (1+ level))
-                (setq level-regex (concat level-regex "\\*")))
-              (setq level-regex (concat level-regex " "))
-              (while (re-search-backward level-regex nil t)
-                (dotimes (_i level) (org-promote-subtree))))))
-        (when (equal entry org-brain--vis-entry)
-          (setq org-brain--vis-entry new-entry))
-        (when (member entry org-brain-pins)
-          (org-brain-pin entry -1)
-          (org-brain-pin new-entry 1)))))
-
-  (defun my/headline-to-file (entry)
-    "Convert headline ENTRY to a file entry.
-     Prompt for name of the new file.
-     If interactive, also prompt for ENTRY."
-    (interactive (list (org-brain-entry-at-pt)))
-    (let* (level
-           (title (org-brain-title entry))
-           (new-entry (concat (format-time-string "%Y-%m-%dT%H.%M.%S")))
-           (path (org-brain-entry-path new-entry)))
-      (when (file-exists-p path)
-        (error "That file already exists"))
-      (let ((parents (org-brain-parents entry))
-            (external-parents (org-brain--linked-property-entries entry "PARENTS"))
-            (children (org-brain--linked-property-entries entry "CHILDREN"))
-            (friends (org-brain-friends entry))
-            (hl-text (org-with-point-at (org-brain-entry-marker entry)
-                       (setq level (org-outline-level))
-                       (org-get-entry))))
-        (dolist (parent external-parents)
-          (org-brain-remove-relationship parent entry))
-        (dolist (child children)
-          (org-brain-remove-relationship entry child))
-        (dolist (friend friends)
-          (org-brain-remove-friendship entry friend))
-        (org-with-point-at (org-brain-entry-marker entry)
-          (org-cut-subtree)
-          (pop kill-ring)
-          (save-buffer))
-        (make-directory (file-name-directory path) t)
-        (with-temp-file path
-          (insert (format "#+TITLE: %s\n" title))
-          (insert (concat "#+DATE: " (format-time-string "[%Y-%m-%d %H:%M]\n")))
-          (delay-mode-hooks
-            (org-mode)
-            (goto-char (point-min))
-            (forward-line 3)
-            (insert (format "#+KEYWORDS: \n\n"))
-            (forward-line 4)
-            (insert (format "%s\n" hl-text))
-            (insert "\n")
-            (goto-char (point-min))
-            (re-search-forward org-property-drawer-re)
-            (replace-match "")
-            (goto-char (point-max))
-            (let ((level-regex "^"))
-              (dotimes (_i (1+ level))
-                (setq level-regex (concat level-regex "\\*")))
-              (setq level-regex (concat level-regex " "))
-              (while (re-search-backward level-regex nil t)
-                (dotimes (_i level) (org-promote-subtree))))))
-        (dolist (parent parents)
-          (org-brain-add-relationship parent new-entry))
-        (dolist (child children)
-          (org-brain-add-relationship new-entry child))
-        (dolist (friend friends)
-          (org-brain--internal-add-friendship new-entry friend))
-        (when (equal entry org-brain--vis-entry)
-          (setq org-brain--vis-entry new-entry))
-        (when (member entry org-brain-pins)
-          (org-brain-pin entry -1)
-          (org-brain-pin new-entry 1)))
-      ))
-
-  (defun my/org-add-ids-to-headlines-in-file ()
-    "Add ID properties to all headlines in the current file which
-     do not already have one."
-    (interactive)
-    (org-map-entries 'org-id-get-create))
-
-(defun my/org-brain-visualize-current ()
-(interactive)
-(org-brain-visualize (org-brain-entry-at-pt))
-(delete-other-windows))
-
-
-  (setq org-brain-visualize-default-choices 'all)
-  (setq org-brain-title-max-length 100)
-
-  (defun my/org-brain-goto-current ()
-    "Jumps to a specific task."
-    (interactive)
-    (call-interactively 'org-brain-goto-current)
-    (org-narrow-to-subtree)
-    (forward-line 5))
-
-
-  (defun org-brain-save-and-update ()
-    (interactive)
-    (org-brain-update-id-locations)
-    (org-save-all-org-buffers)
-    (org-brain--revert-if-visualizing))
-
-  (defun org-brain-cliplink-resource ()
-    "Add a URL from the clipboard as an org-brain resource.
-     Suggest the URL title as a description for resource."
-    (interactive)
-    (let ((url (org-cliplink-clipboard-content)))
-      (org-brain-add-resource
-       url
-       (org-cliplink-retrieve-title-synchronously url)
-       t)))
-
-  (defun my/org-brain-add-child-headline ()
-    "Create a new internal child headline to entry at point.
-    Several children can be created, by using `org-brain-entry-separator'."
-    (interactive)
-    (let ((entry (org-brain-entry-at-pt))
-          (child-name-string (read-string "Add child headline: ")))
-      (dolist (child-name (split-string child-name-string org-brain-entry-separator))
-        (when (equal (length child-name) 0)
-          (error "Child name must be at least 1 character"))
-        (if (org-brain-filep entry)
-            ;; File entry
-            (with-current-buffer (find-file-noselect (org-brain-entry-path entry))
-              (goto-char (point-min))
-              (if (re-search-forward (concat "^\\(" org-outline-regexp "\\)") nil t)
-                  (progn
-                    (beginning-of-line)
-                    (open-line 1))
-                (goto-char (point-max)))
-              (insert (concat "* " child-name))
-              (insert (concat "\n"))
-              (org-id-get-create)
-              (insert (concat "\n\n"))
-              (insert (concat "Related Notes:\n\n"))
-              (insert (concat "\n\n\n"))
-              (insert (concat "Reference:\n\n"))
-              (run-hooks 'org-brain-new-entry-hook)
-              (save-buffer))
-          ;; Headline entry
-          (org-with-point-at (org-brain-entry-marker entry)
-            (if (org-goto-first-child)
-                (open-line 1)
-              (org-end-of-subtree t))
-            (org-insert-heading nil t)
-            (org-do-demote)
-            (insert child-name)
-            (org-id-get-create)
-            (run-hooks 'org-brain-new-entry-hook)
-            (save-buffer)))))
-    (org-brain--revert-if-visualizing))
-
-
-  (setq org-brain-visualize-mode-hook #'delete-other-windows)
-
-
-  (defun org-brain-open-org-noter (entry)
-    "Open `org-noter' on the ENTRY.
-     If run interactively, get ENTRY from context."
-    (interactive (list (org-brain-entry-at-pt)))
-    (org-with-point-at (org-brain-entry-marker entry)
-      (org-noter)))
-
-  (defun org-brain-set-tags (entry)
-    "Modify the ENTRY tags.
-    Use `org-set-tags' on headline ENTRY.
-    Instead sets #+KEYWORDS on file ENTRY.
-    If run interactively, get ENTRY from context."
-    (interactive (list (org-brain-entry-at-pt)))
-    (if (org-brain-filep entry)
-        (with-current-buffer (find-file-noselect (org-brain-entry-path entry))
-          (let ((tag-str (read-string "KEYWORDS: "
-                                      (mapconcat #'identity org-file-tags ":"))))
-            (goto-char (point-min))
-            (when (assoc "KEYWORDS" (org-brain-keywords entry))
-              (re-search-forward "^#\\+KEYWORDS:")
-              (kill-whole-line))
-            (insert (format "#+KEYWORDS: %s\n" tag-str)))
-          ;; From org.el
-          (let ((org-inhibit-startup-visibility-stuff t)
-                (org-startup-align-all-tables nil))
-            (when (boundp 'org-table-coordinate-overlays)
-              (mapc #'delete-overlay org-table-coordinate-overlays)
-              (setq org-table-coordinate-overlays nil))
-            (org-save-outline-visibility 'use-markers (org-mode-restart)))
-          (save-buffer))
-      (org-with-point-at (org-brain-entry-marker entry)
-        (org-set-tags)
-        (save-buffer)))
-    (org-brain--revert-if-visualizing))
-
-  (defun my/org-brain-add-child ()
-    "Add external child to entry at point.
-    If chosen child entry doesn't exist, create it as a new file.
-    Several children can be added, by using `org-brain-entry-separator'."
-    (interactive)
-    (let ((entry (org-brain-entry-at-pt))
-          (header (read-string "Add child: "))
-          (file (format-time-string "%Y-%m-%dT%H.%M.%S"))
-          (date (format-time-string "%Y-%m-%dT%H.%M.%S")))
-      (my/org-brain-add-relationship entry file header date))
-    (org-brain--revert-if-visualizing))
-
-  (defun my/org-brain-add-relationship (parent child title date)
-    "Add external relationship between PARENT and CHILD."
-    (when (equal parent child)
-      (error "An entry can't be a parent/child to itself"))
-    (unless (member child (org-brain-children parent))
-      (if (org-brain-filep parent)
-          ;; Parent = File
-          (with-current-buffer (find-file-noselect (org-brain-entry-path parent))
-            (goto-char (point-min))
-            (if (re-search-forward "^#\\+CHILDREN:.*$" nil t)
-                (insert (concat " " (org-brain-entry-identifier child)))
-              (insert (concat "#+CHILDREN: "
-                              (org-brain-entry-identifier child)
-                              "\n\n")))
-            (save-buffer))
-        ;; Parent = Headline
-        (org-entry-add-to-multivalued-property (org-brain-entry-marker parent)
-                                               "CHILDREN"
-                                               (org-brain-entry-identifier child)))
-      (if (org-brain-filep child)
-          ;; Child = File
-          (with-current-buffer (find-file-noselect (org-brain-entry-path child))
-            (goto-char (point-min))
-            (if (re-search-forward "^#\\+PARENTS:.*$" nil t)
-                (insert (concat " " (org-brain-entry-identifier parent)))
-              (insert (concat "#+PARENTS: "
-                              (org-brain-entry-identifier parent)
-                              "\n\n"))
-
-              (insert (concat"#+TITLE: " title ))
-              (insert "\n")
-              (insert (concat ">>>" (file-name-base buffer-file-name)))
-              (insert "\n")
-              (insert (concat "#+DATE: " (format-time-string "[%Y-%m-%d %H:%M]\n")))
-              (insert "#+KEYWORDS: ")
-              (insert "\n\n\n\n\n\n")
-              (insert "Related:")
-              (insert "\n\n\n\n")
-              (insert "References:")
-              )
-            (save-buffer))
-        ;; Child = Headline
-        (org-entry-add-to-multivalued-property (org-brain-entry-marker child)
-                                               "PARENTS"
-                                               (org-brain-entry-identifier parent)))))
-
-  (defun my/org-brain-visualize-current ()
-    (interactive)
-    (org-brain-visualize (org-brain-entry-at-pt))
-    (delete-other-windows))
-
-  (defun my/org-brain-goto-current-main ()
-    (interactive)
-    (org-brain-goto-current (org-brain-entry-at-pt))
-    (delete-other-windows))
-
-  )
-#+END_SRC
-** DISABLED memacs
-#+BEGIN_SRC emacs-lisp
-(defun memacs-chrome ()
-(interactive)
-(shell-command "~/bin/memacs-chrome.sh"))
-
-(defun my/memacs-org-agenda ()
-   "Opens an org-agenda with activated archive"
-   (interactive)
-   (memacs-chrome)
-   (setq org-agenda-files "~/org/meta/web.org")
-   (org-agenda-list)
-   ;;(call-interactively 'org-agenda-log-mode)
-   (org-agenda-log-mode '(4))
-   (call-interactively 'org-agenda-archives-mode)
-   (org-agenda-archives-mode 'files)
-   )
-
-
-#+END_SRC
-** DISABLED writeroom-mode
-#+BEGIN_SRC emacs-lisp
-(use-package writeroom-mode :ensure t)
-#+END_SRC
-
-** DISABLED annotate
-#+BEGIN_SRC emacs-lisp
-(use-package annotate)
-#+END_SRC
-** DISABLED htmlize
-#+BEGIN_SRC emacs-lisp
-(use-package htmlize)
-#+END_SRC
-** DISABLED ripgrep
-#+BEGIN_SRC emacs-lisp
-  (use-package rg
-    :ensure t
-    :init
-    (rg-enable-default-bindings))
-
-  (use-package dumb-jump
-    :config
-    (setq dumb-jump-selector 'ivy)
-    (setq dumb-jump-prefer-searcher 'rg))
-
-#+END_SRC
-** DISABLED ace-link
-#+BEGIN_SRC emacs-lisp
-(use-package ace-link
-  :demand t
-  :config (ace-link-setup-default))
-#+END_SRC
-
-** DISABLED link-hint
-#+BEGIN_SRC emacs-lisp
-(use-package link-hint :ensure t)
-#+END_SRC
-** DISABLED use-package-hydra
-#+BEGIN_SRC emacs-lisp
-(use-package use-package-hydra
-  :ensure t)
-#+END_SRC
-
-** DISABLED major-mode-hydra
-#+BEGIN_SRC emacs-lisp
-(use-package major-mode-hydra
-  :bind
-  ("C-M-m" . major-mode-hydra))
-
-(setq major-mode-hydra-title-generator
-      '(lambda (mode)
-         (s-concat "n"
-                   (s-repeat 10 " ")
-                   (all-the-icons-icon-for-mode mode :v-adjust 0.05)
-                   " "
-                   (symbol-name mode)
-                   " commands")))
-
-
-#+END_SRC
-** DISABLED crux
-#+BEGIN_SRC emacs-lisp
-(use-package crux)
-#+END_SRC
-** DISABLED General
-*** DISABLED package
-#+BEGIN_SRC emacs-lisp
-  (use-package general
-    :after which-key)
-#+END_SRC
-*** DISABLED configuration
-  #+BEGIN_SRC emacs-lisp
-    (general-create-definer tyrant-def
-      :prefix "C-SPC"
-      :global-prefix "SPC"
-      :keymaps 'boon-moves-map)
-
-    (general-create-definer despot-def
-      :prefix "C-SPC"
-      :global-prefix "SPC"
-      :keymaps 'boon-moves-map)
-
-    (general-define-key
-      :keymaps 'key-translation-map
-      "ESC" (kbd "C-g"))
-
-    (tyrant-def
-
-      ""     nil
-      "SPC" 'counsel-M-x
-      "RET" 'counsel-linux-app
-      "@"  'hycontrol-windows-grid
-      "0"  'delete-window
-      "1"  'delete-other-windows
-      "2"  'split-window-below
-      "3"  'split-window-right
-
-      ;; Buffer operations
-      "b"   '(:ignore t :which-key "buffer")
-      "bb"  'counsel-switch-buffer
-      "bB"  'counsel-switch-buffer-other-window
-      "bk"  'kill-this-buffer
-      "bn"  'next-buffer
-      "bp"  'previous-buffer
-      "bi"  'ibuffer
-
-      ;; Window operations
-      "w"   '(:ignore t :which-key "window")
-      "wu"  'winner-undo
-      "wr"  'winner-redo
-
-
-      ;; File operations
-      "f"  '(:ignore t :which-key "files")
-      "fj"  'dired-jump
-      "fl"  'find-file-literally
-      "fr"  'crux-rename-file-and-buffer
-      "fw"  'write-file
-      "fs"  'save-buffer
-
-      ;; Applications
-      "a"   '(:ignore t :which-key "applications")
-      "ad"  'dired
-      "ac"  'calendar
-      "ag" 'deadgrep
-
-      "ap" '(:keymap projectile-command-map :wk "projectile")
-
-      )
-  #+END_SRC
-** DISABLED boxquote
-#+BEGIN_SRC emacs-lisp
-(use-package boxquote
-  :ensure t
-  :defer t
-  :config
-  (setq-default  boxquote-bottom-corner "╰"      ; U+2570
-                 boxquote-side          "│ "     ; U+2572 + space
-                 boxquote-top-and-tail  "────"   ; U+2500 (×4)
-                 boxquote-top-corner    "╭")     ; U+256F
-  (when (package-installed-p 'hydra)
-    (eval-and-compile
-      (defhydra hydra-boxquote (:color blue :hint nil)
-       "
-                                                                    ╭──────────┐
-  Text           External           Apropos         Do              │ Boxquote │
-╭───────────────────────────────────────────────────────────────────┴──────────╯
-  [_r_] region        [_f_] file      [_K_] describe-key        [_t_] title
-  [_p_] paragraph     [_b_] buffer    [_F_] describe-function   [_u_] unbox
-  [_a_] buffer        [_s_] shell     [_V_] describe-variable   [_w_] fill-paragraph
-  [_e_] text           ^ ^            [_W_] where-is            [_n_] narrow
-  [_d_] defun         [_y_] yank       ^ ^                      [_c_] narrow to content
-  [_q_] boxquote      [_Y_] yanked     ^ ^                      [_x_] kill
---------------------------------------------------------------------------------
-       "
-      ("<esc>" nil "quit")
-      ("x" boxquote-kill)
-      ("Y" boxquote-yank)
-      ("e" boxquote-text)
-      ("u" boxquote-unbox)
-      ("d" boxquote-defun)
-      ("t" boxquote-title)
-      ("r" boxquote-region)
-      ("a" boxquote-buffer)
-      ("q" boxquote-boxquote)
-      ("W" boxquote-where-is)
-      ("p" boxquote-paragraph)
-      ("f" boxquote-insert-file)
-      ("K" boxquote-describe-key)
-      ("s" boxquote-shell-command)
-      ("b" boxquote-insert-buffer)
-      ("y" boxquote-kill-ring-save)
-      ("w" boxquote-fill-paragraph)
-      ("F" boxquote-describe-function)
-      ("V" boxquote-describe-variable)
-      ("n" boxquote-narrow-to-boxquote)
-      ("c" boxquote-narrow-to-boxquote-content)))))
-
-#+END_SRC
-** DISABLED spray
-#+BEGIN_SRC emacs-lisp
-  (use-package spray :ensure t)
-#+END_SRC
-** DISABLED flycheck
- #+BEGIN_SRC emacs-lisp
-(defhydra hydra-flycheck (:color blue :hint nil :inherit (hydra-common/heads)
-                                 :pre (progn
-                                        (exwm-input-line-mode))
-                                 :post (progn
-                                         (exwm-input-char-mode)))
-
-
-  "
-                                                                    ╭──────────┐
-   Navigate          Show Errors                  Do                │ Flycheck │
-╭───────────────────────────────────────────────────────────────────┴──────────╯
-   ^_p_^revious     [_l_] list errors           [_t_] toggle Flycheck
-      ^^↑^^         [_d_] clear all errors      [_c_] select checker
-    ^_f_^irst        ^ ^                        [_r_] run via compile
-      ^^↓^^          ^ ^                        [_h_] describe checker
-    ^_n_^ext
---------------------------------------------------------------------------------
-      "
-  ("c" flycheck-select-checker)
-  ("h" flycheck-describe-checker)
-  ("d" flycheck-clear)
-  ("f" flycheck-first-error)
-  ("l" flycheck-list-errors)
-  ("n" flycheck-next-error :color red)
-  ("p" flycheck-previous-error :color red)
-  ("r" flycheck-compile)
-  ("t" flycheck-mode))
- #+END_SRC
-** DISABLED boon
-*** DISABLED setup
-#+BEGIN_SRC emacs-lisp
-    (use-package boon
-      :config
-      (require 'boon-qwerty)
-      (boon-mode)
-
-  )
-#+END_SRC
-*** DISABLED boon-objed
-#+BEGIN_SRC emacs-lisp
-  ;; (defvar boon-objed-map (make-sparse-keymap))
-  ;; (append boon-mode-map-alist (cons 'boon-objed-state boon-objed-map))
-
-  (defvar-local boon-objed-state nil "Non-nil when boon objed mode is activated.")
-
-  (defun boon-reset-all-mode-states ()
-    (interactive)
-    (mapcar (lambda (boon-mode)
-              (setq boon-mode nil)) boon-mode-map-alist))
-
-
-
-
-  (defun boon-set-objed-state ()
-    "Switch to objed state."
-    (boon-set-state 'boon-objed-state))
-
-  (setq boon-key-list '
-        ((org-mode . (message "%s" "command from org mode"))
-         (lisp-mode . (message "%s" "command from lisp mode"))
-         (python-mode . (message "%s" "command from python mode"))))
-#+END_SRC
-*** DISABLED boon-major-mode
-#+BEGIN_SRC emacs-lisp
-  (defun boon-detect-mode (boon-mode-map)
-    (let ((boon-mode-command (cdr (assoc major-mode boon-mode-map))))
-      (if boon-mode-command (apply boon-mode-command))))
-
-  (setq boon-major-mode-hydra-list '
-        ((org-mode . (hydra-org/body))
-         (emacs-lisp-mode . (hydra-lisp/body))
-         (js2-mode . (hydra-javascript/body))
-         (json-mode . (hydra-json/body))
-         (sql-mode . (hydra-sql/body))
-         (css-mode . (hydra-css/body))
-         (scss-mode . (hydra-scss/body))
-         (javascript-mode . (hydra-javascript/body))
-         (yaml-mode . (hydra-yaml/body))
-         (c++-mode . (hydra-c++/body))
-         (web-mode . (hydra-web/body))
-         (html-mode . (hydra-html/body))
-         (exwm-mode . (hydra-exwm/body))
-         (python-mode . (hydra-python/body))))
-
-  (defun boon-select-major-mode (boon-mode-map)
-    (let ((boon-mode-command (cdr (assoc major-mode boon-mode-map))))
-      (if boon-mode-command (apply boon-mode-command))))
-
-  (defun boon-mode-hydra ()
-    (interactive)
-    (boon-select-major-mode boon-major-mode-hydra-list))
-
-  (define-key boon-command-map (kbd "SPC")   'hydra-master/body)
-  (define-key boon-command-map (kbd "RET")   'counsel-linux-app)
-
-  (define-key boon-command-map  (kbd "m")   'boon-mode-hydra)
-
-  (define-key boon-command-map (kbd "5")     'hydra-narrow/body)
-  (define-key boon-command-map (kbd "8")     'objed-mode)
-
-  (define-key boon-command-map (kbd "g")     'hydra-jump/body)
-  (define-key boon-command-map (kbd "G")     'hydra-goto/body)
-
-  (define-key boon-command-map (kbd "r")     'hydra-search/body)
-  (define-key boon-command-map (kbd "b")     'hydra-register/body)
-
-  (define-key boon-command-map (kbd "/")     'hui-search-web)
-  (define-key boon-command-map (kbd "F")     'my/exwm-counsel-yank-pop)
-  (define-key boon-command-map (kbd "H")     'avy-goto-word-1)
-  (define-key boon-command-map (kbd "h")     'avy-goto-char)
-
-#+END_SRC
-*** DISABLED boon-special
-#+BEGIN_SRC emacs-lisp
-  (custom-set-variables
-   '(boon-special-mode-list
-     (quote
-      (
-       magit-mode
-       magit-popup-mode
-       debugger-mode
-       git-rebase-mode
-       help-mode
-       org-agenda-mode
-       ,,*dashboard*
-       ))))
-
-
-#+END_SRC
-
-** DISABLED google-translate
- #+BEGIN_SRC emacs-lisp
-(use-package google-translate)
- #+END_SRC
-** DISABLED shackle
-#+BEGIN_SRC emacs-lisp
-(use-package shackle
-  :config
-  (setq shackle-default-rule '(:same t))
-  (shackle-mode))
-
-#+END_SRC
-** DISABLED telephone-line
- #+BEGIN_SRC emacs-lisp
-  (use-package telephone-line
-    :config
-    (telephone-line-defsegment my-vc-info ()
-    (when vc-mode
-    (cond
-    ((string-match "Git[:-]" vc-mode)
-    (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
-    (concat "" (format " %s" branch))))
-    ((string-match "SVN-" vc-mode)
-    (let ((revision (cadr (split-string vc-mode "-"))))
-    (concat "" (format "SVN-%s" revision))))
-    (t (format "%s" vc-mode)))))
-
-    (telephone-line-defsegment* telephone-line-boon-mode-segment ()
-         (let ((tag (cond
-                     (boon-command-state  "CMD")
-                     (boon-insert-state   "INS")
-                     (boon-special-state  "SPC")
-                     (boon-objed-state    "OBJ")
-                     )))
-           (if telephone-line-evil-use-short-tag
-               (seq-take tag 1)
-             tag)))
-
-
-    ;; (telephone-line-defsegment* my-airline-position-segment (&optional lines columns)
-    ;;   (let* ((l (number-to-string (if lines lines 1)))
-    ;;          (c (number-to-string (if columns columns 2))))
-    ;;     (if (eq major-mode 'paradox-menu-mode)
-    ;;         (telephone-line-raw mode-line-front-space t)
-    ;;         (concat " " "%" l "l:%" c "c"))))
-
-    ;; (setq tel
-        (setq telephone-line-lhs
-          '((evil   . (telephone-line-boon-mode-segment))
-            (accent . (my-vc-info
-                       telephone-line-process-segment))
-            (nil    . (telephone-line-buffer-segment
-                       telephone-line-projectile-segment))))
-
-    (setq telephone-line-rhs
-          '((nil    . (telephone-line-flycheck-segment
-                       telephone-line-misc-info-segment))
-
-            (accent . (telephone-line-major-mode-segment))
-            (nil    . (telephone-line-hud-segment))))
-                       ;; my-airline-position-segment))))
-
-    (setq display-time-format "%l:%M %p")
-    (setq display-time-default-load-average nil)
-    (setq display-time-use-mail-icon t)
-    (setq display-time-mail-file t)
-
-    (display-time-mode t)
-
-    (telephone-line-mode 1))
- #+END_SRC
-** DISABLED dashboard
- #+BEGIN_SRC emacs-lisp
- (use-package dashboard
-   :init
-   ;(dashboard-setup-startup-hook)
-   :config
-   (setq dashboard-center-content t)
-   (setq dashboard-startup-banner ()  )
- ;  (add-to-list 'dashboard-items '(agenda) t)
-   (setq dashboard-items '())
-
- (add-to-list 'dashboard-item-generators  '(custom . dashboard-insert-custom))
- (add-to-list 'dashboard-items '(custom) t)
-
-     (defvar all-the-icons-scale-factor)
- (defvar all-the-icons-default-adjust)
  (defun dashboard-insert-custom (list-size)
    (let ((all-the-icons-scale-factor 2.00)
          (all-the-icons-default-adjust -0.00))
@@ -5128,106 +4213,1016 @@ assume a filename and skip displaying Dashboard."
                  (insert
                   (with-temp-buffer
                     (insert-text-button
-                     (concat (all-the-icons-octicon icon :face 'font-lock-keyword-face)
+                     (concat (all-the-icons-faicon  icon :face 'font-lock-keyword-face)
                              (propertize (concat " " label) 'face 'font-lock-keyword-face))
                      'action `(lambda (_) ,fn)
                      'follow-link t)
                     (dashboard-center (- dashboard--width 2) (buffer-string)))
                   "\n\n"))))
-           `( ("Open project" "briefcase"
-              (call-interactively (or (command-remapping #'projectile-switch-project)
-                                      #'projectile-switch-project)))
+           `(
 
-              ("Bookmarks" "bookmark"
-              (call-interactively (or (command-remapping #'bookmark-jump)
-                                      #'bookmark-jump)))
+             ("Collect Thoughts" "inbox"
+              (call-interactively (or (command-remapping #'counsel-org-capture)
+                                      #'counsel-org-capture)))
 
-              ,(when (fboundp 'org-agenda-list)
-              '("Agenda for this week" "calendar"
-                (call-interactively #'org-agenda-list)))
+             ("Process Thoughts" "long-arrow-right"
+              (call-interactively (or (command-remapping #'org-boxes-workflow)
+                                      #'org-boxes-workflow)))
 
-
-              ("Capture" "comment"
-               (call-interactively (or (command-remapping #'org-capture)
-                                       #'org-capture)))
-           ))))
-
-
- (defvar dashboard--width 80)
- (defvar dashboard--height 0)
- (defvar dashboard--old-fringe-indicator fringe-indicator-alist)
- (defun dashboard-center (len s)
-   (concat (make-string (ceiling (max 0 (- len (length s))) 2) ? )
-           s))
-
-
- (defun avy-dashboard-button (char &optional arg)
-     "Jump to the currently visible CHAR.
-   The window scope is determined by `avy-all-windows' (ARG negates it)."
-     (interactive (list (read-char "char: " t)
-                        current-prefix-arg))
-
-     (avy-with avy-goto-char
-       (avy-jump
-        (if (= 13 char)
-            "\n"
-          (regexp-quote (string char)))
-        :window-flip arg))
-     (push-button arg))
-
- (define-key dashboard-mode-map "n" #'dashboard/next-button)
- (define-key dashboard-mode-map "p" #'dashboard/previous-button)
-
- (define-key dashboard-mode-map [right] #'dashboard/next-button)
- (define-key dashboard-mode-map [left] #'dashboard/previous-button)
- (define-key dashboard-mode-map [down] #'dashboard/next-button)
- (define-key dashboard-mode-map [up] #'dashboard/previous-button)
+             ("Projects" "tasks"
+              (call-interactively (or (command-remapping #'my/projects)
+                                      #'my/projects)))
+             ("Actions" "check-square"
+              (call-interactively (or (command-remapping #'my/actions)
+                                      #'my/actions)))
+             ("Next Tasks" "clipboard"
+              (call-interactively (or (command-remapping #'my/next-tasks)
+                                      #'my/next-tasks)))
+             ("Delegated" "user"
+              (call-interactively (or (command-remapping #'my/delegated)
+                                      #'my/delegated)))
+             ("Waiting" "hourglass-end"
+              (call-interactively (or (command-remapping #'my/waiting)
+                                      #'my/waiting)))
+             ("Someday/Maybe" "question-circle"
+              (call-interactively (or (command-remapping #'my/someday)
+                                      #'my/someday)))
+             ("Scheduled" "calendar"
+              (call-interactively (or (command-remapping #'my/scheduled)
+                                      #'my/scheduled)))
+             ("Done" "check"
+              (call-interactively (or (command-remapping #'my/completed)
+                                      #'my/completed)))
+             ("Reference" "archive"
+              (call-interactively (or (command-remapping #'howm-list-all)
+                                      #'howm-list-all)))
 
 
- (define-key dashboard-mode-map "s" #'org-save-all-org-buffers)
- (define-key dashboard-mode-map [tab] #'avy-dashboard-button)
+             ))))
 
-
- (define-derived-mode dashboard-mode special-mode
-   (format "Dashboard")
-   "Major mode for the BMACS dashboard buffer."
-   (read-only-mode +1)
-   (global-linum-mode -1)
-   (page-break-lines-mode +1)
-   (setq truncate-lines t)
-   (setq whitespace-style nil)
-   (setq global-whitespace-mode nil)
-   (setq whitespace-mode nil)
-   (setq electric-indent-mode -1)
-   (setq show-trailing-whitespace nil)
-
-   (cl-loop for (car . _cdr) in fringe-indicator-alist
-            collect (cons car nil) into alist
-            finally do (setq fringe-indicator-alist alist)))
-
- (defun dashboard/next-button ()
+ (defun go-to-dashboard ()
    (interactive)
-   (ignore-errors (goto-char (next-button (point)))))
- (defun dashboard/previous-button ()
-   (interactive)
-   (ignore-errors (goto-char (previous-button (point))))))
+   (switch-to-buffer "*dashboard*"))
+
+   (global-set-key (kbd "<f12>") 'go-to-dashboard)
+
+ ;  (define-key dashboard-mode-map "/" #'hui-search-web)
+
+
+
+
+#+END_SRC
+** DISABLED elisp-demos
+#+BEGIN_SRC emacs-lisp
+ (use-package elisp-demos
+ :config
+ (advice-add 'describe-function-1 :after #'elisp-demos-advice-describe-function-1)
+ (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update)
+ )
+#+END_SRC
+** DISABLED org-noter
+#+BEGIN_SRC emacs-lisp
+ (setq org-noter-notes-search-path '("~/org/notes"))
+ (setq org-noter-always-create-frame nil)
+ (setq org-noter-notes-window-location nil)
+ (setq org-noter-default-notes-file-names '("Notes.org"))
+#+END_SRC
+
+** DISABLED org-brain
+#+BEGIN_SRC emacs-lisp
+ (use-package org-brain
+   :ensure t
+   :config
+   (setq org-brain-path "~/org/notes"
+         org-id-track-globally t
+         org-id-locations-file "~/.emacs.d/.org-id-locations"
+         org-brain-visualize-default-choices 'root
+         org-brain-wander-interval 6
+         org-brain-data-file "/home/alexander/org/notes/.org-brain-data.el")
+
+   (defun my/brain ()
+     (interactive)
+     (org-brain-visualize "zettelkasten")
+     (delete-other-windows))
+
+   (defun my/org-add-ids-to-headlines-in-file ()
+     "Add ID properties to all headlines in the current file which
+      do not already have one."
+     (interactive)
+     (org-map-entries 'org-id-get-create))
+
+   (defun org-brain-entry-at-pt ()
+     "Get current org-brain entry.
+     In `org-mode' this is the current headline, or the file.
+     In `org-brain-visualize' just return `org-brain--vis-entry'."
+     (cond ((eq major-mode 'org-mode)
+            (if (ignore-errors (org-get-heading))
+                (if-let ((id (org-entry-get nil "ID")))
+                    (org-brain-entry-from-id id)
+                  (error "Current headline have no ID"))
+              (org-brain-path-entry-name (buffer-file-name))))
+           ((eq major-mode 'org-brain-visualize-mode)
+            org-brain--vis-entry)
+           (t
+            (error "Not in org-mode or org-brain-visualize"))))
+
+   (defun my/refile-to-zettelkasten (entry)
+     "Convert headline ENTRY to a file entry.
+     Prompt for name of the new file.
+     If interactive, also prompt for ENTRY."
+     (interactive (list (org-brain-entry-at-pt)))
+     (let* (level
+            (title (org-brain-title entry))
+            (new-entry (concat (format-time-string "%Y-%m-%dT%H.%M.%S")))
+            (path (org-brain-entry-path new-entry)))
+       (when (file-exists-p path)
+         (error "That file already exists"))
+       (let ((parents (org-brain-parents entry))
+             (external-parents (org-brain--linked-property-entries entry "PARENTS"))
+             (children (org-brain--linked-property-entries entry "CHILDREN"))
+             (friends (org-brain-friends entry))
+             (hl-text (org-with-point-at (org-brain-entry-marker entry)
+                        (setq level (org-outline-level))
+                        (org-get-entry))))
+         (dolist (parent external-parents)
+           (org-brain-remove-relationship parent entry))
+         (dolist (child children)
+           (org-brain-remove-relationship entry child))
+         (dolist (friend friends)
+           (org-brain-remove-friendship entry friend))
+         (org-with-point-at (org-brain-entry-marker entry)
+           (org-cut-subtree)
+           (pop kill-ring)
+           (save-buffer))
+         (make-directory (file-name-directory path) t)
+         (with-temp-file path
+           (insert ":HIDDEN:\n")
+           (insert "#+PARENTS: \n")
+           (insert "#+CHILDREN: \n")
+           (insert "#+FRIENDS: \n")
+           (insert ":END: \n")
+           (insert (format "#+TITLE: %s\n" title))
+           (insert (concat "#+DATE: " (format-time-string "[%Y-%m-%d %H:%M]\n")))
+           (delay-mode-hooks
+             (org-mode)
+             (goto-char (point-min))
+             (forward-line 8)
+             (insert (format "#+KEYWORDS: \n\n"))
+             (forward-line 9)
+             (insert (format "%s\n" hl-text))
+             (insert "\n")
+             (goto-char (point-min))
+             (re-search-forward org-property-drawer-re)
+             (replace-match "")
+             (goto-char (point-max))
+             (let ((level-regex "^"))
+               (dotimes (_i (1+ level))
+                 (setq level-regex (concat level-regex "\\*")))
+               (setq level-regex (concat level-regex " "))
+               (while (re-search-backward level-regex nil t)
+                 (dotimes (_i level) (org-promote-subtree))))))
+         (when (equal entry org-brain--vis-entry)
+           (setq org-brain--vis-entry new-entry))
+         (when (member entry org-brain-pins)
+           (org-brain-pin entry -1)
+           (org-brain-pin new-entry 1)))))
+
+   (defun my/headline-to-file (entry)
+     "Convert headline ENTRY to a file entry.
+      Prompt for name of the new file.
+      If interactive, also prompt for ENTRY."
+     (interactive (list (org-brain-entry-at-pt)))
+     (let* (level
+            (title (org-brain-title entry))
+            (new-entry (concat (format-time-string "%Y-%m-%dT%H.%M.%S")))
+            (path (org-brain-entry-path new-entry)))
+       (when (file-exists-p path)
+         (error "That file already exists"))
+       (let ((parents (org-brain-parents entry))
+             (external-parents (org-brain--linked-property-entries entry "PARENTS"))
+             (children (org-brain--linked-property-entries entry "CHILDREN"))
+             (friends (org-brain-friends entry))
+             (hl-text (org-with-point-at (org-brain-entry-marker entry)
+                        (setq level (org-outline-level))
+                        (org-get-entry))))
+         (dolist (parent external-parents)
+           (org-brain-remove-relationship parent entry))
+         (dolist (child children)
+           (org-brain-remove-relationship entry child))
+         (dolist (friend friends)
+           (org-brain-remove-friendship entry friend))
+         (org-with-point-at (org-brain-entry-marker entry)
+           (org-cut-subtree)
+           (pop kill-ring)
+           (save-buffer))
+         (make-directory (file-name-directory path) t)
+         (with-temp-file path
+           (insert (format "#+TITLE: %s\n" title))
+           (insert (concat "#+DATE: " (format-time-string "[%Y-%m-%d %H:%M]\n")))
+           (delay-mode-hooks
+             (org-mode)
+             (goto-char (point-min))
+             (forward-line 3)
+             (insert (format "#+KEYWORDS: \n\n"))
+             (forward-line 4)
+             (insert (format "%s\n" hl-text))
+             (insert "\n")
+             (goto-char (point-min))
+             (re-search-forward org-property-drawer-re)
+             (replace-match "")
+             (goto-char (point-max))
+             (let ((level-regex "^"))
+               (dotimes (_i (1+ level))
+                 (setq level-regex (concat level-regex "\\*")))
+               (setq level-regex (concat level-regex " "))
+               (while (re-search-backward level-regex nil t)
+                 (dotimes (_i level) (org-promote-subtree))))))
+         (dolist (parent parents)
+           (org-brain-add-relationship parent new-entry))
+         (dolist (child children)
+           (org-brain-add-relationship new-entry child))
+         (dolist (friend friends)
+           (org-brain--internal-add-friendship new-entry friend))
+         (when (equal entry org-brain--vis-entry)
+           (setq org-brain--vis-entry new-entry))
+         (when (member entry org-brain-pins)
+           (org-brain-pin entry -1)
+           (org-brain-pin new-entry 1)))
+       ))
+
+   (defun my/org-add-ids-to-headlines-in-file ()
+     "Add ID properties to all headlines in the current file which
+      do not already have one."
+     (interactive)
+     (org-map-entries 'org-id-get-create))
+
+ (defun my/org-brain-visualize-current ()
+ (interactive)
+ (org-brain-visualize (org-brain-entry-at-pt))
+ (delete-other-windows))
+
+
+   (setq org-brain-visualize-default-choices 'all)
+   (setq org-brain-title-max-length 100)
+
+   (defun my/org-brain-goto-current ()
+     "Jumps to a specific task."
+     (interactive)
+     (call-interactively 'org-brain-goto-current)
+     (org-narrow-to-subtree)
+     (forward-line 5))
+
+
+   (defun org-brain-save-and-update ()
+     (interactive)
+     (org-brain-update-id-locations)
+     (org-save-all-org-buffers)
+     (org-brain--revert-if-visualizing))
+
+   (defun org-brain-cliplink-resource ()
+     "Add a URL from the clipboard as an org-brain resource.
+      Suggest the URL title as a description for resource."
+     (interactive)
+     (let ((url (org-cliplink-clipboard-content)))
+       (org-brain-add-resource
+        url
+        (org-cliplink-retrieve-title-synchronously url)
+        t)))
+
+   (defun my/org-brain-add-child-headline ()
+     "Create a new internal child headline to entry at point.
+     Several children can be created, by using `org-brain-entry-separator'."
+     (interactive)
+     (let ((entry (org-brain-entry-at-pt))
+           (child-name-string (read-string "Add child headline: ")))
+       (dolist (child-name (split-string child-name-string org-brain-entry-separator))
+         (when (equal (length child-name) 0)
+           (error "Child name must be at least 1 character"))
+         (if (org-brain-filep entry)
+             ;; File entry
+             (with-current-buffer (find-file-noselect (org-brain-entry-path entry))
+               (goto-char (point-min))
+               (if (re-search-forward (concat "^\\(" org-outline-regexp "\\)") nil t)
+                   (progn
+                     (beginning-of-line)
+                     (open-line 1))
+                 (goto-char (point-max)))
+               (insert (concat "* " child-name))
+               (insert (concat "\n"))
+               (org-id-get-create)
+               (insert (concat "\n\n"))
+               (insert (concat "Related Notes:\n\n"))
+               (insert (concat "\n\n\n"))
+               (insert (concat "Reference:\n\n"))
+               (run-hooks 'org-brain-new-entry-hook)
+               (save-buffer))
+           ;; Headline entry
+           (org-with-point-at (org-brain-entry-marker entry)
+             (if (org-goto-first-child)
+                 (open-line 1)
+               (org-end-of-subtree t))
+             (org-insert-heading nil t)
+             (org-do-demote)
+             (insert child-name)
+             (org-id-get-create)
+             (run-hooks 'org-brain-new-entry-hook)
+             (save-buffer)))))
+     (org-brain--revert-if-visualizing))
+
+
+   (setq org-brain-visualize-mode-hook #'delete-other-windows)
+
+
+   (defun org-brain-open-org-noter (entry)
+     "Open `org-noter' on the ENTRY.
+      If run interactively, get ENTRY from context."
+     (interactive (list (org-brain-entry-at-pt)))
+     (org-with-point-at (org-brain-entry-marker entry)
+       (org-noter)))
+
+   (defun org-brain-set-tags (entry)
+     "Modify the ENTRY tags.
+     Use `org-set-tags' on headline ENTRY.
+     Instead sets #+KEYWORDS on file ENTRY.
+     If run interactively, get ENTRY from context."
+     (interactive (list (org-brain-entry-at-pt)))
+     (if (org-brain-filep entry)
+         (with-current-buffer (find-file-noselect (org-brain-entry-path entry))
+           (let ((tag-str (read-string "KEYWORDS: "
+                                       (mapconcat #'identity org-file-tags ":"))))
+             (goto-char (point-min))
+             (when (assoc "KEYWORDS" (org-brain-keywords entry))
+               (re-search-forward "^#\\+KEYWORDS:")
+               (kill-whole-line))
+             (insert (format "#+KEYWORDS: %s\n" tag-str)))
+           ;; From org.el
+           (let ((org-inhibit-startup-visibility-stuff t)
+                 (org-startup-align-all-tables nil))
+             (when (boundp 'org-table-coordinate-overlays)
+               (mapc #'delete-overlay org-table-coordinate-overlays)
+               (setq org-table-coordinate-overlays nil))
+             (org-save-outline-visibility 'use-markers (org-mode-restart)))
+           (save-buffer))
+       (org-with-point-at (org-brain-entry-marker entry)
+         (org-set-tags)
+         (save-buffer)))
+     (org-brain--revert-if-visualizing))
+
+   (defun my/org-brain-add-child ()
+     "Add external child to entry at point.
+     If chosen child entry doesn't exist, create it as a new file.
+     Several children can be added, by using `org-brain-entry-separator'."
+     (interactive)
+     (let ((entry (org-brain-entry-at-pt))
+           (header (read-string "Add child: "))
+           (file (format-time-string "%Y-%m-%dT%H.%M.%S"))
+           (date (format-time-string "%Y-%m-%dT%H.%M.%S")))
+       (my/org-brain-add-relationship entry file header date))
+     (org-brain--revert-if-visualizing))
+
+   (defun my/org-brain-add-relationship (parent child title date)
+     "Add external relationship between PARENT and CHILD."
+     (when (equal parent child)
+       (error "An entry can't be a parent/child to itself"))
+     (unless (member child (org-brain-children parent))
+       (if (org-brain-filep parent)
+           ;; Parent = File
+           (with-current-buffer (find-file-noselect (org-brain-entry-path parent))
+             (goto-char (point-min))
+             (if (re-search-forward "^#\\+CHILDREN:.*$" nil t)
+                 (insert (concat " " (org-brain-entry-identifier child)))
+               (insert (concat "#+CHILDREN: "
+                               (org-brain-entry-identifier child)
+                               "\n\n")))
+             (save-buffer))
+         ;; Parent = Headline
+         (org-entry-add-to-multivalued-property (org-brain-entry-marker parent)
+                                                "CHILDREN"
+                                                (org-brain-entry-identifier child)))
+       (if (org-brain-filep child)
+           ;; Child = File
+           (with-current-buffer (find-file-noselect (org-brain-entry-path child))
+             (goto-char (point-min))
+             (if (re-search-forward "^#\\+PARENTS:.*$" nil t)
+                 (insert (concat " " (org-brain-entry-identifier parent)))
+               (insert (concat "#+PARENTS: "
+                               (org-brain-entry-identifier parent)
+                               "\n\n"))
+
+               (insert (concat"#+TITLE: " title ))
+               (insert "\n")
+               (insert (concat ">>>" (file-name-base buffer-file-name)))
+               (insert "\n")
+               (insert (concat "#+DATE: " (format-time-string "[%Y-%m-%d %H:%M]\n")))
+               (insert "#+KEYWORDS: ")
+               (insert "\n\n\n\n\n\n")
+               (insert "Related:")
+               (insert "\n\n\n\n")
+               (insert "References:")
+               )
+             (save-buffer))
+         ;; Child = Headline
+         (org-entry-add-to-multivalued-property (org-brain-entry-marker child)
+                                                "PARENTS"
+                                                (org-brain-entry-identifier parent)))))
+
+   (defun my/org-brain-visualize-current ()
+     (interactive)
+     (org-brain-visualize (org-brain-entry-at-pt))
+     (delete-other-windows))
+
+   (defun my/org-brain-goto-current-main ()
+     (interactive)
+     (org-brain-goto-current (org-brain-entry-at-pt))
+     (delete-other-windows))
+
+   )
+#+END_SRC
+** DISABLED memacs
+#+BEGIN_SRC emacs-lisp
+ (defun memacs-chrome ()
+ (interactive)
+ (shell-command "~/bin/memacs-chrome.sh"))
+
+ (defun my/memacs-org-agenda ()
+    "Opens an org-agenda with activated archive"
+    (interactive)
+    (memacs-chrome)
+    (setq org-agenda-files "~/org/meta/web.org")
+    (org-agenda-list)
+    ;;(call-interactively 'org-agenda-log-mode)
+    (org-agenda-log-mode '(4))
+    (call-interactively 'org-agenda-archives-mode)
+    (org-agenda-archives-mode 'files)
+    )
+
+
+#+END_SRC
+** DISABLED writeroom-mode
+#+BEGIN_SRC emacs-lisp
+ (use-package writeroom-mode :ensure t)
+#+END_SRC
+
+** DISABLED annotate
+#+BEGIN_SRC emacs-lisp
+ (use-package annotate)
+#+END_SRC
+** DISABLED htmlize
+#+BEGIN_SRC emacs-lisp
+ (use-package htmlize)
+#+END_SRC
+** DISABLED ripgrep
+#+BEGIN_SRC emacs-lisp
+   (use-package rg
+     :ensure t
+     :init
+     (rg-enable-default-bindings))
+
+   (use-package dumb-jump
+     :config
+     (setq dumb-jump-selector 'ivy)
+     (setq dumb-jump-prefer-searcher 'rg))
+
+#+END_SRC
+** DISABLED ace-link
+#+BEGIN_SRC emacs-lisp
+ (use-package ace-link
+   :demand t
+   :config (ace-link-setup-default))
+#+END_SRC
+
+** DISABLED link-hint
+#+BEGIN_SRC emacs-lisp
+ (use-package link-hint :ensure t)
+#+END_SRC
+** DISABLED use-package-hydra
+#+BEGIN_SRC emacs-lisp
+ (use-package use-package-hydra
+   :ensure t)
+#+END_SRC
+
+** DISABLED major-mode-hydra
+#+BEGIN_SRC emacs-lisp
+ (use-package major-mode-hydra
+   :bind
+   ("C-M-m" . major-mode-hydra))
+
+ (setq major-mode-hydra-title-generator
+       '(lambda (mode)
+          (s-concat "n"
+                    (s-repeat 10 " ")
+                    (all-the-icons-icon-for-mode mode :v-adjust 0.05)
+                    " "
+                    (symbol-name mode)
+                    " commands")))
+
+
+#+END_SRC
+** DISABLED General
+*** DISABLED package
+#+BEGIN_SRC emacs-lisp
+   (use-package general
+     :after which-key)
+#+END_SRC
+*** DISABLED configuration
+  #+BEGIN_SRC emacs-lisp
+     (general-create-definer tyrant-def
+       :prefix "C-SPC"
+       :global-prefix "SPC"
+       :keymaps 'boon-moves-map)
+
+     (general-create-definer despot-def
+       :prefix "C-SPC"
+       :global-prefix "SPC"
+       :keymaps 'boon-moves-map)
+
+     (general-define-key
+       :keymaps 'key-translation-map
+       "ESC" (kbd "C-g"))
+
+     (tyrant-def
+
+       ""     nil
+       "SPC" 'counsel-M-x
+       "RET" 'counsel-linux-app
+       "@"  'hycontrol-windows-grid
+       "0"  'delete-window
+       "1"  'delete-other-windows
+       "2"  'split-window-below
+       "3"  'split-window-right
+
+       ;; Buffer operations
+       "b"   '(:ignore t :which-key "buffer")
+       "bb"  'counsel-switch-buffer
+       "bB"  'counsel-switch-buffer-other-window
+       "bk"  'kill-this-buffer
+       "bn"  'next-buffer
+       "bp"  'previous-buffer
+       "bi"  'ibuffer
+
+       ;; Window operations
+       "w"   '(:ignore t :which-key "window")
+       "wu"  'winner-undo
+       "wr"  'winner-redo
+
+
+       ;; File operations
+       "f"  '(:ignore t :which-key "files")
+       "fj"  'dired-jump
+       "fl"  'find-file-literally
+       "fr"  'crux-rename-file-and-buffer
+       "fw"  'write-file
+       "fs"  'save-buffer
+
+       ;; Applications
+       "a"   '(:ignore t :which-key "applications")
+       "ad"  'dired
+       "ac"  'calendar
+       "ag" 'deadgrep
+
+       "ap" '(:keymap projectile-command-map :wk "projectile")
+
+       )
+  #+END_SRC
+** DISABLED boxquote
+#+BEGIN_SRC emacs-lisp
+ (use-package boxquote
+   :ensure t
+   :defer t
+   :config
+   (setq-default  boxquote-bottom-corner "╰"      ; U+2570
+                  boxquote-side          "│ "     ; U+2572 + space
+                  boxquote-top-and-tail  "────"   ; U+2500 (×4)
+                  boxquote-top-corner    "╭")     ; U+256F
+   (when (package-installed-p 'hydra)
+     (eval-and-compile
+       (defhydra hydra-boxquote (:color blue :hint nil)
+        "
+                                                                     ╭──────────┐
+   Text           External           Apropos         Do              │ Boxquote │
+ ╭───────────────────────────────────────────────────────────────────┴──────────╯
+   [_r_] region        [_f_] file      [_K_] describe-key        [_t_] title
+   [_p_] paragraph     [_b_] buffer    [_F_] describe-function   [_u_] unbox
+   [_a_] buffer        [_s_] shell     [_V_] describe-variable   [_w_] fill-paragraph
+   [_e_] text           ^ ^            [_W_] where-is            [_n_] narrow
+   [_d_] defun         [_y_] yank       ^ ^                      [_c_] narrow to content
+   [_q_] boxquote      [_Y_] yanked     ^ ^                      [_x_] kill
+ --------------------------------------------------------------------------------
+        "
+       ("<esc>" nil "quit")
+       ("x" boxquote-kill)
+       ("Y" boxquote-yank)
+       ("e" boxquote-text)
+       ("u" boxquote-unbox)
+       ("d" boxquote-defun)
+       ("t" boxquote-title)
+       ("r" boxquote-region)
+       ("a" boxquote-buffer)
+       ("q" boxquote-boxquote)
+       ("W" boxquote-where-is)
+       ("p" boxquote-paragraph)
+       ("f" boxquote-insert-file)
+       ("K" boxquote-describe-key)
+       ("s" boxquote-shell-command)
+       ("b" boxquote-insert-buffer)
+       ("y" boxquote-kill-ring-save)
+       ("w" boxquote-fill-paragraph)
+       ("F" boxquote-describe-function)
+       ("V" boxquote-describe-variable)
+       ("n" boxquote-narrow-to-boxquote)
+       ("c" boxquote-narrow-to-boxquote-content)))))
+
+#+END_SRC
+** DISABLED spray
+#+BEGIN_SRC emacs-lisp
+   (use-package spray :ensure t)
+#+END_SRC
+** DISABLED flycheck
+ #+BEGIN_SRC emacs-lisp
+ (defhydra hydra-flycheck (:color blue :hint nil :inherit (hydra-common/heads)
+                                  :pre (progn
+                                         (exwm-input-line-mode))
+                                  :post (progn
+                                          (exwm-input-char-mode)))
+
+
+   "
+                                                                     ╭──────────┐
+    Navigate          Show Errors                  Do                │ Flycheck │
+ ╭───────────────────────────────────────────────────────────────────┴──────────╯
+    ^_p_^revious     [_l_] list errors           [_t_] toggle Flycheck
+       ^^↑^^         [_d_] clear all errors      [_c_] select checker
+     ^_f_^irst        ^ ^                        [_r_] run via compile
+       ^^↓^^          ^ ^                        [_h_] describe checker
+     ^_n_^ext
+ --------------------------------------------------------------------------------
+       "
+   ("c" flycheck-select-checker)
+   ("h" flycheck-describe-checker)
+   ("d" flycheck-clear)
+   ("f" flycheck-first-error)
+   ("l" flycheck-list-errors)
+   ("n" flycheck-next-error :color red)
+   ("p" flycheck-previous-error :color red)
+   ("r" flycheck-compile)
+   ("t" flycheck-mode))
+ #+END_SRC
+** DISABLED boon
+*** DISABLED setup
+#+BEGIN_SRC emacs-lisp
+     (use-package boon
+       :config
+       (require 'boon-qwerty)
+       (boon-mode)
+
+   )
+#+END_SRC
+*** DISABLED boon-objed
+#+BEGIN_SRC emacs-lisp
+   ;; (defvar boon-objed-map (make-sparse-keymap))
+   ;; (append boon-mode-map-alist (cons 'boon-objed-state boon-objed-map))
+
+   (defvar-local boon-objed-state nil "Non-nil when boon objed mode is activated.")
+
+   (defun boon-reset-all-mode-states ()
+     (interactive)
+     (mapcar (lambda (boon-mode)
+               (setq boon-mode nil)) boon-mode-map-alist))
+
+
+
+
+   (defun boon-set-objed-state ()
+     "Switch to objed state."
+     (boon-set-state 'boon-objed-state))
+
+   (setq boon-key-list '
+         ((org-mode . (message "%s" "command from org mode"))
+          (lisp-mode . (message "%s" "command from lisp mode"))
+          (python-mode . (message "%s" "command from python mode"))))
+#+END_SRC
+*** DISABLED boon-major-mode
+#+BEGIN_SRC emacs-lisp
+   (defun boon-detect-mode (boon-mode-map)
+     (let ((boon-mode-command (cdr (assoc major-mode boon-mode-map))))
+       (if boon-mode-command (apply boon-mode-command))))
+
+   (setq boon-major-mode-hydra-list '
+         ((org-mode . (hydra-org/body))
+          (emacs-lisp-mode . (hydra-lisp/body))
+          (js2-mode . (hydra-javascript/body))
+          (json-mode . (hydra-json/body))
+          (sql-mode . (hydra-sql/body))
+          (css-mode . (hydra-css/body))
+          (scss-mode . (hydra-scss/body))
+          (javascript-mode . (hydra-javascript/body))
+          (yaml-mode . (hydra-yaml/body))
+          (c++-mode . (hydra-c++/body))
+          (web-mode . (hydra-web/body))
+          (html-mode . (hydra-html/body))
+          (exwm-mode . (hydra-exwm/body))
+          (python-mode . (hydra-python/body))))
+
+   (defun boon-select-major-mode (boon-mode-map)
+     (let ((boon-mode-command (cdr (assoc major-mode boon-mode-map))))
+       (if boon-mode-command (apply boon-mode-command))))
+
+   (defun boon-mode-hydra ()
+     (interactive)
+     (boon-select-major-mode boon-major-mode-hydra-list))
+
+   (define-key boon-command-map (kbd "SPC")   'hydra-master/body)
+   (define-key boon-command-map (kbd "RET")   'counsel-linux-app)
+
+   (define-key boon-command-map  (kbd "m")   'boon-mode-hydra)
+
+   (define-key boon-command-map (kbd "5")     'hydra-narrow/body)
+   (define-key boon-command-map (kbd "8")     'objed-mode)
+
+   (define-key boon-command-map (kbd "g")     'hydra-jump/body)
+   (define-key boon-command-map (kbd "G")     'hydra-goto/body)
+
+   (define-key boon-command-map (kbd "r")     'hydra-search/body)
+   (define-key boon-command-map (kbd "b")     'hydra-register/body)
+
+   (define-key boon-command-map (kbd "/")     'hui-search-web)
+   (define-key boon-command-map (kbd "F")     'my/exwm-counsel-yank-pop)
+   (define-key boon-command-map (kbd "H")     'avy-goto-word-1)
+   (define-key boon-command-map (kbd "h")     'avy-goto-char)
+
+#+END_SRC
+*** DISABLED boon-special
+#+BEGIN_SRC emacs-lisp
+   (custom-set-variables
+    '(boon-special-mode-list
+      (quote
+       (
+        magit-mode
+        magit-popup-mode
+        debugger-mode
+        git-rebase-mode
+        help-mode
+        org-agenda-mode
+        ,,*dashboard*
+        ))))
+
+
+#+END_SRC
+
+** DISABLED google-translate
+ #+BEGIN_SRC emacs-lisp
+ (use-package google-translate)
+ #+END_SRC
+** DISABLED shackle
+#+BEGIN_SRC emacs-lisp
+ (use-package shackle
+   :config
+   (setq shackle-default-rule '(:same t))
+   (shackle-mode))
+
+#+END_SRC
+** DISABLED telephone-line
+ #+BEGIN_SRC emacs-lisp
+   (use-package telephone-line
+     :config
+     (telephone-line-defsegment my-vc-info ()
+     (when vc-mode
+     (cond
+     ((string-match "Git[:-]" vc-mode)
+     (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
+     (concat "" (format " %s" branch))))
+     ((string-match "SVN-" vc-mode)
+     (let ((revision (cadr (split-string vc-mode "-"))))
+     (concat "" (format "SVN-%s" revision))))
+     (t (format "%s" vc-mode)))))
+
+     (telephone-line-defsegment* telephone-line-boon-mode-segment ()
+          (let ((tag (cond
+                      (boon-command-state  "CMD")
+                      (boon-insert-state   "INS")
+                      (boon-special-state  "SPC")
+                      (boon-objed-state    "OBJ")
+                      )))
+            (if telephone-line-evil-use-short-tag
+                (seq-take tag 1)
+              tag)))
+
+
+     ;; (telephone-line-defsegment* my-airline-position-segment (&optional lines columns)
+     ;;   (let* ((l (number-to-string (if lines lines 1)))
+     ;;          (c (number-to-string (if columns columns 2))))
+     ;;     (if (eq major-mode 'paradox-menu-mode)
+     ;;         (telephone-line-raw mode-line-front-space t)
+     ;;         (concat " " "%" l "l:%" c "c"))))
+
+     ;; (setq tel
+         (setq telephone-line-lhs
+           '((evil   . (telephone-line-boon-mode-segment))
+             (accent . (my-vc-info
+                        telephone-line-process-segment))
+             (nil    . (telephone-line-buffer-segment
+                        telephone-line-projectile-segment))))
+
+     (setq telephone-line-rhs
+           '((nil    . (telephone-line-flycheck-segment
+                        telephone-line-misc-info-segment))
+
+             (accent . (telephone-line-major-mode-segment))
+             (nil    . (telephone-line-hud-segment))))
+                        ;; my-airline-position-segment))))
+
+     (setq display-time-format "%l:%M %p")
+     (setq display-time-default-load-average nil)
+     (setq display-time-use-mail-icon t)
+     (setq display-time-mail-file t)
+
+     (display-time-mode t)
+
+     (telephone-line-mode 1))
+ #+END_SRC
+** DISABLED dashboard
+ #+BEGIN_SRC emacs-lisp
+  (use-package dashboard
+    :init
+    ;(dashboard-setup-startup-hook)
+    :config
+    (setq dashboard-center-content t)
+    (setq dashboard-startup-banner ()  )
+  ;  (add-to-list 'dashboard-items '(agenda) t)
+    (setq dashboard-items '())
+
+  (add-to-list 'dashboard-item-generators  '(custom . dashboard-insert-custom))
+  (add-to-list 'dashboard-items '(custom) t)
+
+      (defvar all-the-icons-scale-factor)
+  (defvar all-the-icons-default-adjust)
+  (defun dashboard-insert-custom (list-size)
+    (let ((all-the-icons-scale-factor 2.00)
+          (all-the-icons-default-adjust -0.00))
+      (mapc (lambda (btn)
+              (when btn
+                (cl-destructuring-bind (label icon fn) btn
+                  (insert
+                   (with-temp-buffer
+                     (insert-text-button
+                      (concat (all-the-icons-octicon icon :face 'font-lock-keyword-face)
+                              (propertize (concat " " label) 'face 'font-lock-keyword-face))
+                      'action `(lambda (_) ,fn)
+                      'follow-link t)
+                     (dashboard-center (- dashboard--width 2) (buffer-string)))
+                   "\n\n"))))
+            `( ("Open project" "briefcase"
+               (call-interactively (or (command-remapping #'projectile-switch-project)
+                                       #'projectile-switch-project)))
+
+               ("Bookmarks" "bookmark"
+               (call-interactively (or (command-remapping #'bookmark-jump)
+                                       #'bookmark-jump)))
+
+               ,(when (fboundp 'org-agenda-list)
+               '("Agenda for this week" "calendar"
+                 (call-interactively #'org-agenda-list)))
+
+
+               ("Capture" "comment"
+                (call-interactively (or (command-remapping #'org-capture)
+                                        #'org-capture)))
+            ))))
+
+
+  (defvar dashboard--width 80)
+  (defvar dashboard--height 0)
+  (defvar dashboard--old-fringe-indicator fringe-indicator-alist)
+  (defun dashboard-center (len s)
+    (concat (make-string (ceiling (max 0 (- len (length s))) 2) ? )
+            s))
+
+
+  (defun avy-dashboard-button (char &optional arg)
+      "Jump to the currently visible CHAR.
+    The window scope is determined by `avy-all-windows' (ARG negates it)."
+      (interactive (list (read-char "char: " t)
+                         current-prefix-arg))
+
+      (avy-with avy-goto-char
+        (avy-jump
+         (if (= 13 char)
+             "\n"
+           (regexp-quote (string char)))
+         :window-flip arg))
+      (push-button arg))
+
+  (define-key dashboard-mode-map "n" #'dashboard/next-button)
+  (define-key dashboard-mode-map "p" #'dashboard/previous-button)
+
+  (define-key dashboard-mode-map [right] #'dashboard/next-button)
+  (define-key dashboard-mode-map [left] #'dashboard/previous-button)
+  (define-key dashboard-mode-map [down] #'dashboard/next-button)
+  (define-key dashboard-mode-map [up] #'dashboard/previous-button)
+
+
+  (define-key dashboard-mode-map "s" #'org-save-all-org-buffers)
+  (define-key dashboard-mode-map [tab] #'avy-dashboard-button)
+
+
+  (define-derived-mode dashboard-mode special-mode
+    (format "Dashboard")
+    "Major mode for the BMACS dashboard buffer."
+    (read-only-mode +1)
+    (global-linum-mode -1)
+    (page-break-lines-mode +1)
+    (setq truncate-lines t)
+    (setq whitespace-style nil)
+    (setq global-whitespace-mode nil)
+    (setq whitespace-mode nil)
+    (setq electric-indent-mode -1)
+    (setq show-trailing-whitespace nil)
+
+    (cl-loop for (car . _cdr) in fringe-indicator-alist
+             collect (cons car nil) into alist
+             finally do (setq fringe-indicator-alist alist)))
+
+  (defun dashboard/next-button ()
+    (interactive)
+    (ignore-errors (goto-char (next-button (point)))))
+  (defun dashboard/previous-button ()
+    (interactive)
+    (ignore-errors (goto-char (previous-button (point))))))
 
  #+END_SRC
 
 ** DISABLED org-brain
 #+BEGIN_SRC emacs-lisp
- (use-package org-brain
-   :config
-   (setq org-id-track-globally t)
-   (setq org-id-locations-file "~/.emacs.d/.org-id-locations")
-   (setq org-brain-visualize-default-choices 'all)
-   (setq org-brain-title-max-length 12))
+  (use-package org-brain
+    :config
+    (setq org-id-track-globally t)
+    (setq org-id-locations-file "~/.emacs.d/.org-id-locations")
+    (setq org-brain-visualize-default-choices 'all)
+    (setq org-brain-title-max-length 12))
 
 #+END_SRC
 ** DISABLED org-web-tools
 #+BEGIN_SRC emacs-lisp
- (use-package org-web-tools
- :init
- (setq org-web-tools-attach-archive-retry 15))
+  (use-package org-web-tools
+  :init
+  (setq org-web-tools-attach-archive-retry 15))
 
 #+END_SRC
+* TODO Maintenance                                                 :noexport:
+** TODO Keybindings to map
+Keybindings to assign
+*** DONE ivy-push-view
+*** DONE ivy-pop-view
+*** DONE ivy-switch-view
+** TODO Configure eink screen
+*** TODO Customize poet theme to be compatible with eink screen
+    :PROPERTIES:
+    :CREATED:  <2019-05-20 Mon 21:50>
+    :ID:       9f89ab79-6db4-488e-9c43-8a689f1df915
+    :END:
+*** TODO Review [[https://github.com/mnp/dispwatch][GitHub - mnp/dispwatch: Emacs - Watch the current display for changes (ie plu...]]
+    :PROPERTIES:
+    :CREATED:  <2019-05-20 Mon 22:18>
+    :ID:       36e7f0b0-73ee-4b64-8aa4-3ba2b474c4be
+    :END:
+    :LOGBOOK:
+    CLOCK: [2019-05-20 Mon 22:18]--[2019-05-20 Mon 22:19] =>  0:01
+    :END:
+*** TODO [[https://github.com/Lemonbreezes/exwmsw][GitHub - Lemonbreezes/exwmsw: Monitor-independent workspaces for EXWM]]
+    :PROPERTIES:
+    :CREATED:  <2019-06-07 Fri 14:18>
+    :ID:       61add96e-3808-498a-8afa-abc4ddbf8730
+    :END:
+    :LOGBOOK:
+    CLOCK: [2019-06-07 Fri 14:18]--[2019-06-07 Fri 14:19] =>  0:01
+    :END:
+** TODO Create literate configation of system dotfiles
+   :PROPERTIES:
+   :TASK:
+   :ID:       c407f939-5ce0-4635-98e3-1a77e894bfb4
+   :END:
+** DONE Setup boon keybindings for the insert and normal mode that has objed mode as part of it
+** DONE Read over documentation of objed
+* Reference                                                        :noexport:
+** Define context-aware keys in Emacs
+   :PROPERTIES:
+   :ID:       d4f4f43b-cee1-4fb3-a153-46b6ee06a70f
+   :END:
+[[http://endlessparentheses.com/define-context-aware-keys-in-emacs.html][Define context-aware keys in Emacs · Endless Parentheses]]
+
+
+
+ :RELATED:
+ :END:
+
+ :RESOURCES:
+ :END:
+** EXWM and keychord
+   :PROPERTIES:
+   :CREATED:  <2019-05-29 Wed 11:21>
+   :ID:       760ddd05-c598-481e-9e09-5142a8821507
+   :END:
+   :LOGBOOK:
+   CLOCK: [2019-05-29 Wed 11:21]--[2019-05-29 Wed 11:22] =>  0:01
+   :END:
+[[https://github.com/eush77/dotfiles/blob/7b0d623b03d1884d26c2b2e873bd1e366e61cbbf/emacs/.emacs.d/config/config-exwm.el][dotfiles/config-exwm.el at 7b0d623b03d1884d26c2b2e873bd1e366e61cbbf · eush77/...]]
