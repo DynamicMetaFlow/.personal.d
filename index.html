@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-06-11 Tue 13:44 -->
+<!-- 2019-06-11 Tue 14:58 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Personal Configuration</title>
@@ -193,12 +193,9 @@
   .org-svg { width: 90%; }
   /*]]>*/-->
 </style>
-<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/htmlize.css"/>
-<link rel="stylesheet" type="text/css" href="http://www.pirilampo.org/styles/readtheorg/css/readtheorg.css"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="http://www.pirilampo.org/styles/lib/js/jquery.stickytableheaders.js"></script>
-<script type="text/javascript" src="http://www.pirilampo.org/styles/readtheorg/js/readtheorg.js"></script>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
 <style>div#content { max-width: 2000px; }</style>
 <script type="text/javascript">
 /*
@@ -254,186 +251,186 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org25ef52d">1. Modules</a>
+<li><a href="#orgfe32bc4">1. Modules</a>
 <ul>
-<li><a href="#orgc24aaad">1.1. EXWM window manager</a>
+<li><a href="#org52cbbf7">1.1. EXWM window manager</a>
 <ul>
-<li><a href="#org71b8c8c">1.1.1. setup</a></li>
-<li><a href="#orge91150c">1.1.2. packages</a></li>
-<li><a href="#orga7fddcf">1.1.3. keybindings</a></li>
-<li><a href="#orga4ee743">1.1.4. randr</a></li>
-<li><a href="#org4c49909">1.1.5. ibuffer</a></li>
-<li><a href="#orgb12f17e">1.1.6. autostart</a></li>
+<li><a href="#orgee276ff">1.1.1. setup</a></li>
+<li><a href="#orga55ac35">1.1.2. packages</a></li>
+<li><a href="#org0864725">1.1.3. keybindings</a></li>
+<li><a href="#org8e2ee8d">1.1.4. randr</a></li>
+<li><a href="#org0771f1c">1.1.5. ibuffer</a></li>
+<li><a href="#orgab741cb">1.1.6. autostart</a></li>
 </ul>
 </li>
-<li><a href="#org842faca">1.2. boon</a>
+<li><a href="#orga71ca7b">1.2. boon</a>
 <ul>
-<li><a href="#org3989cae">1.2.1. setup</a></li>
-<li><a href="#org96973cb">1.2.2. boon-major-mode</a></li>
-<li><a href="#org876fffe">1.2.3. boon-objed</a></li>
-<li><a href="#orga42fa3d">1.2.4. keybindings</a></li>
+<li><a href="#org325edb0">1.2.1. setup</a></li>
+<li><a href="#org629108f">1.2.2. boon-major-mode</a></li>
+<li><a href="#org8f42411">1.2.3. boon-objed</a></li>
+<li><a href="#org5016a63">1.2.4. keybindings</a></li>
 </ul>
 </li>
-<li><a href="#org0a4074a">1.3. objed</a></li>
-<li><a href="#orge971c43">1.4. hydra</a>
+<li><a href="#org5e6ecdf">1.3. objed</a></li>
+<li><a href="#org5232bee">1.4. hydra</a>
 <ul>
-<li><a href="#orgcfe9d86">1.4.1. setup</a></li>
-<li><a href="#orgade0f7f">1.4.2. common</a></li>
-<li><a href="#org409db32">1.4.3. master</a></li>
-<li><a href="#orgbf781b7">1.4.4. projects</a></li>
-<li><a href="#org0ec1d3b">1.4.5. agenda</a></li>
-<li><a href="#org6fa23d4">1.4.6. emacs</a></li>
-<li><a href="#org233dbe2">1.4.7. terminal</a></li>
-<li><a href="#orge03439f">1.4.8. file</a></li>
-<li><a href="#orgf34e89e">1.4.9. narrow</a></li>
-<li><a href="#org0466961">1.4.10. spell</a></li>
-<li><a href="#org2f0ab2b">1.4.11. text</a></li>
-<li><a href="#orgd47e6af">1.4.12. git</a></li>
-<li><a href="#orgfc1daea">1.4.13. select</a></li>
-<li><a href="#orgc5a442d">1.4.14. delete</a></li>
-<li><a href="#org8461e77">1.4.15. paste</a></li>
-<li><a href="#orge7e1822">1.4.16. copy</a></li>
-<li><a href="#org8adfa0a">1.4.17. help</a></li>
-<li><a href="#orgd2b63cf">1.4.18. jump</a></li>
-<li><a href="#org8dce86a">1.4.19. register</a></li>
-<li><a href="#org61c9967">1.4.20. search</a></li>
-<li><a href="#orge433eaf">1.4.21. torus</a></li>
-<li><a href="#org3414471">1.4.22. bookmarks</a></li>
-<li><a href="#org2cc4496">1.4.23. applications</a></li>
-<li><a href="#orgb9f6a94">1.4.24. window</a></li>
-<li><a href="#org3782f2e">1.4.25. major-modes</a></li>
-<li><a href="#org1395de2">1.4.26. minor-modes</a></li>
+<li><a href="#org5ddeafa">1.4.1. setup</a></li>
+<li><a href="#org23307ee">1.4.2. common</a></li>
+<li><a href="#org6e0d0b3">1.4.3. master</a></li>
+<li><a href="#orga0ef4ac">1.4.4. projects</a></li>
+<li><a href="#org2844a73">1.4.5. agenda</a></li>
+<li><a href="#org7e0eaa3">1.4.6. emacs</a></li>
+<li><a href="#org4d230b5">1.4.7. terminal</a></li>
+<li><a href="#orgdaadd9d">1.4.8. file</a></li>
+<li><a href="#org818e3f8">1.4.9. narrow</a></li>
+<li><a href="#org52b8100">1.4.10. spell</a></li>
+<li><a href="#orgc5905ad">1.4.11. text</a></li>
+<li><a href="#orgf91f6c1">1.4.12. git</a></li>
+<li><a href="#org8e94724">1.4.13. select</a></li>
+<li><a href="#org4e7a957">1.4.14. delete</a></li>
+<li><a href="#org364a311">1.4.15. paste</a></li>
+<li><a href="#org8a41e81">1.4.16. copy</a></li>
+<li><a href="#org1c84dea">1.4.17. help</a></li>
+<li><a href="#org3444ff6">1.4.18. jump</a></li>
+<li><a href="#orged53508">1.4.19. register</a></li>
+<li><a href="#orge4a92e2">1.4.20. search</a></li>
+<li><a href="#org951e925">1.4.21. torus</a></li>
+<li><a href="#org00ebcd5">1.4.22. bookmarks</a></li>
+<li><a href="#org5fed8d4">1.4.23. applications</a></li>
+<li><a href="#orgd0cfafa">1.4.24. window</a></li>
+<li><a href="#org846f2eb">1.4.25. major-modes</a></li>
+<li><a href="#org7f73447">1.4.26. minor-modes</a></li>
 </ul>
 </li>
-<li><a href="#org1b45360">1.5. key-chord</a></li>
-<li><a href="#org644e16d">1.6. elmacro</a></li>
-<li><a href="#org917b13b">1.7. pdf-tools</a></li>
-<li><a href="#org98ac763">1.8. hyperbole</a></li>
-<li><a href="#org531b2d8">1.9. helpful</a></li>
-<li><a href="#org8f6e410">1.10. howm</a></li>
-<li><a href="#org7031685">1.11. emms</a></li>
-<li><a href="#org88931f3">1.12. torus</a></li>
-<li><a href="#org5125547">1.13. org-pomodoro</a></li>
+<li><a href="#orgbbd001d">1.5. key-chord</a></li>
+<li><a href="#org8662a68">1.6. elmacro</a></li>
+<li><a href="#orgaa55ef0">1.7. pdf-tools</a></li>
+<li><a href="#org965346f">1.8. hyperbole</a></li>
+<li><a href="#org1122a23">1.9. helpful</a></li>
+<li><a href="#org54e33ad">1.10. howm</a></li>
+<li><a href="#orgf3a692d">1.11. emms</a></li>
+<li><a href="#org4f58337">1.12. torus</a></li>
+<li><a href="#org2899828">1.13. org-pomodoro</a></li>
 </ul>
 </li>
-<li><a href="#orgf4c5fad">2. Activities</a>
+<li><a href="#org711d213">2. Activities</a>
 <ul>
-<li><a href="#org831e208">2.1. GTD</a></li>
-<li><a href="#orga2c34da">2.2. Journal</a></li>
-<li><a href="#org6ac55a7">2.3. Org-agenda</a>
+<li><a href="#orge0afd65">2.1. GTD</a></li>
+<li><a href="#org24f7135">2.2. Journal</a></li>
+<li><a href="#orgdf1f337">2.3. Org-agenda</a>
 <ul>
-<li><a href="#org91e5d66">2.3.1. variables</a></li>
-<li><a href="#org3dd4659">2.3.2. org-directory</a></li>
-<li><a href="#org064bde6">2.3.3. org-capture templates</a></li>
-<li><a href="#org98fb5d3">2.3.4. org-agenda-custom-commands and vars</a></li>
-<li><a href="#orgaece162">2.3.5. org-export-backends</a></li>
-<li><a href="#org1944ca0">2.3.6. org-agenda functions</a></li>
-<li><a href="#org9be7995">2.3.7. org-habit</a></li>
-<li><a href="#orgffd1119">2.3.8. org-attach</a></li>
-<li><a href="#orgf608bc3">2.3.9. org-babel</a></li>
-<li><a href="#orge83d08f">2.3.10. org-export</a></li>
+<li><a href="#org6bd02b3">2.3.1. variables</a></li>
+<li><a href="#org2ed44d0">2.3.2. org-directory</a></li>
+<li><a href="#org8cf6e6b">2.3.3. org-capture templates</a></li>
+<li><a href="#org1bcd319">2.3.4. org-agenda-custom-commands and vars</a></li>
+<li><a href="#orgeb3417f">2.3.5. org-export-backends</a></li>
+<li><a href="#org9fe415c">2.3.6. org-agenda functions</a></li>
+<li><a href="#org2b8c755">2.3.7. org-habit</a></li>
+<li><a href="#orga8d0d8d">2.3.8. org-attach</a></li>
+<li><a href="#org8deefe4">2.3.9. org-babel</a></li>
+<li><a href="#org5209653">2.3.10. org-export</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org15c8b6a">3. Helpers</a>
+<li><a href="#org362e315">3. Helpers</a>
 <ul>
-<li><a href="#org83d7428">3.1. defun</a></li>
-<li><a href="#orgbc2936a">3.2. variables</a></li>
-<li><a href="#orgf8843d8">3.3. appointments and notifications</a></li>
-<li><a href="#org972f5db">3.4. window-snapshots</a></li>
-<li><a href="#org13d0ff1">3.5. buffer</a></li>
-<li><a href="#orgd58a2c4">3.6. window</a></li>
-<li><a href="#org164f652">3.7. editing</a></li>
-<li><a href="#org9a3f869">3.8. flycheck</a></li>
-<li><a href="#org3c286d5">3.9. test-emacs</a></li>
-<li><a href="#orga7c674f">3.10. time</a></li>
-<li><a href="#orgffb11df">3.11. archive</a></li>
-<li><a href="#orgc863284">3.12. org-insert-link</a></li>
-<li><a href="#orgb7d3906">3.13. expansion</a></li>
-<li><a href="#org799146d">3.14. export-headlines</a></li>
-<li><a href="#org11ca0ea">3.15. org-id</a></li>
-<li><a href="#org9773f8f">3.16. nov</a></li>
-<li><a href="#org6d6de1a">3.17. org-mode-hooks</a></li>
-<li><a href="#orgb067b6e">3.18. misc</a></li>
-<li><a href="#org2b5c186">3.19. save-hist</a></li>
-<li><a href="#orgea1b79d">3.20. xref</a></li>
-<li><a href="#orgd53ffdd">3.21. agenda</a></li>
-<li><a href="#orgcc62042">3.22. unbound Keybindings</a></li>
+<li><a href="#orgba31ebf">3.1. defun</a></li>
+<li><a href="#org3affc72">3.2. variables</a></li>
+<li><a href="#orge14b2f7">3.3. appointments and notifications</a></li>
+<li><a href="#org284903c">3.4. window-snapshots</a></li>
+<li><a href="#org21d1293">3.5. buffer</a></li>
+<li><a href="#org6b0db39">3.6. window</a></li>
+<li><a href="#org9b8f0e7">3.7. editing</a></li>
+<li><a href="#orgc3884ac">3.8. flycheck</a></li>
+<li><a href="#org9ad7c9f">3.9. test-emacs</a></li>
+<li><a href="#org3779d25">3.10. time</a></li>
+<li><a href="#org47f2b9a">3.11. archive</a></li>
+<li><a href="#orgc6aad60">3.12. org-insert-link</a></li>
+<li><a href="#orgdc4b085">3.13. expansion</a></li>
+<li><a href="#org0821d7e">3.14. export-headlines</a></li>
+<li><a href="#orgedc0a3b">3.15. org-id</a></li>
+<li><a href="#orgf643211">3.16. nov</a></li>
+<li><a href="#org8008a5c">3.17. org-mode-hooks</a></li>
+<li><a href="#org8f86fd4">3.18. misc</a></li>
+<li><a href="#orga74b77f">3.19. save-hist</a></li>
+<li><a href="#org7bfecbc">3.20. xref</a></li>
+<li><a href="#org65a0a6c">3.21. agenda</a></li>
+<li><a href="#orga39feb8">3.22. unbound Keybindings</a></li>
 </ul>
 </li>
-<li><a href="#org2b986b1">4. Disabled</a>
+<li><a href="#orgafc4107">4. Disabled</a>
 <ul>
-<li><a href="#org096ce1a">4.1. <span class="done DISABLED">DISABLED</span> boon-hydra bindings</a></li>
-<li><a href="#org786c733">4.2. <span class="done DISABLED">DISABLED</span> boon Keybindings</a></li>
-<li><a href="#org8fcff55">4.3. <span class="done DISABLED">DISABLED</span> javascript-mode</a></li>
-<li><a href="#org3c605aa">4.4. <span class="done DISABLED">DISABLED</span> eval-in-repl</a></li>
-<li><a href="#org106dfef">4.5. <span class="done DISABLED">DISABLED</span> edit-indirect</a></li>
-<li><a href="#org6ea6ae8">4.6. <span class="done DISABLED">DISABLED</span> goto-last-change</a></li>
-<li><a href="#orgdc4283f">4.7. <span class="done DISABLED">DISABLED</span> goto-last-point</a></li>
-<li><a href="#org745071d">4.8. <span class="done DISABLED">DISABLED</span> old-code</a></li>
-<li><a href="#orgce91c17">4.9. <span class="done DISABLED">DISABLED</span> notdeft</a></li>
-<li><a href="#org571f027">4.10. <span class="done DISABLED">DISABLED</span> deft</a></li>
-<li><a href="#org061a6f0">4.11. <span class="done DISABLED">DISABLED</span> eyebrowse</a></li>
-<li><a href="#orgdc2f112">4.12. <span class="done DISABLED">DISABLED</span> multiple-cursors</a></li>
-<li><a href="#org12f302b">4.13. <span class="done DISABLED">DISABLED</span> demo-it</a></li>
-<li><a href="#org04c6696">4.14. <span class="done DISABLED">DISABLED</span> tangle</a></li>
-<li><a href="#org08de8fa">4.15. <span class="done DISABLED">DISABLED</span> persp-mode</a></li>
-<li><a href="#org105fb9e">4.16. <span class="done DISABLED">DISABLED</span> hideshow</a></li>
-<li><a href="#org104f6e5">4.17. <span class="done DISABLED">DISABLED</span> neotree</a></li>
-<li><a href="#org7ddfe5f">4.18. <span class="done DISABLED">DISABLED</span> desktop</a></li>
-<li><a href="#org9f665c8">4.19. <span class="done DISABLED">DISABLED</span> dashboard</a></li>
-<li><a href="#org648b2c1">4.20. <span class="done DISABLED">DISABLED</span> elisp-demos</a></li>
-<li><a href="#orgb8e70ab">4.21. <span class="done DISABLED">DISABLED</span> org-noter</a></li>
-<li><a href="#orgbd7c956">4.22. <span class="done DISABLED">DISABLED</span> org-brain</a></li>
-<li><a href="#orgd01457f">4.23. <span class="done DISABLED">DISABLED</span> memacs</a></li>
-<li><a href="#org869753a">4.24. <span class="done DISABLED">DISABLED</span> writeroom-mode</a></li>
-<li><a href="#orge83f978">4.25. <span class="done DISABLED">DISABLED</span> annotate</a></li>
-<li><a href="#orgcb784be">4.26. <span class="done DISABLED">DISABLED</span> htmlize</a></li>
-<li><a href="#org553972b">4.27. <span class="done DISABLED">DISABLED</span> ripgrep</a></li>
-<li><a href="#org9ed1103">4.28. <span class="done DISABLED">DISABLED</span> ace-link</a></li>
-<li><a href="#org4a6950a">4.29. <span class="done DISABLED">DISABLED</span> link-hint</a></li>
-<li><a href="#orgbdabd09">4.30. <span class="done DISABLED">DISABLED</span> use-package-hydra</a></li>
-<li><a href="#orgf98c2c3">4.31. <span class="done DISABLED">DISABLED</span> major-mode-hydra</a></li>
-<li><a href="#org427da32">4.32. <span class="done DISABLED">DISABLED</span> General</a>
+<li><a href="#orgf54661d">4.1. <span class="done DISABLED">DISABLED</span> boon-hydra bindings</a></li>
+<li><a href="#org9a36176">4.2. <span class="done DISABLED">DISABLED</span> boon Keybindings</a></li>
+<li><a href="#orge24fd7e">4.3. <span class="done DISABLED">DISABLED</span> javascript-mode</a></li>
+<li><a href="#orgef65c5b">4.4. <span class="done DISABLED">DISABLED</span> eval-in-repl</a></li>
+<li><a href="#org982beb8">4.5. <span class="done DISABLED">DISABLED</span> edit-indirect</a></li>
+<li><a href="#orgf0e7196">4.6. <span class="done DISABLED">DISABLED</span> goto-last-change</a></li>
+<li><a href="#org08bc809">4.7. <span class="done DISABLED">DISABLED</span> goto-last-point</a></li>
+<li><a href="#org9adddab">4.8. <span class="done DISABLED">DISABLED</span> old-code</a></li>
+<li><a href="#org471255e">4.9. <span class="done DISABLED">DISABLED</span> notdeft</a></li>
+<li><a href="#org2a1500a">4.10. <span class="done DISABLED">DISABLED</span> deft</a></li>
+<li><a href="#org2e2297c">4.11. <span class="done DISABLED">DISABLED</span> eyebrowse</a></li>
+<li><a href="#org306d549">4.12. <span class="done DISABLED">DISABLED</span> multiple-cursors</a></li>
+<li><a href="#orgd931ddc">4.13. <span class="done DISABLED">DISABLED</span> demo-it</a></li>
+<li><a href="#org23ccb3d">4.14. <span class="done DISABLED">DISABLED</span> tangle</a></li>
+<li><a href="#org6121076">4.15. <span class="done DISABLED">DISABLED</span> persp-mode</a></li>
+<li><a href="#org54da411">4.16. <span class="done DISABLED">DISABLED</span> hideshow</a></li>
+<li><a href="#orgc2d3f8b">4.17. <span class="done DISABLED">DISABLED</span> neotree</a></li>
+<li><a href="#orgb9253fa">4.18. <span class="done DISABLED">DISABLED</span> desktop</a></li>
+<li><a href="#orga2780cf">4.19. <span class="done DISABLED">DISABLED</span> dashboard</a></li>
+<li><a href="#orgc0b4766">4.20. <span class="done DISABLED">DISABLED</span> elisp-demos</a></li>
+<li><a href="#orgc1e1aaf">4.21. <span class="done DISABLED">DISABLED</span> org-noter</a></li>
+<li><a href="#org6a5e0fc">4.22. <span class="done DISABLED">DISABLED</span> org-brain</a></li>
+<li><a href="#orgfaef9f5">4.23. <span class="done DISABLED">DISABLED</span> memacs</a></li>
+<li><a href="#org59f88a1">4.24. <span class="done DISABLED">DISABLED</span> writeroom-mode</a></li>
+<li><a href="#org591bd42">4.25. <span class="done DISABLED">DISABLED</span> annotate</a></li>
+<li><a href="#orgda596e2">4.26. <span class="done DISABLED">DISABLED</span> htmlize</a></li>
+<li><a href="#orgbe9cfca">4.27. <span class="done DISABLED">DISABLED</span> ripgrep</a></li>
+<li><a href="#org3a148f5">4.28. <span class="done DISABLED">DISABLED</span> ace-link</a></li>
+<li><a href="#orgffe2e42">4.29. <span class="done DISABLED">DISABLED</span> link-hint</a></li>
+<li><a href="#org9a9b28e">4.30. <span class="done DISABLED">DISABLED</span> use-package-hydra</a></li>
+<li><a href="#org22aaa53">4.31. <span class="done DISABLED">DISABLED</span> major-mode-hydra</a></li>
+<li><a href="#org80ad63a">4.32. <span class="done DISABLED">DISABLED</span> General</a>
 <ul>
-<li><a href="#org621f225">4.32.1. <span class="done DISABLED">DISABLED</span> package</a></li>
-<li><a href="#org1578d13">4.32.2. <span class="done DISABLED">DISABLED</span> configuration</a></li>
+<li><a href="#org2e6f8b9">4.32.1. <span class="done DISABLED">DISABLED</span> package</a></li>
+<li><a href="#orgaab3b0b">4.32.2. <span class="done DISABLED">DISABLED</span> configuration</a></li>
 </ul>
 </li>
-<li><a href="#org5e80970">4.33. <span class="done DISABLED">DISABLED</span> boxquote</a></li>
-<li><a href="#org25f0594">4.34. <span class="done DISABLED">DISABLED</span> spray</a></li>
-<li><a href="#org2d38bde">4.35. <span class="done DISABLED">DISABLED</span> flycheck</a></li>
-<li><a href="#orgbc96d34">4.36. <span class="done DISABLED">DISABLED</span> boon</a>
+<li><a href="#org335e228">4.33. <span class="done DISABLED">DISABLED</span> boxquote</a></li>
+<li><a href="#orgeecdb05">4.34. <span class="done DISABLED">DISABLED</span> spray</a></li>
+<li><a href="#org91943ca">4.35. <span class="done DISABLED">DISABLED</span> flycheck</a></li>
+<li><a href="#org6439ef9">4.36. <span class="done DISABLED">DISABLED</span> boon</a>
 <ul>
-<li><a href="#org8f007d0">4.36.1. <span class="done DISABLED">DISABLED</span> setup</a></li>
-<li><a href="#org4749214">4.36.2. <span class="done DISABLED">DISABLED</span> boon-objed</a></li>
-<li><a href="#org4251843">4.36.3. <span class="done DISABLED">DISABLED</span> boon-major-mode</a></li>
-<li><a href="#org75e7d5d">4.36.4. <span class="done DISABLED">DISABLED</span> boon-special</a></li>
+<li><a href="#orgb991f7d">4.36.1. <span class="done DISABLED">DISABLED</span> setup</a></li>
+<li><a href="#org000cff9">4.36.2. <span class="done DISABLED">DISABLED</span> boon-objed</a></li>
+<li><a href="#orgc33557e">4.36.3. <span class="done DISABLED">DISABLED</span> boon-major-mode</a></li>
+<li><a href="#org55b59b1">4.36.4. <span class="done DISABLED">DISABLED</span> boon-special</a></li>
 </ul>
 </li>
-<li><a href="#org647922d">4.37. <span class="done DISABLED">DISABLED</span> google-translate</a></li>
-<li><a href="#org596779d">4.38. <span class="done DISABLED">DISABLED</span> shackle</a></li>
-<li><a href="#orga72a3a5">4.39. <span class="done DISABLED">DISABLED</span> telephone-line</a></li>
-<li><a href="#org8925092">4.40. <span class="done DISABLED">DISABLED</span> dashboard</a></li>
-<li><a href="#org721011c">4.41. <span class="done DISABLED">DISABLED</span> org-brain</a></li>
-<li><a href="#org3c27303">4.42. <span class="done DISABLED">DISABLED</span> org-web-tools</a></li>
+<li><a href="#org4dd9b1a">4.37. <span class="done DISABLED">DISABLED</span> google-translate</a></li>
+<li><a href="#orge0ba249">4.38. <span class="done DISABLED">DISABLED</span> shackle</a></li>
+<li><a href="#orge965b27">4.39. <span class="done DISABLED">DISABLED</span> telephone-line</a></li>
+<li><a href="#org83f208f">4.40. <span class="done DISABLED">DISABLED</span> dashboard</a></li>
+<li><a href="#org6b5a2ea">4.41. <span class="done DISABLED">DISABLED</span> org-brain</a></li>
+<li><a href="#org6ee4d15">4.42. <span class="done DISABLED">DISABLED</span> org-web-tools</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org25ef52d" class="outline-2">
-<h2 id="org25ef52d"><span class="section-number-2">1</span> Modules</h2>
+<div id="outline-container-orgfe32bc4" class="outline-2">
+<h2 id="orgfe32bc4"><span class="section-number-2">1</span> Modules</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-orgc24aaad" class="outline-3">
-<h3 id="orgc24aaad"><span class="section-number-3">1.1</span> EXWM window manager</h3>
+<div id="outline-container-org52cbbf7" class="outline-3">
+<h3 id="org52cbbf7"><span class="section-number-3">1.1</span> EXWM window manager</h3>
 <div class="outline-text-3" id="text-1-1">
 </div>
-<div id="outline-container-org71b8c8c" class="outline-4">
-<h4 id="org71b8c8c"><span class="section-number-4">1.1.1</span> setup</h4>
+<div id="outline-container-orgee276ff" class="outline-4">
+<h4 id="orgee276ff"><span class="section-number-4">1.1.1</span> setup</h4>
 <div class="outline-text-4" id="text-1-1-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">exwm</span>
@@ -559,12 +556,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orge91150c" class="outline-4">
-<h4 id="orge91150c"><span class="section-number-4">1.1.2</span> packages</h4>
+<div id="outline-container-orga55ac35" class="outline-4">
+<h4 id="orga55ac35"><span class="section-number-4">1.1.2</span> packages</h4>
 <div class="outline-text-4" id="text-1-1-2">
 </div>
 <ol class="org-ol">
-<li><a id="org9881629"></a>xelb<br />
+<li><a id="org49bf4d8"></a>xelb<br />
 <div class="outline-text-5" id="text-1-1-2-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">   (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">xelb</span>)
@@ -572,7 +569,7 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </li>
-<li><a id="org35aee62"></a>exwm-edit<br />
+<li><a id="org2c52254"></a>exwm-edit<br />
 <div class="outline-text-5" id="text-1-1-2-2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">   (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">exwm-edit</span>)
@@ -582,8 +579,8 @@ for the JavaScript code in this tag.
 </li>
 </ol>
 </div>
-<div id="outline-container-orga7fddcf" class="outline-4">
-<h4 id="orga7fddcf"><span class="section-number-4">1.1.3</span> keybindings</h4>
+<div id="outline-container-org0864725" class="outline-4">
+<h4 id="org0864725"><span class="section-number-4">1.1.3</span> keybindings</h4>
 <div class="outline-text-4" id="text-1-1-3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">setq</span> exwm-input-line-mode-passthrough t)
@@ -699,8 +696,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orga4ee743" class="outline-4">
-<h4 id="orga4ee743"><span class="section-number-4">1.1.4</span> randr</h4>
+<div id="outline-container-org8e2ee8d" class="outline-4">
+<h4 id="org8e2ee8d"><span class="section-number-4">1.1.4</span> randr</h4>
 <div class="outline-text-4" id="text-1-1-4">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">   (<span style="color: #859900;">setq</span> exwm-randr-workspace-output-plist '(1 <span style="color: #2aa198;">"eDP1"</span> 0 <span style="color: #2aa198;">"HDMI2"</span> 1 <span style="color: #2aa198;">"VGA1"</span>))
@@ -714,8 +711,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org4c49909" class="outline-4">
-<h4 id="org4c49909"><span class="section-number-4">1.1.5</span> ibuffer</h4>
+<div id="outline-container-org0771f1c" class="outline-4">
+<h4 id="org0771f1c"><span class="section-number-4">1.1.5</span> ibuffer</h4>
 <div class="outline-text-4" id="text-1-1-5">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">   (<span style="color: #859900;">setq</span> ibuffer-saved-filter-groups
@@ -796,8 +793,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgb12f17e" class="outline-4">
-<h4 id="orgb12f17e"><span class="section-number-4">1.1.6</span> autostart</h4>
+<div id="outline-container-orgab741cb" class="outline-4">
+<h4 id="orgab741cb"><span class="section-number-4">1.1.6</span> autostart</h4>
 <div class="outline-text-4" id="text-1-1-6">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">   (<span style="color: #859900;">defun</span> <span style="color: #b58900;">app/autostart</span> (application)
@@ -841,12 +838,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org842faca" class="outline-3">
-<h3 id="org842faca"><span class="section-number-3">1.2</span> boon</h3>
+<div id="outline-container-orga71ca7b" class="outline-3">
+<h3 id="orga71ca7b"><span class="section-number-3">1.2</span> boon</h3>
 <div class="outline-text-3" id="text-1-2">
 </div>
-<div id="outline-container-org3989cae" class="outline-4">
-<h4 id="org3989cae"><span class="section-number-4">1.2.1</span> setup</h4>
+<div id="outline-container-org325edb0" class="outline-4">
+<h4 id="org325edb0"><span class="section-number-4">1.2.1</span> setup</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">boon</span>
@@ -858,8 +855,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org96973cb" class="outline-4">
-<h4 id="org96973cb"><span class="section-number-4">1.2.2</span> boon-major-mode</h4>
+<div id="outline-container-org629108f" class="outline-4">
+<h4 id="org629108f"><span class="section-number-4">1.2.2</span> boon-major-mode</h4>
 <div class="outline-text-4" id="text-1-2-2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defvar-local</span> <span style="color: #268bd2;">boon-objed-state</span> nil <span style="color: #35a69c; font-style: italic;">"Non-nil when boon objed mode is activated."</span>)
@@ -921,8 +918,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org876fffe" class="outline-4">
-<h4 id="org876fffe"><span class="section-number-4">1.2.3</span> boon-objed</h4>
+<div id="outline-container-org8f42411" class="outline-4">
+<h4 id="org8f42411"><span class="section-number-4">1.2.3</span> boon-objed</h4>
 <div class="outline-text-4" id="text-1-2-3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">  (<span style="color: #859900;">defun</span> <span style="color: #b58900;">boon-reset-all-mode-states</span> ()
@@ -1029,8 +1026,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orga42fa3d" class="outline-4">
-<h4 id="orga42fa3d"><span class="section-number-4">1.2.4</span> keybindings</h4>
+<div id="outline-container-org5016a63" class="outline-4">
+<h4 id="org5016a63"><span class="section-number-4">1.2.4</span> keybindings</h4>
 <div class="outline-text-4" id="text-1-2-4">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(define-key boon-command-map (kbd <span style="color: #2aa198;">"SPC"</span>) 'counsel-M-x)
@@ -1054,8 +1051,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org0a4074a" class="outline-3">
-<h3 id="org0a4074a"><span class="section-number-3">1.3</span> objed</h3>
+<div id="outline-container-org5e6ecdf" class="outline-3">
+<h3 id="org5e6ecdf"><span class="section-number-3">1.3</span> objed</h3>
 <div class="outline-text-3" id="text-1-3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">objed</span>
@@ -1073,12 +1070,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orge971c43" class="outline-3">
-<h3 id="orge971c43"><span class="section-number-3">1.4</span> hydra</h3>
+<div id="outline-container-org5232bee" class="outline-3">
+<h3 id="org5232bee"><span class="section-number-3">1.4</span> hydra</h3>
 <div class="outline-text-3" id="text-1-4">
 </div>
-<div id="outline-container-orgcfe9d86" class="outline-4">
-<h4 id="orgcfe9d86"><span class="section-number-4">1.4.1</span> setup</h4>
+<div id="outline-container-org5ddeafa" class="outline-4">
+<h4 id="org5ddeafa"><span class="section-number-4">1.4.1</span> setup</h4>
 <div class="outline-text-4" id="text-1-4-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">hydra</span>
@@ -1116,8 +1113,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgade0f7f" class="outline-4">
-<h4 id="orgade0f7f"><span class="section-number-4">1.4.2</span> common</h4>
+<div id="outline-container-org23307ee" class="outline-4">
+<h4 id="org23307ee"><span class="section-number-4">1.4.2</span> common</h4>
 <div class="outline-text-4" id="text-1-4-2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">eval-and-compile</span>
@@ -1147,8 +1144,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org409db32" class="outline-4">
-<h4 id="org409db32"><span class="section-number-4">1.4.3</span> master</h4>
+<div id="outline-container-org6e0d0b3" class="outline-4">
+<h4 id="org6e0d0b3"><span class="section-number-4">1.4.3</span> master</h4>
 <div class="outline-text-4" id="text-1-4-3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-master (
@@ -1180,8 +1177,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgbf781b7" class="outline-4">
-<h4 id="orgbf781b7"><span class="section-number-4">1.4.4</span> projects</h4>
+<div id="outline-container-orga0ef4ac" class="outline-4">
+<h4 id="orga0ef4ac"><span class="section-number-4">1.4.4</span> projects</h4>
 <div class="outline-text-4" id="text-1-4-4">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-projects (<span style="color: #d33682; font-style: italic;">:color</span> blue <span style="color: #d33682; font-style: italic;">:hint</span> nil
@@ -1255,8 +1252,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org0ec1d3b" class="outline-4">
-<h4 id="org0ec1d3b"><span class="section-number-4">1.4.5</span> agenda</h4>
+<div id="outline-container-org2844a73" class="outline-4">
+<h4 id="org2844a73"><span class="section-number-4">1.4.5</span> agenda</h4>
 <div class="outline-text-4" id="text-1-4-5">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-agenda (
@@ -1304,8 +1301,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org6fa23d4" class="outline-4">
-<h4 id="org6fa23d4"><span class="section-number-4">1.4.6</span> emacs</h4>
+<div id="outline-container-org7e0eaa3" class="outline-4">
+<h4 id="org7e0eaa3"><span class="section-number-4">1.4.6</span> emacs</h4>
 <div class="outline-text-4" id="text-1-4-6">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-emacs (<span style="color: #d33682; font-style: italic;">:color</span> blue <span style="color: #d33682; font-style: italic;">:hint</span> nil <span style="color: #d33682; font-style: italic;">:inherit</span> (hydra-common/heads)
@@ -1351,8 +1348,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org233dbe2" class="outline-4">
-<h4 id="org233dbe2"><span class="section-number-4">1.4.7</span> terminal</h4>
+<div id="outline-container-org4d230b5" class="outline-4">
+<h4 id="org4d230b5"><span class="section-number-4">1.4.7</span> terminal</h4>
 <div class="outline-text-4" id="text-1-4-7">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">  (<span style="color: #859900;">defhydra</span> hydra-terminal (<span style="color: #d33682; font-style: italic;">:color</span> blue <span style="color: #d33682; font-style: italic;">:hint</span> nil <span style="color: #d33682; font-style: italic;">:inherit</span> (hydra-common/heads)
@@ -1387,8 +1384,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orge03439f" class="outline-4">
-<h4 id="orge03439f"><span class="section-number-4">1.4.8</span> file</h4>
+<div id="outline-container-orgdaadd9d" class="outline-4">
+<h4 id="orgdaadd9d"><span class="section-number-4">1.4.8</span> file</h4>
 <div class="outline-text-4" id="text-1-4-8">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-file (<span style="color: #d33682; font-style: italic;">:color</span> blue <span style="color: #d33682; font-style: italic;">:hint</span> nil <span style="color: #d33682; font-style: italic;">:inherit</span> (hydra-common/heads)
@@ -1418,8 +1415,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgf34e89e" class="outline-4">
-<h4 id="orgf34e89e"><span class="section-number-4">1.4.9</span> narrow</h4>
+<div id="outline-container-org818e3f8" class="outline-4">
+<h4 id="org818e3f8"><span class="section-number-4">1.4.9</span> narrow</h4>
 <div class="outline-text-4" id="text-1-4-9">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-narrow (<span style="color: #d33682; font-style: italic;">:color</span> blue <span style="color: #d33682; font-style: italic;">:hint</span> nil <span style="color: #d33682; font-style: italic;">:inherit</span> (hydra-common/heads)
@@ -1450,8 +1447,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org0466961" class="outline-4">
-<h4 id="org0466961"><span class="section-number-4">1.4.10</span> spell</h4>
+<div id="outline-container-org52b8100" class="outline-4">
+<h4 id="org52b8100"><span class="section-number-4">1.4.10</span> spell</h4>
 <div class="outline-text-4" id="text-1-4-10">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-spell (<span style="color: #d33682; font-style: italic;">:color</span> blue <span style="color: #d33682; font-style: italic;">:hint</span> nil <span style="color: #d33682; font-style: italic;">:inherit</span> (hydra-common/heads)
@@ -1482,8 +1479,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org2f0ab2b" class="outline-4">
-<h4 id="org2f0ab2b"><span class="section-number-4">1.4.11</span> text</h4>
+<div id="outline-container-orgc5905ad" class="outline-4">
+<h4 id="orgc5905ad"><span class="section-number-4">1.4.11</span> text</h4>
 <div class="outline-text-4" id="text-1-4-11">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-text (<span style="color: #d33682; font-style: italic;">:color</span> blue <span style="color: #d33682; font-style: italic;">:hint</span> nil <span style="color: #d33682; font-style: italic;">:inherit</span> (hydra-common/heads)
@@ -1535,8 +1532,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgd47e6af" class="outline-4">
-<h4 id="orgd47e6af"><span class="section-number-4">1.4.12</span> git</h4>
+<div id="outline-container-orgf91f6c1" class="outline-4">
+<h4 id="orgf91f6c1"><span class="section-number-4">1.4.12</span> git</h4>
 <div class="outline-text-4" id="text-1-4-12">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-git (<span style="color: #d33682; font-style: italic;">:color</span> blue <span style="color: #d33682; font-style: italic;">:hint</span> nil <span style="color: #d33682; font-style: italic;">:inherit</span> (hydra-common/heads)
@@ -1564,8 +1561,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgfc1daea" class="outline-4">
-<h4 id="orgfc1daea"><span class="section-number-4">1.4.13</span> select</h4>
+<div id="outline-container-org8e94724" class="outline-4">
+<h4 id="org8e94724"><span class="section-number-4">1.4.13</span> select</h4>
 <div class="outline-text-4" id="text-1-4-13">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-select (<span style="color: #d33682; font-style: italic;">:exit</span> t <span style="color: #d33682; font-style: italic;">:columns</span> 4)
@@ -1584,8 +1581,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgc5a442d" class="outline-4">
-<h4 id="orgc5a442d"><span class="section-number-4">1.4.14</span> delete</h4>
+<div id="outline-container-org4e7a957" class="outline-4">
+<h4 id="org4e7a957"><span class="section-number-4">1.4.14</span> delete</h4>
 <div class="outline-text-4" id="text-1-4-14">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-delete (<span style="color: #d33682; font-style: italic;">:exit</span> t <span style="color: #d33682; font-style: italic;">:columns</span> 4)
@@ -1608,8 +1605,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org8461e77" class="outline-4">
-<h4 id="org8461e77"><span class="section-number-4">1.4.15</span> paste</h4>
+<div id="outline-container-org364a311" class="outline-4">
+<h4 id="org364a311"><span class="section-number-4">1.4.15</span> paste</h4>
 <div class="outline-text-4" id="text-1-4-15">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-paste (<span style="color: #d33682; font-style: italic;">:exit</span> t <span style="color: #d33682; font-style: italic;">:columns</span> 4)
@@ -1625,8 +1622,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orge7e1822" class="outline-4">
-<h4 id="orge7e1822"><span class="section-number-4">1.4.16</span> copy</h4>
+<div id="outline-container-org8a41e81" class="outline-4">
+<h4 id="org8a41e81"><span class="section-number-4">1.4.16</span> copy</h4>
 <div class="outline-text-4" id="text-1-4-16">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-copy (<span style="color: #d33682; font-style: italic;">:exit</span> t <span style="color: #d33682; font-style: italic;">:columns</span> 4)
@@ -1644,8 +1641,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org8adfa0a" class="outline-4">
-<h4 id="org8adfa0a"><span class="section-number-4">1.4.17</span> help</h4>
+<div id="outline-container-org1c84dea" class="outline-4">
+<h4 id="org1c84dea"><span class="section-number-4">1.4.17</span> help</h4>
 <div class="outline-text-4" id="text-1-4-17">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">  (<span style="color: #859900;">defhydra</span> hydra-help (<span style="color: #d33682; font-style: italic;">:exit</span> t <span style="color: #d33682; font-style: italic;">:columns</span> 4)
@@ -1662,8 +1659,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgd2b63cf" class="outline-4">
-<h4 id="orgd2b63cf"><span class="section-number-4">1.4.18</span> jump</h4>
+<div id="outline-container-org3444ff6" class="outline-4">
+<h4 id="org3444ff6"><span class="section-number-4">1.4.18</span> jump</h4>
 <div class="outline-text-4" id="text-1-4-18">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-jump (<span style="color: #d33682; font-style: italic;">:color</span> blue <span style="color: #d33682; font-style: italic;">:hint</span> nil <span style="color: #d33682; font-style: italic;">:inherit</span> (hydra-common/heads)
@@ -1701,8 +1698,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org8dce86a" class="outline-4">
-<h4 id="org8dce86a"><span class="section-number-4">1.4.19</span> register</h4>
+<div id="outline-container-orged53508" class="outline-4">
+<h4 id="orged53508"><span class="section-number-4">1.4.19</span> register</h4>
 <div class="outline-text-4" id="text-1-4-19">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-register (<span style="color: #d33682; font-style: italic;">:color</span> blue <span style="color: #d33682; font-style: italic;">:hint</span> nil <span style="color: #d33682; font-style: italic;">:inherit</span> (hydra-common/heads)
@@ -1734,8 +1731,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org61c9967" class="outline-4">
-<h4 id="org61c9967"><span class="section-number-4">1.4.20</span> search</h4>
+<div id="outline-container-orge4a92e2" class="outline-4">
+<h4 id="orge4a92e2"><span class="section-number-4">1.4.20</span> search</h4>
 <div class="outline-text-4" id="text-1-4-20">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-search (<span style="color: #d33682; font-style: italic;">:color</span> blue <span style="color: #d33682; font-style: italic;">:hint</span> nil <span style="color: #d33682; font-style: italic;">:inherit</span> (hydra-common/heads)
@@ -1775,8 +1772,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orge433eaf" class="outline-4">
-<h4 id="orge433eaf"><span class="section-number-4">1.4.21</span> torus</h4>
+<div id="outline-container-org951e925" class="outline-4">
+<h4 id="org951e925"><span class="section-number-4">1.4.21</span> torus</h4>
 <div class="outline-text-4" id="text-1-4-21">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-torus (
@@ -1834,8 +1831,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org3414471" class="outline-4">
-<h4 id="org3414471"><span class="section-number-4">1.4.22</span> bookmarks</h4>
+<div id="outline-container-org00ebcd5" class="outline-4">
+<h4 id="org00ebcd5"><span class="section-number-4">1.4.22</span> bookmarks</h4>
 <div class="outline-text-4" id="text-1-4-22">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-bookmarks (
@@ -1865,8 +1862,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org2cc4496" class="outline-4">
-<h4 id="org2cc4496"><span class="section-number-4">1.4.23</span> applications</h4>
+<div id="outline-container-org5fed8d4" class="outline-4">
+<h4 id="org5fed8d4"><span class="section-number-4">1.4.23</span> applications</h4>
 <div class="outline-text-4" id="text-1-4-23">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">  (<span style="color: #859900;">defhydra</span> hydra-applications (<span style="color: #d33682; font-style: italic;">:exit</span> t <span style="color: #d33682; font-style: italic;">:columns</span> 4)
@@ -1885,8 +1882,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgb9f6a94" class="outline-4">
-<h4 id="orgb9f6a94"><span class="section-number-4">1.4.24</span> window</h4>
+<div id="outline-container-orgd0cfafa" class="outline-4">
+<h4 id="orgd0cfafa"><span class="section-number-4">1.4.24</span> window</h4>
 <div class="outline-text-4" id="text-1-4-24">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-window (
@@ -1951,12 +1948,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org3782f2e" class="outline-4">
-<h4 id="org3782f2e"><span class="section-number-4">1.4.25</span> major-modes</h4>
+<div id="outline-container-org846f2eb" class="outline-4">
+<h4 id="org846f2eb"><span class="section-number-4">1.4.25</span> major-modes</h4>
 <div class="outline-text-4" id="text-1-4-25">
 </div>
 <ol class="org-ol">
-<li><a id="org6fdb115"></a>org<br />
+<li><a id="org5c7bd58"></a>org<br />
 <div class="outline-text-5" id="text-1-4-25-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-org (<span style="color: #d33682; font-style: italic;">:exit</span> t <span style="color: #d33682; font-style: italic;">:columns</span> 4
@@ -1977,7 +1974,7 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </li>
-<li><a id="org264b954"></a>python<br />
+<li><a id="orga78cc95"></a>python<br />
 <div class="outline-text-5" id="text-1-4-25-2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(with-no-warnings
@@ -2008,7 +2005,7 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </li>
-<li><a id="org15f3cb4"></a>lisp<br />
+<li><a id="org8c4dbb5"></a>lisp<br />
 <div class="outline-text-5" id="text-1-4-25-3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-lisp (<span style="color: #d33682; font-style: italic;">:exit</span> t <span style="color: #d33682; font-style: italic;">:columns</span> 4)
@@ -2024,7 +2021,7 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </li>
-<li><a id="org37e733d"></a>javascript<br />
+<li><a id="org565c214"></a>javascript<br />
 <div class="outline-text-5" id="text-1-4-25-4">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-javascript (<span style="color: #d33682; font-style: italic;">:exit</span> t <span style="color: #d33682; font-style: italic;">:columns</span> 4)
@@ -2039,7 +2036,7 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </li>
-<li><a id="org33058ac"></a>rjsx<br />
+<li><a id="org036a4ed"></a>rjsx<br />
 <div class="outline-text-5" id="text-1-4-25-5">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-rjsx (<span style="color: #d33682; font-style: italic;">:exit</span> t <span style="color: #d33682; font-style: italic;">:columns</span> 4)
@@ -2058,7 +2055,7 @@ for the JavaScript code in this tag.
 </div>
 </li>
 
-<li><a id="org41e7367"></a>css<br />
+<li><a id="org3641904"></a>css<br />
 <div class="outline-text-5" id="text-1-4-25-6">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-css (<span style="color: #d33682; font-style: italic;">:exit</span> t <span style="color: #d33682; font-style: italic;">:columns</span> 4)
@@ -2070,7 +2067,7 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </li>
-<li><a id="org9efbc1a"></a>scss<br />
+<li><a id="org24375a3"></a>scss<br />
 <div class="outline-text-5" id="text-1-4-25-7">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-scss (<span style="color: #d33682; font-style: italic;">:exit</span> t <span style="color: #d33682; font-style: italic;">:columns</span> 4)
@@ -2082,7 +2079,7 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </li>
-<li><a id="orga07f9c6"></a>web<br />
+<li><a id="org2a34d81"></a>web<br />
 <div class="outline-text-5" id="text-1-4-25-8">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-web (<span style="color: #d33682; font-style: italic;">:exit</span> t <span style="color: #d33682; font-style: italic;">:columns</span> 4)
@@ -2093,7 +2090,7 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </li>
-<li><a id="orga3c3432"></a>html<br />
+<li><a id="orgb4719e7"></a>html<br />
 <div class="outline-text-5" id="text-1-4-25-9">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-html (<span style="color: #d33682; font-style: italic;">:exit</span> t <span style="color: #d33682; font-style: italic;">:columns</span> 4)
@@ -2105,7 +2102,7 @@ for the JavaScript code in this tag.
 </div>
 </li>
 
-<li><a id="orgcbd996c"></a>c<br />
+<li><a id="org031b945"></a>c<br />
 <div class="outline-text-5" id="text-1-4-25-10">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-c (<span style="color: #d33682; font-style: italic;">:exit</span> t <span style="color: #d33682; font-style: italic;">:columns</span> 4)
@@ -2118,7 +2115,7 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </li>
-<li><a id="orgce6bf5e"></a>json<br />
+<li><a id="org37d9278"></a>json<br />
 <div class="outline-text-5" id="text-1-4-25-11">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(with-no-warnings
@@ -2130,7 +2127,7 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </li>
-<li><a id="org617622d"></a>exwm<br />
+<li><a id="org865cf78"></a>exwm<br />
 <div class="outline-text-5" id="text-1-4-25-12">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defhydra</span> hydra-exwm (<span style="color: #d33682; font-style: italic;">:exit</span> t
@@ -2168,8 +2165,8 @@ for the JavaScript code in this tag.
 </li>
 </ol>
 </div>
-<div id="outline-container-org1395de2" class="outline-4">
-<h4 id="org1395de2"><span class="section-number-4">1.4.26</span> minor-modes</h4>
+<div id="outline-container-org7f73447" class="outline-4">
+<h4 id="org7f73447"><span class="section-number-4">1.4.26</span> minor-modes</h4>
 <div class="outline-text-4" id="text-1-4-26">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">defhydra</span> hydra-minor (<span style="color: #d33682; font-style: italic;">:exit</span> t <span style="color: #d33682; font-style: italic;">:columns</span> 4)
@@ -2182,8 +2179,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org1b45360" class="outline-3">
-<h3 id="org1b45360"><span class="section-number-3">1.5</span> key-chord</h3>
+<div id="outline-container-orgbbd001d" class="outline-3">
+<h3 id="orgbbd001d"><span class="section-number-3">1.5</span> key-chord</h3>
 <div class="outline-text-3" id="text-1-5">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">   (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">key-chord</span>
@@ -2212,8 +2209,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org644e16d" class="outline-3">
-<h3 id="org644e16d"><span class="section-number-3">1.6</span> elmacro</h3>
+<div id="outline-container-org8662a68" class="outline-3">
+<h3 id="org8662a68"><span class="section-number-3">1.6</span> elmacro</h3>
 <div class="outline-text-3" id="text-1-6">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">elmacro</span>
@@ -2222,8 +2219,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org917b13b" class="outline-3">
-<h3 id="org917b13b"><span class="section-number-3">1.7</span> pdf-tools</h3>
+<div id="outline-container-orgaa55ef0" class="outline-3">
+<h3 id="orgaa55ef0"><span class="section-number-3">1.7</span> pdf-tools</h3>
 <div class="outline-text-3" id="text-1-7">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">pdf-tools</span> <span style="color: #d33682; font-style: italic;">:ensure</span> t
@@ -2237,8 +2234,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org98ac763" class="outline-3">
-<h3 id="org98ac763"><span class="section-number-3">1.8</span> hyperbole</h3>
+<div id="outline-container-org965346f" class="outline-3">
+<h3 id="org965346f"><span class="section-number-3">1.8</span> hyperbole</h3>
 <div class="outline-text-3" id="text-1-8">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">hyperbole</span>
@@ -2249,8 +2246,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org531b2d8" class="outline-3">
-<h3 id="org531b2d8"><span class="section-number-3">1.9</span> helpful</h3>
+<div id="outline-container-org1122a23" class="outline-3">
+<h3 id="org1122a23"><span class="section-number-3">1.9</span> helpful</h3>
 <div class="outline-text-3" id="text-1-9">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">helpful</span>
@@ -2260,12 +2257,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org8f6e410" class="outline-3">
-<h3 id="org8f6e410"><span class="section-number-3">1.10</span> howm</h3>
+<div id="outline-container-org54e33ad" class="outline-3">
+<h3 id="org54e33ad"><span class="section-number-3">1.10</span> howm</h3>
 <div class="outline-text-3" id="text-1-10">
 </div>
 <ol class="org-ol">
-<li><a id="orgd2d70f6"></a>functions<br />
+<li><a id="org0c42b89"></a>functions<br />
 <div class="outline-text-5" id="text-1-10-0-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defvar</span> <span style="color: #268bd2;">howm-view-title-header</span> <span style="color: #2aa198;">"#+TITLE:"</span>)
@@ -2504,7 +2501,7 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </li>
-<li><a id="org7f58066"></a>package<br />
+<li><a id="org99b5f43"></a>package<br />
 <div class="outline-text-5" id="text-1-10-0-2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">howm</span>
@@ -2541,8 +2538,8 @@ for the JavaScript code in this tag.
 </li>
 </ol>
 </div>
-<div id="outline-container-org7031685" class="outline-3">
-<h3 id="org7031685"><span class="section-number-3">1.11</span> emms</h3>
+<div id="outline-container-orgf3a692d" class="outline-3">
+<h3 id="orgf3a692d"><span class="section-number-3">1.11</span> emms</h3>
 <div class="outline-text-3" id="text-1-11">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">emms</span>
@@ -2561,8 +2558,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org88931f3" class="outline-3">
-<h3 id="org88931f3"><span class="section-number-3">1.12</span> torus</h3>
+<div id="outline-container-org4f58337" class="outline-3">
+<h3 id="org4f58337"><span class="section-number-3">1.12</span> torus</h3>
 <div class="outline-text-3" id="text-1-12">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">    (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">torus</span>
@@ -2629,8 +2626,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org5125547" class="outline-3">
-<h3 id="org5125547"><span class="section-number-3">1.13</span> org-pomodoro</h3>
+<div id="outline-container-org2899828" class="outline-3">
+<h3 id="org2899828"><span class="section-number-3">1.13</span> org-pomodoro</h3>
 <div class="outline-text-3" id="text-1-13">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">org-pomodoro</span>
@@ -2641,12 +2638,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgf4c5fad" class="outline-2">
-<h2 id="orgf4c5fad"><span class="section-number-2">2</span> Activities</h2>
+<div id="outline-container-org711d213" class="outline-2">
+<h2 id="org711d213"><span class="section-number-2">2</span> Activities</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org831e208" class="outline-3">
-<h3 id="org831e208"><span class="section-number-3">2.1</span> GTD</h3>
+<div id="outline-container-orge0afd65" class="outline-3">
+<h3 id="orge0afd65"><span class="section-number-3">2.1</span> GTD</h3>
 <div class="outline-text-3" id="text-2-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">defvar</span> <span style="color: #268bd2;">org-default-projects-dir</span>   <span style="color: #2aa198;">"~/org/projects"</span>                     <span style="color: #35a69c; font-style: italic;">"Primary GTD directory"</span>)
@@ -3157,8 +3154,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orga2c34da" class="outline-3">
-<h3 id="orga2c34da"><span class="section-number-3">2.2</span> Journal</h3>
+<div id="outline-container-org24f7135" class="outline-3">
+<h3 id="org24f7135"><span class="section-number-3">2.2</span> Journal</h3>
 <div class="outline-text-3" id="text-2-2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">setq</span> journal-author <span style="color: #2aa198;">"Alexander Soto"</span>)
@@ -3247,12 +3244,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org6ac55a7" class="outline-3">
-<h3 id="org6ac55a7"><span class="section-number-3">2.3</span> Org-agenda</h3>
+<div id="outline-container-orgdf1f337" class="outline-3">
+<h3 id="orgdf1f337"><span class="section-number-3">2.3</span> Org-agenda</h3>
 <div class="outline-text-3" id="text-2-3">
 </div>
-<div id="outline-container-org91e5d66" class="outline-4">
-<h4 id="org91e5d66"><span class="section-number-4">2.3.1</span> variables</h4>
+<div id="outline-container-org6bd02b3" class="outline-4">
+<h4 id="org6bd02b3"><span class="section-number-4">2.3.1</span> variables</h4>
 <div class="outline-text-4" id="text-2-3-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">setq</span> org-agenda-auto-exclude-function 'bh/org-auto-exclude-function)
@@ -3493,8 +3490,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org3dd4659" class="outline-4">
-<h4 id="org3dd4659"><span class="section-number-4">2.3.2</span> org-directory</h4>
+<div id="outline-container-org2ed44d0" class="outline-4">
+<h4 id="org2ed44d0"><span class="section-number-4">2.3.2</span> org-directory</h4>
 <div class="outline-text-4" id="text-2-3-2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">setq</span> org-directory <span style="color: #2aa198;">"~/org/agenda/"</span>)
@@ -3507,8 +3504,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org064bde6" class="outline-4">
-<h4 id="org064bde6"><span class="section-number-4">2.3.3</span> org-capture templates</h4>
+<div id="outline-container-org8cf6e6b" class="outline-4">
+<h4 id="org8cf6e6b"><span class="section-number-4">2.3.3</span> org-capture templates</h4>
 <div class="outline-text-4" id="text-2-3-3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">setq</span> org-capture-templates
@@ -3540,8 +3537,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org98fb5d3" class="outline-4">
-<h4 id="org98fb5d3"><span class="section-number-4">2.3.4</span> org-agenda-custom-commands and vars</h4>
+<div id="outline-container-org1bcd319" class="outline-4">
+<h4 id="org1bcd319"><span class="section-number-4">2.3.4</span> org-agenda-custom-commands and vars</h4>
 <div class="outline-text-4" id="text-2-3-4">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">   (<span style="color: #859900;">setq</span> my/org-agenda-today-view
@@ -3875,8 +3872,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgaece162" class="outline-4">
-<h4 id="orgaece162"><span class="section-number-4">2.3.5</span> org-export-backends</h4>
+<div id="outline-container-orgeb3417f" class="outline-4">
+<h4 id="orgeb3417f"><span class="section-number-4">2.3.5</span> org-export-backends</h4>
 <div class="outline-text-4" id="text-2-3-5">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">setq</span> org-export-backends '(ascii html icalendar latex org odt))
@@ -3884,8 +3881,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org1944ca0" class="outline-4">
-<h4 id="org1944ca0"><span class="section-number-4">2.3.6</span> org-agenda functions</h4>
+<div id="outline-container-org9fe415c" class="outline-4">
+<h4 id="org9fe415c"><span class="section-number-4">2.3.6</span> org-agenda functions</h4>
 <div class="outline-text-4" id="text-2-3-6">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defun</span> <span style="color: #b58900;">my/org-agenda-switch-to</span>()
@@ -3921,8 +3918,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org9be7995" class="outline-4">
-<h4 id="org9be7995"><span class="section-number-4">2.3.7</span> org-habit</h4>
+<div id="outline-container-org2b8c755" class="outline-4">
+<h4 id="org2b8c755"><span class="section-number-4">2.3.7</span> org-habit</h4>
 <div class="outline-text-4" id="text-2-3-7">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(add-to-list 'org-modules 'org-habit)
@@ -3946,8 +3943,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgffd1119" class="outline-4">
-<h4 id="orgffd1119"><span class="section-number-4">2.3.8</span> org-attach</h4>
+<div id="outline-container-orga8d0d8d" class="outline-4">
+<h4 id="orga8d0d8d"><span class="section-number-4">2.3.8</span> org-attach</h4>
 <div class="outline-text-4" id="text-2-3-8">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">setq</span> org-attach-auto-tag nil)
@@ -3992,8 +3989,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgf608bc3" class="outline-4">
-<h4 id="orgf608bc3"><span class="section-number-4">2.3.9</span> org-babel</h4>
+<div id="outline-container-org8deefe4" class="outline-4">
+<h4 id="org8deefe4"><span class="section-number-4">2.3.9</span> org-babel</h4>
 <div class="outline-text-4" id="text-2-3-9">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">setq</span> org-confirm-babel-evaluate nil
@@ -4005,8 +4002,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orge83d08f" class="outline-4">
-<h4 id="orge83d08f"><span class="section-number-4">2.3.10</span> org-export</h4>
+<div id="outline-container-org5209653" class="outline-4">
+<h4 id="org5209653"><span class="section-number-4">2.3.10</span> org-export</h4>
 <div class="outline-text-4" id="text-2-3-10">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">setq</span> org-agenda-exporter-settings
@@ -4023,12 +4020,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org15c8b6a" class="outline-2">
-<h2 id="org15c8b6a"><span class="section-number-2">3</span> Helpers</h2>
+<div id="outline-container-org362e315" class="outline-2">
+<h2 id="org362e315"><span class="section-number-2">3</span> Helpers</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org83d7428" class="outline-3">
-<h3 id="org83d7428"><span class="section-number-3">3.1</span> defun</h3>
+<div id="outline-container-orgba31ebf" class="outline-3">
+<h3 id="orgba31ebf"><span class="section-number-3">3.1</span> defun</h3>
 <div class="outline-text-3" id="text-3-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defun</span> <span style="color: #b58900;">goto-button</span> (heading loc)
@@ -4120,8 +4117,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgbc2936a" class="outline-3">
-<h3 id="orgbc2936a"><span class="section-number-3">3.2</span> variables</h3>
+<div id="outline-container-org3affc72" class="outline-3">
+<h3 id="org3affc72"><span class="section-number-3">3.2</span> variables</h3>
 <div class="outline-text-3" id="text-3-2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(exwm-input-set-key (kbd <span style="color: #2aa198;">"M-y"</span>) #'my/exwm-counsel-yank-pop)
@@ -4180,8 +4177,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgf8843d8" class="outline-3">
-<h3 id="orgf8843d8"><span class="section-number-3">3.3</span> appointments and notifications</h3>
+<div id="outline-container-orge14b2f7" class="outline-3">
+<h3 id="orge14b2f7"><span class="section-number-3">3.3</span> appointments and notifications</h3>
 <div class="outline-text-3" id="text-3-3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">setq</span> appt-display-diary nil)
@@ -4250,8 +4247,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org972f5db" class="outline-3">
-<h3 id="org972f5db"><span class="section-number-3">3.4</span> window-snapshots</h3>
+<div id="outline-container-org284903c" class="outline-3">
+<h3 id="org284903c"><span class="section-number-3">3.4</span> window-snapshots</h3>
 <div class="outline-text-3" id="text-3-4">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">defvar</span> <span style="color: #268bd2;">window-snapshots</span> '())
@@ -4282,8 +4279,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org13d0ff1" class="outline-3">
-<h3 id="org13d0ff1"><span class="section-number-3">3.5</span> buffer</h3>
+<div id="outline-container-org21d1293" class="outline-3">
+<h3 id="org21d1293"><span class="section-number-3">3.5</span> buffer</h3>
 <div class="outline-text-3" id="text-3-5">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">defun</span> <span style="color: #b58900;">save-buffer-always</span> ()
@@ -4331,8 +4328,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgd58a2c4" class="outline-3">
-<h3 id="orgd58a2c4"><span class="section-number-3">3.6</span> window</h3>
+<div id="outline-container-org6b0db39" class="outline-3">
+<h3 id="org6b0db39"><span class="section-number-3">3.6</span> window</h3>
 <div class="outline-text-3" id="text-3-6">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defun</span> <span style="color: #b58900;">delete-window-balance</span> ()
@@ -4373,8 +4370,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org164f652" class="outline-3">
-<h3 id="org164f652"><span class="section-number-3">3.7</span> editing</h3>
+<div id="outline-container-org9b8f0e7" class="outline-3">
+<h3 id="org9b8f0e7"><span class="section-number-3">3.7</span> editing</h3>
 <div class="outline-text-3" id="text-3-7">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">defun</span> <span style="color: #b58900;">copy-line</span> ()
@@ -4400,8 +4397,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org9a3f869" class="outline-3">
-<h3 id="org9a3f869"><span class="section-number-3">3.8</span> flycheck</h3>
+<div id="outline-container-orgc3884ac" class="outline-3">
+<h3 id="orgc3884ac"><span class="section-number-3">3.8</span> flycheck</h3>
 <div class="outline-text-3" id="text-3-8">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defun</span> <span style="color: #b58900;">toggle-flycheck-error-list</span> ()
@@ -4425,8 +4422,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org3c286d5" class="outline-3">
-<h3 id="org3c286d5"><span class="section-number-3">3.9</span> test-emacs</h3>
+<div id="outline-container-org9ad7c9f" class="outline-3">
+<h3 id="org9ad7c9f"><span class="section-number-3">3.9</span> test-emacs</h3>
 <div class="outline-text-3" id="text-3-9">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defun</span> <span style="color: #b58900;">test-emacs</span> ()
@@ -4459,8 +4456,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orga7c674f" class="outline-3">
-<h3 id="orga7c674f"><span class="section-number-3">3.10</span> time</h3>
+<div id="outline-container-org3779d25" class="outline-3">
+<h3 id="org3779d25"><span class="section-number-3">3.10</span> time</h3>
 <div class="outline-text-3" id="text-3-10">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defun</span> <span style="color: #b58900;">my/insert-created-timestamp</span>()
@@ -4475,8 +4472,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgffb11df" class="outline-3">
-<h3 id="orgffb11df"><span class="section-number-3">3.11</span> archive</h3>
+<div id="outline-container-org47f2b9a" class="outline-3">
+<h3 id="org47f2b9a"><span class="section-number-3">3.11</span> archive</h3>
 <div class="outline-text-3" id="text-3-11">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defun</span> <span style="color: #b58900;">org-archive-done-tasks</span> ()
@@ -4487,8 +4484,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgc863284" class="outline-3">
-<h3 id="orgc863284"><span class="section-number-3">3.12</span> org-insert-link</h3>
+<div id="outline-container-orgc6aad60" class="outline-3">
+<h3 id="orgc6aad60"><span class="section-number-3">3.12</span> org-insert-link</h3>
 <div class="outline-text-3" id="text-3-12">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defun</span> <span style="color: #b58900;">org-insert-link-with-default-description</span> (file-name)
@@ -4499,8 +4496,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgb7d3906" class="outline-3">
-<h3 id="orgb7d3906"><span class="section-number-3">3.13</span> expansion</h3>
+<div id="outline-container-orgdc4b085" class="outline-3">
+<h3 id="orgdc4b085"><span class="section-number-3">3.13</span> expansion</h3>
 <div class="outline-text-3" id="text-3-13">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defun</span> <span style="color: #b58900;">check-expansion</span> ()
@@ -4518,8 +4515,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org799146d" class="outline-3">
-<h3 id="org799146d"><span class="section-number-3">3.14</span> export-headlines</h3>
+<div id="outline-container-org0821d7e" class="outline-3">
+<h3 id="org0821d7e"><span class="section-number-3">3.14</span> export-headlines</h3>
 <div class="outline-text-3" id="text-3-14">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defun</span> <span style="color: #b58900;">my/org-export-headlines-to-org</span> ()
@@ -4553,8 +4550,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org11ca0ea" class="outline-3">
-<h3 id="org11ca0ea"><span class="section-number-3">3.15</span> org-id</h3>
+<div id="outline-container-orgedc0a3b" class="outline-3">
+<h3 id="orgedc0a3b"><span class="section-number-3">3.15</span> org-id</h3>
 <div class="outline-text-3" id="text-3-15">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defun</span> <span style="color: #b58900;">my/org-add-ids-to-headlines-in-file</span> ()
@@ -4585,8 +4582,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org9773f8f" class="outline-3">
-<h3 id="org9773f8f"><span class="section-number-3">3.16</span> nov</h3>
+<div id="outline-container-orgf643211" class="outline-3">
+<h3 id="orgf643211"><span class="section-number-3">3.16</span> nov</h3>
 <div class="outline-text-3" id="text-3-16">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defun</span> <span style="color: #b58900;">my-nov-font-setup</span> ()
@@ -4596,8 +4593,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org6d6de1a" class="outline-3">
-<h3 id="org6d6de1a"><span class="section-number-3">3.17</span> org-mode-hooks</h3>
+<div id="outline-container-org8008a5c" class="outline-3">
+<h3 id="org8008a5c"><span class="section-number-3">3.17</span> org-mode-hooks</h3>
 <div class="outline-text-3" id="text-3-17">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defun</span> <span style="color: #b58900;">my-org-mode-hooks</span> ()
@@ -4609,8 +4606,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgb067b6e" class="outline-3">
-<h3 id="orgb067b6e"><span class="section-number-3">3.18</span> misc</h3>
+<div id="outline-container-org8f86fd4" class="outline-3">
+<h3 id="org8f86fd4"><span class="section-number-3">3.18</span> misc</h3>
 <div class="outline-text-3" id="text-3-18">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defun</span> <span style="color: #b58900;">my/trim-non-chrome</span> ()
@@ -4651,8 +4648,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org2b5c186" class="outline-3">
-<h3 id="org2b5c186"><span class="section-number-3">3.19</span> save-hist</h3>
+<div id="outline-container-orga74b77f" class="outline-3">
+<h3 id="orga74b77f"><span class="section-number-3">3.19</span> save-hist</h3>
 <div class="outline-text-3" id="text-3-19">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">
@@ -4675,8 +4672,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgea1b79d" class="outline-3">
-<h3 id="orgea1b79d"><span class="section-number-3">3.20</span> xref</h3>
+<div id="outline-container-org7bfecbc" class="outline-3">
+<h3 id="org7bfecbc"><span class="section-number-3">3.20</span> xref</h3>
 <div class="outline-text-3" id="text-3-20">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(custom-set-variables '(xref-show-xrefs-function #'ivy-xref-show-xrefs))
@@ -4694,8 +4691,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgd53ffdd" class="outline-3">
-<h3 id="orgd53ffdd"><span class="section-number-3">3.21</span> agenda</h3>
+<div id="outline-container-org65a0a6c" class="outline-3">
+<h3 id="org65a0a6c"><span class="section-number-3">3.21</span> agenda</h3>
 <div class="outline-text-3" id="text-3-21">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #859900;">defun</span> <span style="color: #b58900;">my/scheduled</span> ()
@@ -4746,8 +4743,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgcc62042" class="outline-3">
-<h3 id="orgcc62042"><span class="section-number-3">3.22</span> unbound Keybindings</h3>
+<div id="outline-container-orga39feb8" class="outline-3">
+<h3 id="orga39feb8"><span class="section-number-3">3.22</span> unbound Keybindings</h3>
 <div class="outline-text-3" id="text-3-22">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (define-key winner-mode-map (kbd <span style="color: #2aa198;">"C-c &lt;left&gt;"</span>) nil)
@@ -4761,12 +4758,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org2b986b1" class="outline-2">
-<h2 id="org2b986b1"><span class="section-number-2">4</span> Disabled</h2>
+<div id="outline-container-orgafc4107" class="outline-2">
+<h2 id="orgafc4107"><span class="section-number-2">4</span> Disabled</h2>
 <div class="outline-text-2" id="text-4">
 </div>
-<div id="outline-container-org096ce1a" class="outline-3">
-<h3 id="org096ce1a"><span class="section-number-3">4.1</span> <span class="done DISABLED">DISABLED</span> boon-hydra bindings</h3>
+<div id="outline-container-orgf54661d" class="outline-3">
+<h3 id="orgf54661d"><span class="section-number-3">4.1</span> <span class="done DISABLED">DISABLED</span> boon-hydra bindings</h3>
 <div class="outline-text-3" id="text-4-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> <span style="color: #96A7A9; font-style: italic;">;; </span><span style="color: #96A7A9; font-style: italic;">(define-key boon-command-map (kbd "A")  'hydra-agenda/body)</span>
@@ -4786,8 +4783,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org786c733" class="outline-3">
-<h3 id="org786c733"><span class="section-number-3">4.2</span> <span class="done DISABLED">DISABLED</span> boon Keybindings</h3>
+<div id="outline-container-org9a36176" class="outline-3">
+<h3 id="org9a36176"><span class="section-number-3">4.2</span> <span class="done DISABLED">DISABLED</span> boon Keybindings</h3>
 <div class="outline-text-3" id="text-4-2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (define-key boon-command-map (kbd <span style="color: #2aa198;">"SPC"</span>) 'counsel-M-x)
@@ -4835,8 +4832,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org8fcff55" class="outline-3">
-<h3 id="org8fcff55"><span class="section-number-3">4.3</span> <span class="done DISABLED">DISABLED</span> javascript-mode</h3>
+<div id="outline-container-orge24fd7e" class="outline-3">
+<h3 id="orge24fd7e"><span class="section-number-3">4.3</span> <span class="done DISABLED">DISABLED</span> javascript-mode</h3>
 <div class="outline-text-3" id="text-4-3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">js3-mode</span>)
@@ -4845,8 +4842,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org3c605aa" class="outline-3">
-<h3 id="org3c605aa"><span class="section-number-3">4.4</span> <span class="done DISABLED">DISABLED</span> eval-in-repl</h3>
+<div id="outline-container-orgef65c5b" class="outline-3">
+<h3 id="orgef65c5b"><span class="section-number-3">4.4</span> <span class="done DISABLED">DISABLED</span> eval-in-repl</h3>
 <div class="outline-text-3" id="text-4-4">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">eval-in-repl</span>)
@@ -4855,8 +4852,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org106dfef" class="outline-3">
-<h3 id="org106dfef"><span class="section-number-3">4.5</span> <span class="done DISABLED">DISABLED</span> edit-indirect</h3>
+<div id="outline-container-org982beb8" class="outline-3">
+<h3 id="org982beb8"><span class="section-number-3">4.5</span> <span class="done DISABLED">DISABLED</span> edit-indirect</h3>
 <div class="outline-text-3" id="text-4-5">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">   (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">edit-indirect</span>)
@@ -4865,8 +4862,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org6ea6ae8" class="outline-3">
-<h3 id="org6ea6ae8"><span class="section-number-3">4.6</span> <span class="done DISABLED">DISABLED</span> goto-last-change</h3>
+<div id="outline-container-orgf0e7196" class="outline-3">
+<h3 id="orgf0e7196"><span class="section-number-3">4.6</span> <span class="done DISABLED">DISABLED</span> goto-last-change</h3>
 <div class="outline-text-3" id="text-4-6">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">   (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">goto-last-change</span>
@@ -4879,8 +4876,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgdc4283f" class="outline-3">
-<h3 id="orgdc4283f"><span class="section-number-3">4.7</span> <span class="done DISABLED">DISABLED</span> goto-last-point</h3>
+<div id="outline-container-org08bc809" class="outline-3">
+<h3 id="org08bc809"><span class="section-number-3">4.7</span> <span class="done DISABLED">DISABLED</span> goto-last-point</h3>
 <div class="outline-text-3" id="text-4-7">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">   (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">goto-last-point</span>
@@ -4892,8 +4889,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org745071d" class="outline-3">
-<h3 id="org745071d"><span class="section-number-3">4.8</span> <span class="done DISABLED">DISABLED</span> old-code</h3>
+<div id="outline-container-org9adddab" class="outline-3">
+<h3 id="org9adddab"><span class="section-number-3">4.8</span> <span class="done DISABLED">DISABLED</span> old-code</h3>
 <div class="outline-text-3" id="text-4-8">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> <span style="color: #96A7A9; font-style: italic;">;; </span><span style="color: #96A7A9; font-style: italic;">(define-key org-agenda-mode-map (kbd "TAB") #'my/org-agenda-goto-narrow)</span>
@@ -4935,8 +4932,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgce91c17" class="outline-3">
-<h3 id="orgce91c17"><span class="section-number-3">4.9</span> <span class="done DISABLED">DISABLED</span> notdeft</h3>
+<div id="outline-container-org471255e" class="outline-3">
+<h3 id="org471255e"><span class="section-number-3">4.9</span> <span class="done DISABLED">DISABLED</span> notdeft</h3>
 <div class="outline-text-3" id="text-4-9">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (add-to-list 'load-path <span style="color: #2aa198;">"~/.emacs.d/lisp/notdeft-0.6.20190210"</span>)
@@ -4978,8 +4975,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org571f027" class="outline-3">
-<h3 id="org571f027"><span class="section-number-3">4.10</span> <span class="done DISABLED">DISABLED</span> deft</h3>
+<div id="outline-container-org2a1500a" class="outline-3">
+<h3 id="org2a1500a"><span class="section-number-3">4.10</span> <span class="done DISABLED">DISABLED</span> deft</h3>
 <div class="outline-text-3" id="text-4-10">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">deft</span>
@@ -5012,8 +5009,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org061a6f0" class="outline-3">
-<h3 id="org061a6f0"><span class="section-number-3">4.11</span> <span class="done DISABLED">DISABLED</span> eyebrowse</h3>
+<div id="outline-container-org2e2297c" class="outline-3">
+<h3 id="org2e2297c"><span class="section-number-3">4.11</span> <span class="done DISABLED">DISABLED</span> eyebrowse</h3>
 <div class="outline-text-3" id="text-4-11">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">setq</span> eyebrowse-keymap-prefix (kbd <span style="color: #2aa198;">"C-SPC e"</span>))
@@ -5026,8 +5023,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgdc2f112" class="outline-3">
-<h3 id="orgdc2f112"><span class="section-number-3">4.12</span> <span class="done DISABLED">DISABLED</span> multiple-cursors</h3>
+<div id="outline-container-org306d549" class="outline-3">
+<h3 id="org306d549"><span class="section-number-3">4.12</span> <span class="done DISABLED">DISABLED</span> multiple-cursors</h3>
 <div class="outline-text-3" id="text-4-12">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">multiple-cursors</span>
@@ -5045,8 +5042,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org12f302b" class="outline-3">
-<h3 id="org12f302b"><span class="section-number-3">4.13</span> <span class="done DISABLED">DISABLED</span> demo-it</h3>
+<div id="outline-container-orgd931ddc" class="outline-3">
+<h3 id="orgd931ddc"><span class="section-number-3">4.13</span> <span class="done DISABLED">DISABLED</span> demo-it</h3>
 <div class="outline-text-3" id="text-4-13">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">demo-it</span>)
@@ -5054,8 +5051,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org04c6696" class="outline-3">
-<h3 id="org04c6696"><span class="section-number-3">4.14</span> <span class="done DISABLED">DISABLED</span> tangle</h3>
+<div id="outline-container-org23ccb3d" class="outline-3">
+<h3 id="org23ccb3d"><span class="section-number-3">4.14</span> <span class="done DISABLED">DISABLED</span> tangle</h3>
 <div class="outline-text-3" id="text-4-14">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">defun</span> <span style="color: #b58900;">tangle-on-save-org-mode-file</span>()
@@ -5079,8 +5076,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org08de8fa" class="outline-3">
-<h3 id="org08de8fa"><span class="section-number-3">4.15</span> <span class="done DISABLED">DISABLED</span> persp-mode</h3>
+<div id="outline-container-org6121076" class="outline-3">
+<h3 id="org6121076"><span class="section-number-3">4.15</span> <span class="done DISABLED">DISABLED</span> persp-mode</h3>
 <div class="outline-text-3" id="text-4-15">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">persp-mode</span> <span style="color: #d33682; font-style: italic;">:demand</span> t
@@ -5138,8 +5135,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org105fb9e" class="outline-3">
-<h3 id="org105fb9e"><span class="section-number-3">4.16</span> <span class="done DISABLED">DISABLED</span> hideshow</h3>
+<div id="outline-container-org54da411" class="outline-3">
+<h3 id="org54da411"><span class="section-number-3">4.16</span> <span class="done DISABLED">DISABLED</span> hideshow</h3>
 <div class="outline-text-3" id="text-4-16">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">hideshow</span> <span style="color: #d33682; font-style: italic;">:demand</span> t <span style="color: #96A7A9; font-style: italic;">; </span><span style="color: #96A7A9; font-style: italic;">built-in</span>
@@ -5151,8 +5148,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org104f6e5" class="outline-3">
-<h3 id="org104f6e5"><span class="section-number-3">4.17</span> <span class="done DISABLED">DISABLED</span> neotree</h3>
+<div id="outline-container-orgc2d3f8b" class="outline-3">
+<h3 id="orgc2d3f8b"><span class="section-number-3">4.17</span> <span class="done DISABLED">DISABLED</span> neotree</h3>
 <div class="outline-text-3" id="text-4-17">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">neotree</span>
@@ -5164,8 +5161,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org7ddfe5f" class="outline-3">
-<h3 id="org7ddfe5f"><span class="section-number-3">4.18</span> <span class="done DISABLED">DISABLED</span> desktop</h3>
+<div id="outline-container-orgb9253fa" class="outline-3">
+<h3 id="orgb9253fa"><span class="section-number-3">4.18</span> <span class="done DISABLED">DISABLED</span> desktop</h3>
 <div class="outline-text-3" id="text-4-18">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">   (<span style="color: #859900;">require</span> '<span style="color: #6c71c4;">desktop</span>)
@@ -5184,8 +5181,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org9f665c8" class="outline-3">
-<h3 id="org9f665c8"><span class="section-number-3">4.19</span> <span class="done DISABLED">DISABLED</span> dashboard</h3>
+<div id="outline-container-orga2780cf" class="outline-3">
+<h3 id="orga2780cf"><span class="section-number-3">4.19</span> <span class="done DISABLED">DISABLED</span> dashboard</h3>
 <div class="outline-text-3" id="text-4-19">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">defun</span> <span style="color: #b58900;">dashboard-setup-startup-hook</span> ()
@@ -5269,8 +5266,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org648b2c1" class="outline-3">
-<h3 id="org648b2c1"><span class="section-number-3">4.20</span> <span class="done DISABLED">DISABLED</span> elisp-demos</h3>
+<div id="outline-container-orgc0b4766" class="outline-3">
+<h3 id="orgc0b4766"><span class="section-number-3">4.20</span> <span class="done DISABLED">DISABLED</span> elisp-demos</h3>
 <div class="outline-text-3" id="text-4-20">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">elisp-demos</span>
@@ -5282,8 +5279,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgb8e70ab" class="outline-3">
-<h3 id="orgb8e70ab"><span class="section-number-3">4.21</span> <span class="done DISABLED">DISABLED</span> org-noter</h3>
+<div id="outline-container-orgc1e1aaf" class="outline-3">
+<h3 id="orgc1e1aaf"><span class="section-number-3">4.21</span> <span class="done DISABLED">DISABLED</span> org-noter</h3>
 <div class="outline-text-3" id="text-4-21">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">setq</span> org-noter-notes-search-path '(<span style="color: #2aa198;">"~/org/notes"</span>))
@@ -5295,8 +5292,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgbd7c956" class="outline-3">
-<h3 id="orgbd7c956"><span class="section-number-3">4.22</span> <span class="done DISABLED">DISABLED</span> org-brain</h3>
+<div id="outline-container-org6a5e0fc" class="outline-3">
+<h3 id="org6a5e0fc"><span class="section-number-3">4.22</span> <span class="done DISABLED">DISABLED</span> org-brain</h3>
 <div class="outline-text-3" id="text-4-22">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">org-brain</span>
@@ -5650,8 +5647,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgd01457f" class="outline-3">
-<h3 id="orgd01457f"><span class="section-number-3">4.23</span> <span class="done DISABLED">DISABLED</span> memacs</h3>
+<div id="outline-container-orgfaef9f5" class="outline-3">
+<h3 id="orgfaef9f5"><span class="section-number-3">4.23</span> <span class="done DISABLED">DISABLED</span> memacs</h3>
 <div class="outline-text-3" id="text-4-23">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">defun</span> <span style="color: #b58900;">memacs-chrome</span> ()
@@ -5675,8 +5672,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org869753a" class="outline-3">
-<h3 id="org869753a"><span class="section-number-3">4.24</span> <span class="done DISABLED">DISABLED</span> writeroom-mode</h3>
+<div id="outline-container-org59f88a1" class="outline-3">
+<h3 id="org59f88a1"><span class="section-number-3">4.24</span> <span class="done DISABLED">DISABLED</span> writeroom-mode</h3>
 <div class="outline-text-3" id="text-4-24">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">writeroom-mode</span> <span style="color: #d33682; font-style: italic;">:ensure</span> t)
@@ -5685,8 +5682,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orge83f978" class="outline-3">
-<h3 id="orge83f978"><span class="section-number-3">4.25</span> <span class="done DISABLED">DISABLED</span> annotate</h3>
+<div id="outline-container-org591bd42" class="outline-3">
+<h3 id="org591bd42"><span class="section-number-3">4.25</span> <span class="done DISABLED">DISABLED</span> annotate</h3>
 <div class="outline-text-3" id="text-4-25">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">annotate</span>)
@@ -5694,8 +5691,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgcb784be" class="outline-3">
-<h3 id="orgcb784be"><span class="section-number-3">4.26</span> <span class="done DISABLED">DISABLED</span> htmlize</h3>
+<div id="outline-container-orgda596e2" class="outline-3">
+<h3 id="orgda596e2"><span class="section-number-3">4.26</span> <span class="done DISABLED">DISABLED</span> htmlize</h3>
 <div class="outline-text-3" id="text-4-26">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">htmlize</span>)
@@ -5703,8 +5700,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org553972b" class="outline-3">
-<h3 id="org553972b"><span class="section-number-3">4.27</span> <span class="done DISABLED">DISABLED</span> ripgrep</h3>
+<div id="outline-container-orgbe9cfca" class="outline-3">
+<h3 id="orgbe9cfca"><span class="section-number-3">4.27</span> <span class="done DISABLED">DISABLED</span> ripgrep</h3>
 <div class="outline-text-3" id="text-4-27">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">   (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">rg</span>
@@ -5721,8 +5718,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org9ed1103" class="outline-3">
-<h3 id="org9ed1103"><span class="section-number-3">4.28</span> <span class="done DISABLED">DISABLED</span> ace-link</h3>
+<div id="outline-container-org3a148f5" class="outline-3">
+<h3 id="org3a148f5"><span class="section-number-3">4.28</span> <span class="done DISABLED">DISABLED</span> ace-link</h3>
 <div class="outline-text-3" id="text-4-28">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">ace-link</span>
@@ -5733,8 +5730,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org4a6950a" class="outline-3">
-<h3 id="org4a6950a"><span class="section-number-3">4.29</span> <span class="done DISABLED">DISABLED</span> link-hint</h3>
+<div id="outline-container-orgffe2e42" class="outline-3">
+<h3 id="orgffe2e42"><span class="section-number-3">4.29</span> <span class="done DISABLED">DISABLED</span> link-hint</h3>
 <div class="outline-text-3" id="text-4-29">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">link-hint</span> <span style="color: #d33682; font-style: italic;">:ensure</span> t)
@@ -5742,8 +5739,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgbdabd09" class="outline-3">
-<h3 id="orgbdabd09"><span class="section-number-3">4.30</span> <span class="done DISABLED">DISABLED</span> use-package-hydra</h3>
+<div id="outline-container-org9a9b28e" class="outline-3">
+<h3 id="org9a9b28e"><span class="section-number-3">4.30</span> <span class="done DISABLED">DISABLED</span> use-package-hydra</h3>
 <div class="outline-text-3" id="text-4-30">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">use-package-hydra</span>
@@ -5753,8 +5750,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgf98c2c3" class="outline-3">
-<h3 id="orgf98c2c3"><span class="section-number-3">4.31</span> <span class="done DISABLED">DISABLED</span> major-mode-hydra</h3>
+<div id="outline-container-org22aaa53" class="outline-3">
+<h3 id="org22aaa53"><span class="section-number-3">4.31</span> <span class="done DISABLED">DISABLED</span> major-mode-hydra</h3>
 <div class="outline-text-3" id="text-4-31">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">major-mode-hydra</span>
@@ -5775,12 +5772,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org427da32" class="outline-3">
-<h3 id="org427da32"><span class="section-number-3">4.32</span> <span class="done DISABLED">DISABLED</span> General</h3>
+<div id="outline-container-org80ad63a" class="outline-3">
+<h3 id="org80ad63a"><span class="section-number-3">4.32</span> <span class="done DISABLED">DISABLED</span> General</h3>
 <div class="outline-text-3" id="text-4-32">
 </div>
-<div id="outline-container-org621f225" class="outline-4">
-<h4 id="org621f225"><span class="section-number-4">4.32.1</span> <span class="done DISABLED">DISABLED</span> package</h4>
+<div id="outline-container-org2e6f8b9" class="outline-4">
+<h4 id="org2e6f8b9"><span class="section-number-4">4.32.1</span> <span class="done DISABLED">DISABLED</span> package</h4>
 <div class="outline-text-4" id="text-4-32-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">   (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">general</span>
@@ -5789,8 +5786,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org1578d13" class="outline-4">
-<h4 id="org1578d13"><span class="section-number-4">4.32.2</span> <span class="done DISABLED">DISABLED</span> configuration</h4>
+<div id="outline-container-orgaab3b0b" class="outline-4">
+<h4 id="orgaab3b0b"><span class="section-number-4">4.32.2</span> <span class="done DISABLED">DISABLED</span> configuration</h4>
 <div class="outline-text-4" id="text-4-32-2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">     (general-create-definer tyrant-def
@@ -5855,8 +5852,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org5e80970" class="outline-3">
-<h3 id="org5e80970"><span class="section-number-3">4.33</span> <span class="done DISABLED">DISABLED</span> boxquote</h3>
+<div id="outline-container-org335e228" class="outline-3">
+<h3 id="org335e228"><span class="section-number-3">4.33</span> <span class="done DISABLED">DISABLED</span> boxquote</h3>
 <div class="outline-text-3" id="text-4-33">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">boxquote</span>
@@ -5909,8 +5906,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org25f0594" class="outline-3">
-<h3 id="org25f0594"><span class="section-number-3">4.34</span> <span class="done DISABLED">DISABLED</span> spray</h3>
+<div id="outline-container-orgeecdb05" class="outline-3">
+<h3 id="orgeecdb05"><span class="section-number-3">4.34</span> <span class="done DISABLED">DISABLED</span> spray</h3>
 <div class="outline-text-3" id="text-4-34">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">   (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">spray</span> <span style="color: #d33682; font-style: italic;">:ensure</span> t)
@@ -5918,8 +5915,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org2d38bde" class="outline-3">
-<h3 id="org2d38bde"><span class="section-number-3">4.35</span> <span class="done DISABLED">DISABLED</span> flycheck</h3>
+<div id="outline-container-org91943ca" class="outline-3">
+<h3 id="org91943ca"><span class="section-number-3">4.35</span> <span class="done DISABLED">DISABLED</span> flycheck</h3>
 <div class="outline-text-3" id="text-4-35">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">defhydra</span> hydra-flycheck (<span style="color: #d33682; font-style: italic;">:color</span> blue <span style="color: #d33682; font-style: italic;">:hint</span> nil <span style="color: #d33682; font-style: italic;">:inherit</span> (hydra-common/heads)
@@ -5953,12 +5950,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgbc96d34" class="outline-3">
-<h3 id="orgbc96d34"><span class="section-number-3">4.36</span> <span class="done DISABLED">DISABLED</span> boon</h3>
+<div id="outline-container-org6439ef9" class="outline-3">
+<h3 id="org6439ef9"><span class="section-number-3">4.36</span> <span class="done DISABLED">DISABLED</span> boon</h3>
 <div class="outline-text-3" id="text-4-36">
 </div>
-<div id="outline-container-org8f007d0" class="outline-4">
-<h4 id="org8f007d0"><span class="section-number-4">4.36.1</span> <span class="done DISABLED">DISABLED</span> setup</h4>
+<div id="outline-container-orgb991f7d" class="outline-4">
+<h4 id="orgb991f7d"><span class="section-number-4">4.36.1</span> <span class="done DISABLED">DISABLED</span> setup</h4>
 <div class="outline-text-4" id="text-4-36-1">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">     (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">boon</span>
@@ -5971,8 +5968,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org4749214" class="outline-4">
-<h4 id="org4749214"><span class="section-number-4">4.36.2</span> <span class="done DISABLED">DISABLED</span> boon-objed</h4>
+<div id="outline-container-org000cff9" class="outline-4">
+<h4 id="org000cff9"><span class="section-number-4">4.36.2</span> <span class="done DISABLED">DISABLED</span> boon-objed</h4>
 <div class="outline-text-4" id="text-4-36-2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">   <span style="color: #96A7A9; font-style: italic;">;; </span><span style="color: #96A7A9; font-style: italic;">(defvar boon-objed-map (make-sparse-keymap))</span>
@@ -6000,8 +5997,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org4251843" class="outline-4">
-<h4 id="org4251843"><span class="section-number-4">4.36.3</span> <span class="done DISABLED">DISABLED</span> boon-major-mode</h4>
+<div id="outline-container-orgc33557e" class="outline-4">
+<h4 id="orgc33557e"><span class="section-number-4">4.36.3</span> <span class="done DISABLED">DISABLED</span> boon-major-mode</h4>
 <div class="outline-text-4" id="text-4-36-3">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">   (<span style="color: #859900;">defun</span> <span style="color: #b58900;">boon-detect-mode</span> (boon-mode-map)
@@ -6055,8 +6052,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org75e7d5d" class="outline-4">
-<h4 id="org75e7d5d"><span class="section-number-4">4.36.4</span> <span class="done DISABLED">DISABLED</span> boon-special</h4>
+<div id="outline-container-org55b59b1" class="outline-4">
+<h4 id="org55b59b1"><span class="section-number-4">4.36.4</span> <span class="done DISABLED">DISABLED</span> boon-special</h4>
 <div class="outline-text-4" id="text-4-36-4">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">   (custom-set-variables
@@ -6079,8 +6076,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org647922d" class="outline-3">
-<h3 id="org647922d"><span class="section-number-3">4.37</span> <span class="done DISABLED">DISABLED</span> google-translate</h3>
+<div id="outline-container-org4dd9b1a" class="outline-3">
+<h3 id="org4dd9b1a"><span class="section-number-3">4.37</span> <span class="done DISABLED">DISABLED</span> google-translate</h3>
 <div class="outline-text-3" id="text-4-37">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">google-translate</span>)
@@ -6088,8 +6085,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org596779d" class="outline-3">
-<h3 id="org596779d"><span class="section-number-3">4.38</span> <span class="done DISABLED">DISABLED</span> shackle</h3>
+<div id="outline-container-orge0ba249" class="outline-3">
+<h3 id="orge0ba249"><span class="section-number-3">4.38</span> <span class="done DISABLED">DISABLED</span> shackle</h3>
 <div class="outline-text-3" id="text-4-38">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">shackle</span>
@@ -6101,8 +6098,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orga72a3a5" class="outline-3">
-<h3 id="orga72a3a5"><span class="section-number-3">4.39</span> <span class="done DISABLED">DISABLED</span> telephone-line</h3>
+<div id="outline-container-orge965b27" class="outline-3">
+<h3 id="orge965b27"><span class="section-number-3">4.39</span> <span class="done DISABLED">DISABLED</span> telephone-line</h3>
 <div class="outline-text-3" id="text-4-39">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">   (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">telephone-line</span>
@@ -6165,8 +6162,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org8925092" class="outline-3">
-<h3 id="org8925092"><span class="section-number-3">4.40</span> <span class="done DISABLED">DISABLED</span> dashboard</h3>
+<div id="outline-container-org83f208f" class="outline-3">
+<h3 id="org83f208f"><span class="section-number-3">4.40</span> <span class="done DISABLED">DISABLED</span> dashboard</h3>
 <div class="outline-text-3" id="text-4-40">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">  (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">dashboard</span>
@@ -6281,8 +6278,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org721011c" class="outline-3">
-<h3 id="org721011c"><span class="section-number-3">4.41</span> <span class="done DISABLED">DISABLED</span> org-brain</h3>
+<div id="outline-container-org6b5a2ea" class="outline-3">
+<h3 id="org6b5a2ea"><span class="section-number-3">4.41</span> <span class="done DISABLED">DISABLED</span> org-brain</h3>
 <div class="outline-text-3" id="text-4-41">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">  (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">org-brain</span>
@@ -6296,8 +6293,8 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-org3c27303" class="outline-3">
-<h3 id="org3c27303"><span class="section-number-3">4.42</span> <span class="done DISABLED">DISABLED</span> org-web-tools</h3>
+<div id="outline-container-org6ee4d15" class="outline-3">
+<h3 id="org6ee4d15"><span class="section-number-3">4.42</span> <span class="done DISABLED">DISABLED</span> org-web-tools</h3>
 <div class="outline-text-3" id="text-4-42">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">  (<span style="color: #859900;">use-package</span> <span style="color: #6c71c4;">org-web-tools</span>
@@ -6312,7 +6309,7 @@ for the JavaScript code in this tag.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: alexander</p>
-<p class="date">Created: 2019-06-11 Tue 13:44</p>
+<p class="date">Created: 2019-06-11 Tue 14:58</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
