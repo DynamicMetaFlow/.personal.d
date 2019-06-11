@@ -678,7 +678,7 @@ optional list of changes as its last argument."
   (setq lv-use-separator t)
   (set-face-attribute 'hydra-face-blue nil :foreground "deep sky blue" :weight 'bold))
  #+END_SRC
-**** ACTIVE common
+**** common
    #+BEGIN_SRC emacs-lisp
 (eval-and-compile
   (defhydra hydra-common  (
@@ -704,7 +704,7 @@ optional list of changes as its last argument."
     ))
    #+END_SRC
 
-**** ACTIVE master
+**** master
   #+BEGIN_SRC emacs-lisp
 (defhydra hydra-master (
                         :color blue
@@ -732,7 +732,7 @@ optional list of changes as its last argument."
 
       )
     #+END_SRC
-**** ACTIVE projects
+**** projects
    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-projects (:color blue :hint nil
                                 :pre (progn
@@ -802,7 +802,7 @@ optional list of changes as its last argument."
 (define-key projectile-mode-map (kbd "C-c o") #'hydra-project/body)
 
    #+END_SRC
-**** ACTIVE agenda
+**** agenda
     #+BEGIN_SRC emacs-lisp
 (defhydra hydra-agenda (
                         :color blue
@@ -846,7 +846,7 @@ optional list of changes as its last argument."
 
 )
     #+END_SRC
-**** ACTIVE emacs
+**** emacs
     #+BEGIN_SRC emacs-lisp
 (defhydra hydra-emacs (:color blue :hint nil :inherit (hydra-common/heads)
                               :pre (progn
@@ -888,7 +888,7 @@ optional list of changes as its last argument."
 )
     #+END_SRC
 
-**** ACTIVE terminal
+**** terminal
    #+BEGIN_SRC emacs-lisp
   (defhydra hydra-terminal (:color blue :hint nil :inherit (hydra-common/heads)
                                  :pre (progn
@@ -919,7 +919,7 @@ optional list of changes as its last argument."
 
    #+END_SRC
 
-**** ACTIVE file
+**** file
     #+BEGIN_SRC emacs-lisp
 (defhydra hydra-file (:color blue :hint nil :inherit (hydra-common/heads)
                              :pre (progn
@@ -945,7 +945,7 @@ optional list of changes as its last argument."
   ("hg" hydra-git/body nil   :color blue)
 )
     #+END_SRC
-**** ACTIVE narrow
+**** narrow
    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-narrow (:color blue :hint nil :inherit (hydra-common/heads)
                                :pre (progn
@@ -972,7 +972,7 @@ optional list of changes as its last argument."
       ("N" widen))
    #+END_SRC
 
-**** ACTIVE spell
+**** spell
     #+BEGIN_SRC emacs-lisp
 (defhydra hydra-spell (:color blue :hint nil :inherit (hydra-common/heads)
                               :pre (progn
@@ -999,7 +999,7 @@ optional list of changes as its last argument."
   ("n" flyspell-goto-next-error))
     #+END_SRC
 
-**** ACTIVE text
+**** text
    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-text (:color blue :hint nil :inherit (hydra-common/heads)
                              :pre (progn
@@ -1047,7 +1047,7 @@ optional list of changes as its last argument."
   ("x" comment-box))
    #+END_SRC
 
-**** ACTIVE git
+**** git
     #+BEGIN_SRC emacs-lisp
 (defhydra hydra-git (:color blue :hint nil :inherit (hydra-common/heads)
                             :pre (progn
@@ -1071,7 +1071,7 @@ optional list of changes as its last argument."
   ("t" git-timemachine))
     #+END_SRC
 
-**** ACTIVE select
+**** select
  #+BEGIN_SRC emacs-lisp
 (defhydra hydra-select (:exit t :columns 4)
     "Select"
@@ -1086,7 +1086,7 @@ optional list of changes as its last argument."
     ("w" er/mark-word "Word / Symbol")
     ("s" mc--mark-symbol-at-point "Word / Symbol"))
  #+END_SRC
-**** ACTIVE delete
+**** delete
  #+BEGIN_SRC emacs-lisp
 (defhydra hydra-delete (:exit t :columns 4)
   "Delete / Cut shortcuts"
@@ -1105,7 +1105,7 @@ optional list of changes as its last argument."
   ("a" zop-to-char "After character")
   ("A" (zop-to-char -1) "After character backwards"))
  #+END_SRC
-**** ACTIVE paste
+**** paste
  #+BEGIN_SRC emacs-lisp
 (defhydra hydra-paste (:exit t :columns 4)
   "Paste"
@@ -1117,7 +1117,7 @@ optional list of changes as its last argument."
 
 
  #+END_SRC
-**** ACTIVE copy
+**** copy
  #+BEGIN_SRC emacs-lisp
 (defhydra hydra-copy (:exit t :columns 4)
   "Copy"
@@ -1131,7 +1131,7 @@ optional list of changes as its last argument."
   ("d" em-duplicate-line "Duplicate line"))
 
  #+END_SRC
-**** ACTIVE help
+**** help
  #+BEGIN_SRC emacs-lisp
   (defhydra hydra-help (:exit t :columns 4)
     "Help"
@@ -1144,7 +1144,7 @@ optional list of changes as its last argument."
     ("l" find-library "Library source"))
 
  #+END_SRC
-**** ACTIVE jump
+**** jump
     #+BEGIN_SRC emacs-lisp
 (defhydra hydra-jump (:color blue :hint nil :inherit (hydra-common/heads)
                              :pre (progn
@@ -1178,7 +1178,7 @@ optional list of changes as its last argument."
   ("i" avy-isearch)
 )
     #+END_SRC
-**** ACTIVE register
+**** register
    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-register (:color blue :hint nil :inherit (hydra-common/heads)
                                  :pre (progn
@@ -1206,7 +1206,7 @@ optional list of changes as its last argument."
   ("u" undo-tree-visualize))
    #+END_SRC
 
-**** ACTIVE search
+**** search
    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-search (:color blue :hint nil :inherit (hydra-common/heads)
                                :pre (progn
@@ -1242,7 +1242,7 @@ optional list of changes as its last argument."
 
    #+END_SRC
 
-**** ACTIVE torus
+**** torus
    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-torus (
                        :color red
@@ -1257,28 +1257,28 @@ optional list of changes as its last argument."
     Switch                    Move                        Do                               │  Torus  │
 ╭──────────────────────────────────────────────────────────────────────────────────────────┴─────────╯
   [_sc_] circle          [_<up>_]  prev-location         [_#_]  layout            [_ss_] search
-  [_sl_] location       [_<down>_] next-location         [_ac_] add-circle        [_sh_] search-history
+  [_sl_] location        [_<down>_] next-location        [_ac_] add-circle        [_sh_] search-history
   [_st_] torus                                         [_al_] add-location
-                     [_<left>_]  prev-circle
-  [_!_] alt-circle     [_<right>_] next-circle          [_dc_] delete-circle
-  [_<_] alt-circles                                   [_dl_] delete-location
-  [_>_] alt-torus      [_<prior>_] newer-history
-                     [_<next>_]  older-history
+                       [_<left>_]  prev-circle
+                       [_<right>_] next-circle         [_dc_] delete-circle
+                                                     [_dl_] delete-location
+                       [_<prior>_] newer-history
+                       [_<next>_]  older-history
    ^ ^
 -------------------------------------------------------------------------------------------------------
     "
 
-("#" torus-layout-menu)
+("#" torus-layout-menu :color blue)
 
-("sc" torus-switch-circle)
-("sl" torus-switch-location)
-("st" torus-switch-torus)
+("sc" torus-switch-circle :color blue)
+("sl" torus-switch-location :color blue)
+("st" torus-switch-torus :color blue)
 
-("ac" torus-add-circle)
-("al" torus-add-location)
+("ac" torus-add-circle :color blue)
+("al" torus-add-location :color blue)
 
-("dl" torus-delete-location)
-("dc" torus-delete-circle)
+("dl" torus-delete-location :color blue)
+("dc" torus-delete-circle :color blue)
 
 ("<up>"   torus-previous-location)
 ("<down>" torus-next-location)
@@ -1286,20 +1286,17 @@ optional list of changes as its last argument."
 ("<right>" torus-next-circle)
 
 
-("ss" torus-search)
-("sh" torus-search-history)
+("ss" torus-search :color blue)
+("sh" torus-search-history :color blue)
 
 ("<prior>" torus-history-newer)
 ("<next>" torus-history-older)
 
-("!" torus-alternate-in-same-torus)
-("<" torus-alternate-circles)
-(">" torus-alternate-in-same-circle)
 )
 
    #+END_SRC
 
-**** ACTIVE bookmarks
+**** bookmarks
    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-bookmarks (
                            :color red
@@ -1325,7 +1322,7 @@ optional list of changes as its last argument."
   ("s" bookmark-save))
    #+END_SRC
 
-**** ACTIVE applications
+**** applications
  #+BEGIN_SRC emacs-lisp
   (defhydra hydra-applications (:exit t :columns 4)
     "Applications"
@@ -1340,7 +1337,7 @@ optional list of changes as its last argument."
 
 
  #+END_SRC
-**** ACTIVE window
+**** window
    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-window (
                         :color red
@@ -1401,7 +1398,7 @@ optional list of changes as its last argument."
   )
    #+END_SRC
 
-**** ACTIVE major-modes
+**** major-modes
 ***** org
  #+BEGIN_SRC emacs-lisp :results silent
 (defhydra hydra-org (:exit t :columns 4
@@ -1564,7 +1561,7 @@ optional list of changes as its last argument."
 
 )
  #+END_SRC
-**** ACTIVE minor-modes
+**** minor-modes
  #+BEGIN_SRC emacs-lisp
  (defhydra hydra-minor (:exit t :columns 4)
      "Minor modes"
@@ -1592,10 +1589,7 @@ optional list of changes as its last argument."
      (key-chord-define boon-command-map "hh"  'hydra-help/body)
      (key-chord-define boon-command-map "ff"  'hydra-file/body)
 
-(key-chord-mode +1)
-
-
-      )
+     (key-chord-mode +1))
 
 (use-package bind-chord)
 (use-package use-package-chords)
@@ -1603,6 +1597,24 @@ optional list of changes as its last argument."
 *** elmacro
  #+BEGIN_SRC emacs-lisp
  (use-package elmacro)
+ #+END_SRC
+*** pdf-tools
+  #+BEGIN_SRC emacs-lisp
+(use-package pdf-tools :ensure t
+  :config
+  (unless noninteractive
+    (pdf-tools-install))
+  (setq-default pdf-view-display-size 'fit-page))
+  #+END_SRC
+
+*** hyperbole
+ #+BEGIN_SRC emacs-lisp
+(use-package hyperbole :ensure t)
+ #+END_SRC
+
+*** helpful
+ #+BEGIN_SRC emacs-lisp
+(use-package helpful)
  #+END_SRC
 *** howm
 ***** functions
@@ -1872,24 +1884,6 @@ optional list of changes as its last argument."
 
 
      #+END_SRC
-*** pdf-tools
-  #+BEGIN_SRC emacs-lisp
-(use-package pdf-tools :ensure t
-  :config
-  (unless noninteractive
-    (pdf-tools-install))
-  (setq-default pdf-view-display-size 'fit-page))
-  #+END_SRC
-
-*** hyperbole
- #+BEGIN_SRC emacs-lisp
-(use-package hyperbole :ensure t)
- #+END_SRC
-
-*** helpful
- #+BEGIN_SRC emacs-lisp
-(use-package helpful)
- #+END_SRC
 *** emms
   #+BEGIN_SRC emacs-lisp
  (use-package emms
@@ -1905,10 +1899,6 @@ optional list of changes as its last argument."
     (emms-playing-time 1))
 
   #+END_SRC
-*** org-pomodoro
-#+BEGIN_SRC emacs-lisp
- (use-package org-pomodoro)
-#+END_SRC
 *** torus
   #+BEGIN_SRC emacs-lisp
     (use-package torus
@@ -1971,10 +1961,13 @@ optional list of changes as its last argument."
 
   #+END_SRC
 
+*** org-pomodoro
+#+BEGIN_SRC emacs-lisp
+ (use-package org-pomodoro)
+#+END_SRC
 ** Activities
 *** GTD
-**** hydra-org-refiler
- #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
  (defvar org-default-projects-dir   "~/org/projects"                     "Primary GTD directory")
  (defvar org-default-zettelkasten-dir "~/org/notes"                     "Directory of notes modeled after Zettelkasten includes an Archive, and Notes")
  (defvar org-default-completed-dir  "~/org/projects/completed"            "Directory of completed project files")
@@ -2479,7 +2472,7 @@ pre-populated with the HEADER, BODY and any associated TAGS."
    (kill-line))
 
 (provide 'gtd)
- #+END_SRC
+#+END_SRC
 *** Journal
  #+BEGIN_SRC emacs-lisp
 (setq journal-author "Alexander Soto")
