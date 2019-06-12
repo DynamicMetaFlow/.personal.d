@@ -10,7 +10,7 @@
 #+PROPERTY: header-args :results silent :tangle personal-config.el
 :END:
 #+TITLE: Personal Configuration
-#+SEQ_TODO: TODO NEXT ACTIVE | DISABLED
+#+CATEGORY: emacs
 
 * Modules
 ** EXWM window manager
@@ -481,10 +481,10 @@ When CHANGES are non-nil, replay those instead."
 (defun my/boon-set-command-state ()
   "Switch to command state."
   (interactive)
-  (boon-set-state 'boon-command-state)
   (objed-mode -1)
+  (boon-set-state 'boon-command-state)
   (message "Objed mode disabled")
-  )
+    )
 
   (defun boon-set-objed-like-state (&optional changes)
   "Switch to special or insert state, depending on mode.
@@ -570,6 +570,8 @@ optional list of changes as its last argument."
 (define-key boon-command-map (kbd "b")  'ivy-switch-buffer)
 
 (define-key boon-command-map (kbd "g")  'magit-status)
+
+(define-key boon-command-map (kbd "A")  'hydra-agenda/body)
 
 #+END_SRC
 ** objed
@@ -875,12 +877,13 @@ optional list of changes as its last argument."
 ╭───────────────────────────────────────────────────────────────────────┴──────╯
   [_f_] open file            [_d_] dired     [_ht_] text
   [_e_] open file extern                   [_hs_] spell
-                                         [_hn_] narrow
+  [_r_] open recentf                       [_hn_] narrow
                                          [_hg_] git
 --------------------------------------------------------------------------------
       "
   ("f" counsel-find-file)
   ("e" counsel-find-file-extern)
+  ("r" counsel-recentf "recent")
   ("d" dired)
   ("hn" hydra-narrow/body nil :color blue)
   ("hs" hydra-spell/body nil  :color blue)
@@ -3273,12 +3276,6 @@ kill-ring, prompting if not found.  With prefix, prompt for URL."
   (objed-mode +1)
   (objed-activate))
 
-(defun my/boon-set-command-state ()
-  (interactive)
-  (boon-mode +1)
-  (key-chord-mode +1)
-  (objed-mode -1))
-
   (defun em-comment ()
     (interactive)
     (objed-comment-or-uncomment-region))
@@ -3745,7 +3742,7 @@ are exported to a filename derived from the headline text."
   (add-hook 'exwm-manage-finish-hook
             (defun my/exwm-manage-hook ()
               (when (string-match "Google-chrome" exwm-class-name)
-                (exwm-workspace-move-window 0)
+;                (exwm-workspace-move-window 0)
 ;                (exwm-layout-hide-mode-line)
                 (setq ido-make-buffer-list-hook 'my/trim-non-chrome))))
 
@@ -5169,18 +5166,18 @@ are exported to a filename derived from the headline text."
 
 #+END_SRC
 * TODO Maintenance                                                 :noexport:
-** TODO Keybindings to map
+** DISABLED Keybindings to map
 Keybindings to assign
 *** DONE ivy-push-view
 *** DONE ivy-pop-view
 *** DONE ivy-switch-view
-** TODO Configure eink screen
-*** TODO Customize poet theme to be compatible with eink screen
+** HOLD Configure eink screen                                          :HOLD:
+*** HOLD Customize poet theme to be compatible with eink screen        :HOLD:
     :PROPERTIES:
     :CREATED:  <2019-05-20 Mon 21:50>
     :ID:       9f89ab79-6db4-488e-9c43-8a689f1df915
     :END:
-*** TODO Review [[https://github.com/mnp/dispwatch][GitHub - mnp/dispwatch: Emacs - Watch the current display for changes (ie plu...]]
+*** HOLD Review [[https://github.com/mnp/dispwatch][GitHub - mnp/dispwatch: Emacs - Watch the current display for changes (ie plu...]] :HOLD:
     :PROPERTIES:
     :CREATED:  <2019-05-20 Mon 22:18>
     :ID:       36e7f0b0-73ee-4b64-8aa4-3ba2b474c4be
@@ -5188,7 +5185,7 @@ Keybindings to assign
     :LOGBOOK:
     CLOCK: [2019-05-20 Mon 22:18]--[2019-05-20 Mon 22:19] =>  0:01
     :END:
-*** TODO [[https://github.com/Lemonbreezes/exwmsw][GitHub - Lemonbreezes/exwmsw: Monitor-independent workspaces for EXWM]]
+*** HOLD [[https://github.com/Lemonbreezes/exwmsw][GitHub - Lemonbreezes/exwmsw: Monitor-independent workspaces for EXWM]] :HOLD:
     :PROPERTIES:
     :CREATED:  <2019-06-07 Fri 14:18>
     :ID:       61add96e-3808-498a-8afa-abc4ddbf8730
@@ -5196,7 +5193,7 @@ Keybindings to assign
     :LOGBOOK:
     CLOCK: [2019-06-07 Fri 14:18]--[2019-06-07 Fri 14:19] =>  0:01
     :END:
-** TODO Create literate configation of system dotfiles
+** HOLD Create literate configation of system dotfiles                 :HOLD:
    :PROPERTIES:
    :TASK:
    :ID:       c407f939-5ce0-4635-98e3-1a77e894bfb4
