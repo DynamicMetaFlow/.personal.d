@@ -4,9 +4,10 @@
 # git stuff
 !.gitignore
 
-#
 !personal-config.org
-!index.html
-!README.org
+!disabled.org
+
 !css
 !css/style.css
+!index.html
+!README.org

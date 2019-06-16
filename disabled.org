@@ -1,0 +1,2137 @@
+#+PROPERTY: header-args :results silent :tangle no
+#+TITLE: Disabled
+
+* DISABLED Disabled
+  :PROPERTIES:
+  :CREATED:  [2019-06-16 Sun 00:11]
+  :END:
+** DISABLED boon-hydra bindings
+ #+BEGIN_SRC emacs-lisp :tangle no
+ ;; (define-key boon-command-map (kbd "A")  'hydra-agenda/body)
+ ;; (define-key boon-command-map (kbd "W")  'hydra-window/body)
+ ;; (define-key boon-command-map (kbd "J")  'hydra-jump/body)
+ ;; (define-key boon-command-map (kbd "T")  'hydra-torus/body)
+ ;; (define-key boon-command-map (kbd "S")  'hydra-select/body)
+ ;; (define-key boon-command-map (kbd "C")  'hydra-copy/body)
+ ;; (define-key boon-command-map (kbd "Y")  'hydra-paste/body)
+ ;; (define-key boon-command-map (kbd "K")  'hydra-delete/body)
+ ;; (define-key boon-command-map (kbd "E")  'hydra-emacs/body)
+ ;; (define-key boon-command-map (kbd "N")  'hydra-narrow/body)
+ ;; (define-key boon-command-map (kbd "R")  'hydra-register/body)
+ ;; (define-key boon-command-map (kbd "G")  'hydra-git/body)
+ ;; (define-key boon-command-map (kbd "H")  'hydra-help/body)
+ #+END_SRC
+** DISABLED boon Keybindings
+ #+BEGIN_SRC emacs-lisp
+ (define-key boon-command-map (kbd "SPC") 'counsel-M-x)
+ (define-key boon-command-map (kbd "RET") 'counsel-linux-app)
+
+
+ (define-key boon-command-map (kbd "a")  'hydra-agenda/body)
+ (define-key boon-command-map (kbd "b")  '("b Buffer list" . ivy-switch-buffer))
+ (define-key boon-command-map (kbd "c")  'boon-c-god)
+ (define-key boon-command-map (kbd "C")  'hydra-copy/body)
+ (define-key boon-command-map (kbd "d")  'hydra-delete/body)
+ ; (define-key boon-command-map (kbd "e")   'hydra-emacs/body)
+ (define-key boon-command-map (kbd "f")  'hydra-file/body)
+ ;(define-key boon-command-map (kbd "g")  'hydra-bookmarks/body)
+ (define-key boon-command-map (kbd "g") '("g magit" . magit-status))
+ (define-key boon-command-map (kbd "h")  'avy-goto-char)
+ ; (define-key boon-command-map (kbd "H")   'hydra-help/body)
+ (define-key boon-command-map (kbd "i")  'my/insert-mode)
+ (define-key boon-command-map (kbd "j")  'hydra-jump/body)
+ ;(define-key boon-command-map (kbd "k"))
+ ;(define-key boon-command-map (kbd "l"))
+
+ (define-key boon-command-map (kbd "n")  'hydra-narrow/body)
+ ;(define-key boon-command-map (kbd "o")  'my/objed-mode)
+ (define-key boon-command-map (kbd "P")  'hydra-paste/body)
+ (define-key boon-command-map (kbd "q")  'kill-buffer)
+ (define-key boon-command-map (kbd "R")  'hydra-register/body)
+ (define-key boon-command-map (kbd "s")  'hydra-search/body)
+ (define-key boon-command-map (kbd "S")  'ivy-resume)
+ (define-key boon-command-map (kbd "t")  'hydra-torus/body)
+ (define-key boon-command-map (kbd "u")  'undo)
+ (define-key boon-command-map (kbd "v")  'hydra-select/body)
+ (define-key boon-command-map (kbd "w")  'hydra-window/body)
+ ;  (define-key boon-command-map (kbd "W")   'hydra-wrap/body)
+ (define-key boon-command-map (kbd "x")  'boon-x-map)
+ (define-key boon-command-map (kbd "y")  '("p paste/yank" . yank))
+ (define-key boon-command-map (kbd "z")  'ivy-resume)
+
+ (define-key global-map [escape]  'my/boon-set-command-state)
+
+
+
+ #+END_SRC
+
+** DISABLED javascript-mode
+ #+BEGIN_SRC emacs-lisp
+ (use-package js3-mode)
+ #+END_SRC
+
+** DISABLED eval-in-repl
+ #+BEGIN_SRC emacs-lisp
+ (use-package eval-in-repl)
+ #+END_SRC
+
+** DISABLED edit-indirect
+ #+BEGIN_SRC emacs-lisp
+   (use-package edit-indirect)
+ #+END_SRC
+
+** DISABLED goto-last-change
+ #+BEGIN_SRC emacs-lisp
+   (use-package goto-last-change
+     :ensure t
+     :bind
+     (:map boon-goto-map
+           ("SPC" . goto-last-change)))
+ #+END_SRC
+
+** DISABLED goto-last-point
+ #+BEGIN_SRC emacs-lisp
+   (use-package goto-last-point
+     :ensure t
+     :demand t
+     :config (goto-last-point-mode))
+ #+END_SRC
+
+** DISABLED old-code
+ #+BEGIN_SRC emacs-lisp
+ ;; (define-key org-agenda-mode-map (kbd "TAB") #'my/org-agenda-goto-narrow)
+ ;; (define-key org-agenda-mode-map (kbd "s-RET") #'my/org-agenda-switch-to)
+ (define-key org-agenda-mode-map (kbd ";") #'org-agenda-workflow)
+ (define-key org-agenda-mode-map (kbd "i") #'org-agenda-clock-in)
+ (define-key org-agenda-mode-map (kbd "I") #'org-pomodoro)
+ (define-key org-agenda-mode-map (kbd "o") #'org-agenda-clock-out)
+ (define-key org-agenda-mode-map (kbd "k") #'org-capture)
+
+ (define-key org-brain-visualize-mode-map (kbd "SPC") #'link-hint-open-link)
+ (define-key org-brain-visualize-mode-map (kbd "TAB") 'my/org-brain-goto-current)
+
+ (define-key org-brain-visualize-mode-map (kbd "s") 'org-brain-save-and-update)
+
+ (define-key org-brain-visualize-mode-map "c" 'my/org-brain-add-child)
+ (define-key org-brain-visualize-mode-map "C" 'org-brain-add-child)
+
+
+  (define-key global-map (kbd "C-1") 'bjm/org-capture-todo)
+  (define-key global-map (kbd "C-2") 'bjm/org-capture-zettel)
+  (define-key global-map (kbd "C-3") 'bjm/org-capture-event)
+  (define-key global-map (kbd "C-4") 'howm-create)
+  (define-key global-map (kbd "<f1>") 'my/org-brain-visualize-current)
+
+
+ (define-key global-map (kbd "C-2") 'bjm/org-capture-zettel)
+ (define-key global-map (kbd "C-4") 'bjm/org-capture-journal)
+
+ (define-prefix-command 'my-digit-map)
+ (global-set-key (kbd "C-2") 'my-digit-map)
+ (define-key 'my-digit-map (kbd "p") 'howm-parent-to)
+ (define-key 'my-digit-map (kbd "c") 'howm-child-to)
+ (define-key 'my-digit-map (kbd "f") 'howm-friendship-to)
+ (define-key 'my-digit-map (kbd "C") 'howm-create)
+ (define-key 'my-digit-map (kbd "2") 'bjm/org-capture-zettel)
+
+ #+END_SRC
+** DISABLED notdeft
+ #+BEGIN_SRC emacs-lisp
+ (add-to-list 'load-path "~/.emacs.d/lisp/notdeft-0.6.20190210")
+  (load "notdeft-example")
+
+ (load-file (expand-file-name
+                       "~/.emacs.d/lisp/notdeft-0.6.20190210/notdeft.el"
+                       user-emacs-directory))
+
+
+ (setq notdeft-directories '("~/org/notes"))
+ (setq notdeft-extension "org")
+
+  (defun toggle-window-dedicated ()
+         "Toggle whether the current active window is dedicated or not.
+  Code founded by peterfoldi
+  https://stackoverflow.com/questions/29332242/is-there-a-way-to-fix-window-buffer-in-emacs-for-cider-error-repl/33082302#33082302"
+    (interactive)
+    (message
+     (if (let (window (get-buffer-window (current-buffer)))
+       (set-window-dedicated-p window
+                       (not (window-dedicated-p window))))
+         "Window '%s' is dedicated"
+       "Window '%s' is normal")
+     (current-buffer)))
+
+ (defun notdeft-new-file-named (pfx title &optional data)
+   "Create a new file, prompting for a title.
+ The prefix argument PFX is as for `notdeft-new-file'.
+ Query for a TITLE when invoked as a command.
+ Initialize the file with DATA, or TITLE if not given.
+ Return the filename of the created file."
+   (interactive "P\nsNew title: ")
+   (let ((notename (concat (format-time-string "%Y-%m-%dT%H.%M.%S") (notdeft-title-to-notename title))))
+     (notdeft-sub-new-file (or data title) notename pfx)))
+
+
+ #+END_SRC
+** DISABLED deft
+ #+BEGIN_SRC emacs-lisp
+ (use-package deft
+ :commands (deft)
+ :init
+ (setq deft-directory "~/org/notes/"
+                 deft-extensions '("org" "md" "txt")
+                 deft-default-extension "org"
+                 deft-use-filename-as-title t))
+
+ (defun notdeft-new-file (pfx)
+   "Create a new file quickly.
+ Create it with an automatically generated name, one based
+ on the `notdeft-filter-string' filter string if it is non-nil.
+ With a prefix argument PFX, offer a choice of NotDeft
+ directories, when there is more than one of them.
+ With two prefix arguments, also offer a choice of filename
+ extensions when `notdeft-secondary-extensions' is non-empty.
+ Return the filename of the created file."
+   (interactive "P")
+   (let ((data (and notdeft-filter-string
+                    (concat notdeft-filter-string "\n\n")))
+         (notename
+          (and notdeft-filter-string
+               (notdeft-title-to-notename notdeft-filter-string))))
+     (notdeft-sub-new-file data (concat (format-time-string "%Y-%m-%d-%H%M ") notename)) pfx))
+
+
+ #+END_SRC
+** DISABLED eyebrowse
+ #+BEGIN_SRC emacs-lisp :tangle no
+ (setq eyebrowse-keymap-prefix (kbd "C-SPC e"))
+ (use-package eyebrowse
+   :config
+   (setq eyebrowse-new-workspace t)
+   (eyebrowse-mode t))
+
+ #+END_SRC
+** DISABLED multiple-cursors
+ #+BEGIN_SRC emacs-lisp
+ (use-package multiple-cursors
+   :commands multiple-cursors-mode
+   :config
+   (bind-keys :map mc/keymap
+              ("C-c m" . nil))
+   :bind (
+ ;         ("s-i" . mc/mark-next-like-this)
+ ;	 ("s-I" . mc/mark-previous-like-this)
+          ("C-c m e" . mc/mark-more-like-this-extended)
+          ("C-c m m" . mc/mark-all-like-this-dwim)
+          ("C-c m c" . mc/edit-lines)))
+ #+END_SRC
+** DISABLED demo-it
+ #+BEGIN_SRC emacs-lisp
+ (use-package demo-it)
+ #+END_SRC
+** DISABLED tangle
+ #+BEGIN_SRC emacs-lisp
+ (defun tangle-on-save-org-mode-file()
+   (when (equal major-mode 'org-mode)
+     (org-babel-tangle)))
+
+ (defun my/org-toggle-tangle-on-save ()
+   "Toggle tangling code blocks on save"
+   (interactive)
+   (if (get 'my/org-toggle-tangle-on-save 'state)
+       (progn
+         (message "%s" "Org tangle on save Disabled")
+         (remove-hook 'after-save-hook 'tangle-on-save-org-mode-file)
+         (put 'my/org-toggle-tangle-on-save 'state nil))
+     (progn
+       (message "%s" "Org tangle on save Enabled")
+       (add-hook 'after-save-hook 'tangle-on-save-org-mode-file)
+       (put 'my/org-toggle-tangle-on-save 'state t))))
+
+ #+END_SRC
+** DISABLED persp-mode
+ #+BEGIN_SRC emacs-lisp
+ (use-package persp-mode :demand t
+   :config
+   (setq wg-morph-on nil
+         persp-autokill-buffer-on-remove 'kill-weak
+         persp-nil-name "nil"
+         persp-nil-hidden t
+         persp-auto-save-fname "autosave"
+         persp-auto-resume-time 1
+         persp-auto-save-opt 1
+         persp-save-dir (concat dotfiles-etc-dir "workspaces/"))
+
+   (defun +workspaces*track-last-persp (switch-fun &rest args)
+     (let ((before-persp (safe-persp-name (get-current-persp)))
+           (after-persp (apply switch-fun args)))
+       (when (not (string= before-persp after-persp))
+         (setq +workspaces-last-persp before-persp))))
+   (advice-add #'persp-switch :around #'+workspaces*track-last-persp)
+   (add-hook 'my/post-init-hook #'(lambda () (persp-mode 1))))
+
+
+ (defvar +workspaces-last-persp nil
+   "A variable that contains the last accessed perspective")
+
+ (defun +workspace-exists-p (name)
+   "Returns t if NAME is the name of an existing workspace."
+   (when (symbolp name)
+     (setq name (symbol-name name)))
+   (unless (stringp name)
+     (error "Expected a string, got a %s" (type-of name)))
+   (member name (persp-names-current-frame-fast-ordered)))
+
+ (defun +workspace-switch-last ()
+   "Switches to the last workspace"
+   (interactive)
+   (if (+workspace-exists-p +workspaces-last-persp)
+       (persp-switch +workspaces-last-persp)
+     (error "No previous workspace.")))
+
+ (defun +workspace-switch-project ()
+   (interactive)
+   (ivy-read "Switch to Project Perspective: "
+             (if (projectile-project-p)
+                 (cons (abbreviate-file-name (projectile-project-root))
+                       (projectile-relevant-known-projects))
+               projectile-known-projects)
+             :action (lambda (project)
+                       (persp-switch project)
+                       (let ((projectile-completion-system 'ivy))
+                         (projectile-switch-project-by-name project)))))
+
+
+ #+END_SRC
+** DISABLED hideshow
+ #+BEGIN_SRC emacs-lisp
+ (use-package hideshow :demand t ; built-in
+   :commands (hs-minor-mode hs-toggle-hiding hs-already-hidden-p hs-hide-level hs-show-all)
+   :config
+   (add-hook 'prog-mode-hook #'hs-minor-mode)
+   (setq hs-hide-comments-when-hiding-all nil))
+ #+END_SRC
+** DISABLED neotree
+ #+BEGIN_SRC emacs-lisp
+ (use-package neotree
+   :ensure t
+   :config
+   (global-set-key "\M-n" 'neotree-toggle)
+   (setq neo-theme 'icons))
+ #+END_SRC
+** DISABLED desktop
+ #+BEGIN_SRC emacs-lisp :tangle no
+   (require 'desktop)
+
+   (setq desktop-save 1
+         desktop-load-locked-desktop t
+         desktop-dirname user-emacs-directory
+         desktop-restore-frames t
+         desktop-restore-eager 4
+         ;; Don't save remote files and/or *gpg files.
+         desktop-files-not-to-save "\\(^/[^/:]*:\\|(ftp)$\\)\\|\\(\\.gpg$\\)")
+   (desktop-save-mode 1)
+
+
+ #+END_SRC
+** DISABLED dashboard
+ #+BEGIN_SRC emacs-lisp
+ (defun dashboard-setup-startup-hook ()
+   "Setup post initialization hooks.
+ If a command line argument is provided,
+ assume a filename and skip displaying Dashboard."
+   (if (< (length command-line-args) 2 )
+       (progn
+         (add-hook 'after-init-hook (lambda ()
+                                      ;; Display useful lists of items
+                                      (dashboard-insert-startupify-lists))))))
+
+ (defun dashboard-insert-custom (list-size)
+   (let ((all-the-icons-scale-factor 2.00)
+         (all-the-icons-default-adjust -0.00))
+     (mapc (lambda (btn)
+             (when btn
+               (cl-destructuring-bind (label icon fn) btn
+                 (insert
+                  (with-temp-buffer
+                    (insert-text-button
+                     (concat (all-the-icons-faicon  icon :face 'font-lock-keyword-face)
+                             (propertize (concat " " label) 'face 'font-lock-keyword-face))
+                     'action `(lambda (_) ,fn)
+                     'follow-link t)
+                    (dashboard-center (- dashboard--width 2) (buffer-string)))
+                  "\n\n"))))
+           `(
+
+             ("Collect Thoughts" "inbox"
+              (call-interactively (or (command-remapping #'counsel-org-capture)
+                                      #'counsel-org-capture)))
+
+             ("Process Thoughts" "long-arrow-right"
+              (call-interactively (or (command-remapping #'org-boxes-workflow)
+                                      #'org-boxes-workflow)))
+
+             ("Projects" "tasks"
+              (call-interactively (or (command-remapping #'my/projects)
+                                      #'my/projects)))
+             ("Actions" "check-square"
+              (call-interactively (or (command-remapping #'my/actions)
+                                      #'my/actions)))
+             ("Next Tasks" "clipboard"
+              (call-interactively (or (command-remapping #'my/next-tasks)
+                                      #'my/next-tasks)))
+             ("Delegated" "user"
+              (call-interactively (or (command-remapping #'my/delegated)
+                                      #'my/delegated)))
+             ("Waiting" "hourglass-end"
+              (call-interactively (or (command-remapping #'my/waiting)
+                                      #'my/waiting)))
+             ("Someday/Maybe" "question-circle"
+              (call-interactively (or (command-remapping #'my/someday)
+                                      #'my/someday)))
+             ("Scheduled" "calendar"
+              (call-interactively (or (command-remapping #'my/scheduled)
+                                      #'my/scheduled)))
+             ("Done" "check"
+              (call-interactively (or (command-remapping #'my/completed)
+                                      #'my/completed)))
+             ("Reference" "archive"
+              (call-interactively (or (command-remapping #'howm-list-all)
+                                      #'howm-list-all)))
+
+
+             ))))
+
+ (defun go-to-dashboard ()
+   (interactive)
+   (switch-to-buffer "*dashboard*"))
+
+   (global-set-key (kbd "<f12>") 'go-to-dashboard)
+
+ ;  (define-key dashboard-mode-map "/" #'hui-search-web)
+
+
+
+
+ #+END_SRC
+** DISABLED elisp-demos
+ #+BEGIN_SRC emacs-lisp
+ (use-package elisp-demos
+ :config
+ (advice-add 'describe-function-1 :after #'elisp-demos-advice-describe-function-1)
+ (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update)
+ )
+ #+END_SRC
+** DISABLED org-noter
+ #+BEGIN_SRC emacs-lisp
+ (setq org-noter-notes-search-path '("~/org/notes"))
+ (setq org-noter-always-create-frame nil)
+ (setq org-noter-notes-window-location nil)
+ (setq org-noter-default-notes-file-names '("Notes.org"))
+ #+END_SRC
+
+** DISABLED org-brain
+ #+BEGIN_SRC emacs-lisp
+ (use-package org-brain
+   :ensure t
+   :config
+   (setq org-brain-path "~/org/notes"
+         org-id-track-globally t
+         org-id-locations-file "~/.emacs.d/.org-id-locations"
+         org-brain-visualize-default-choices 'root
+         org-brain-wander-interval 6
+         org-brain-data-file "/home/alexander/org/notes/.org-brain-data.el")
+
+   (defun my/brain ()
+     (interactive)
+     (org-brain-visualize "zettelkasten")
+     (delete-other-windows))
+
+   (defun my/org-add-ids-to-headlines-in-file ()
+     "Add ID properties to all headlines in the current file which
+      do not already have one."
+     (interactive)
+     (org-map-entries 'org-id-get-create))
+
+   (defun org-brain-entry-at-pt ()
+     "Get current org-brain entry.
+     In `org-mode' this is the current headline, or the file.
+     In `org-brain-visualize' just return `org-brain--vis-entry'."
+     (cond ((eq major-mode 'org-mode)
+            (if (ignore-errors (org-get-heading))
+                (if-let ((id (org-entry-get nil "ID")))
+                    (org-brain-entry-from-id id)
+                  (error "Current headline have no ID"))
+              (org-brain-path-entry-name (buffer-file-name))))
+           ((eq major-mode 'org-brain-visualize-mode)
+            org-brain--vis-entry)
+           (t
+            (error "Not in org-mode or org-brain-visualize"))))
+
+   (defun my/refile-to-zettelkasten (entry)
+     "Convert headline ENTRY to a file entry.
+     Prompt for name of the new file.
+     If interactive, also prompt for ENTRY."
+     (interactive (list (org-brain-entry-at-pt)))
+     (let* (level
+            (title (org-brain-title entry))
+            (new-entry (concat (format-time-string "%Y-%m-%dT%H.%M.%S")))
+            (path (org-brain-entry-path new-entry)))
+       (when (file-exists-p path)
+         (error "That file already exists"))
+       (let ((parents (org-brain-parents entry))
+             (external-parents (org-brain--linked-property-entries entry "PARENTS"))
+             (children (org-brain--linked-property-entries entry "CHILDREN"))
+             (friends (org-brain-friends entry))
+             (hl-text (org-with-point-at (org-brain-entry-marker entry)
+                        (setq level (org-outline-level))
+                        (org-get-entry))))
+         (dolist (parent external-parents)
+           (org-brain-remove-relationship parent entry))
+         (dolist (child children)
+           (org-brain-remove-relationship entry child))
+         (dolist (friend friends)
+           (org-brain-remove-friendship entry friend))
+         (org-with-point-at (org-brain-entry-marker entry)
+           (org-cut-subtree)
+           (pop kill-ring)
+           (save-buffer))
+         (make-directory (file-name-directory path) t)
+         (with-temp-file path
+           (insert ":HIDDEN:\n")
+           (insert "#+PARENTS: \n")
+           (insert "#+CHILDREN: \n")
+           (insert "#+FRIENDS: \n")
+           (insert ":END: \n")
+           (insert (format "#+TITLE: %s\n" title))
+           (insert (concat "#+DATE: " (format-time-string "[%Y-%m-%d %H:%M]\n")))
+           (delay-mode-hooks
+             (org-mode)
+             (goto-char (point-min))
+             (forward-line 8)
+             (insert (format "#+KEYWORDS: \n\n"))
+             (forward-line 9)
+             (insert (format "%s\n" hl-text))
+             (insert "\n")
+             (goto-char (point-min))
+             (re-search-forward org-property-drawer-re)
+             (replace-match "")
+             (goto-char (point-max))
+             (let ((level-regex "^"))
+               (dotimes (_i (1+ level))
+                 (setq level-regex (concat level-regex "\\*")))
+               (setq level-regex (concat level-regex " "))
+               (while (re-search-backward level-regex nil t)
+                 (dotimes (_i level) (org-promote-subtree))))))
+         (when (equal entry org-brain--vis-entry)
+           (setq org-brain--vis-entry new-entry))
+         (when (member entry org-brain-pins)
+           (org-brain-pin entry -1)
+           (org-brain-pin new-entry 1)))))
+
+   (defun my/headline-to-file (entry)
+     "Convert headline ENTRY to a file entry.
+      Prompt for name of the new file.
+      If interactive, also prompt for ENTRY."
+     (interactive (list (org-brain-entry-at-pt)))
+     (let* (level
+            (title (org-brain-title entry))
+            (new-entry (concat (format-time-string "%Y-%m-%dT%H.%M.%S")))
+            (path (org-brain-entry-path new-entry)))
+       (when (file-exists-p path)
+         (error "That file already exists"))
+       (let ((parents (org-brain-parents entry))
+             (external-parents (org-brain--linked-property-entries entry "PARENTS"))
+             (children (org-brain--linked-property-entries entry "CHILDREN"))
+             (friends (org-brain-friends entry))
+             (hl-text (org-with-point-at (org-brain-entry-marker entry)
+                        (setq level (org-outline-level))
+                        (org-get-entry))))
+         (dolist (parent external-parents)
+           (org-brain-remove-relationship parent entry))
+         (dolist (child children)
+           (org-brain-remove-relationship entry child))
+         (dolist (friend friends)
+           (org-brain-remove-friendship entry friend))
+         (org-with-point-at (org-brain-entry-marker entry)
+           (org-cut-subtree)
+           (pop kill-ring)
+           (save-buffer))
+         (make-directory (file-name-directory path) t)
+         (with-temp-file path
+           (insert (format "#+TITLE: %s\n" title))
+           (insert (concat "#+DATE: " (format-time-string "[%Y-%m-%d %H:%M]\n")))
+           (delay-mode-hooks
+             (org-mode)
+             (goto-char (point-min))
+             (forward-line 3)
+             (insert (format "#+KEYWORDS: \n\n"))
+             (forward-line 4)
+             (insert (format "%s\n" hl-text))
+             (insert "\n")
+             (goto-char (point-min))
+             (re-search-forward org-property-drawer-re)
+             (replace-match "")
+             (goto-char (point-max))
+             (let ((level-regex "^"))
+               (dotimes (_i (1+ level))
+                 (setq level-regex (concat level-regex "\\*")))
+               (setq level-regex (concat level-regex " "))
+               (while (re-search-backward level-regex nil t)
+                 (dotimes (_i level) (org-promote-subtree))))))
+         (dolist (parent parents)
+           (org-brain-add-relationship parent new-entry))
+         (dolist (child children)
+           (org-brain-add-relationship new-entry child))
+         (dolist (friend friends)
+           (org-brain--internal-add-friendship new-entry friend))
+         (when (equal entry org-brain--vis-entry)
+           (setq org-brain--vis-entry new-entry))
+         (when (member entry org-brain-pins)
+           (org-brain-pin entry -1)
+           (org-brain-pin new-entry 1)))
+       ))
+
+   (defun my/org-add-ids-to-headlines-in-file ()
+     "Add ID properties to all headlines in the current file which
+      do not already have one."
+     (interactive)
+     (org-map-entries 'org-id-get-create))
+
+ (defun my/org-brain-visualize-current ()
+ (interactive)
+ (org-brain-visualize (org-brain-entry-at-pt))
+ (delete-other-windows))
+
+
+   (setq org-brain-visualize-default-choices 'all)
+   (setq org-brain-title-max-length 100)
+
+   (defun my/org-brain-goto-current ()
+     "Jumps to a specific task."
+     (interactive)
+     (call-interactively 'org-brain-goto-current)
+     (org-narrow-to-subtree)
+     (forward-line 5))
+
+
+   (defun org-brain-save-and-update ()
+     (interactive)
+     (org-brain-update-id-locations)
+     (org-save-all-org-buffers)
+     (org-brain--revert-if-visualizing))
+
+   (defun org-brain-cliplink-resource ()
+     "Add a URL from the clipboard as an org-brain resource.
+      Suggest the URL title as a description for resource."
+     (interactive)
+     (let ((url (org-cliplink-clipboard-content)))
+       (org-brain-add-resource
+        url
+        (org-cliplink-retrieve-title-synchronously url)
+        t)))
+
+   (defun my/org-brain-add-child-headline ()
+     "Create a new internal child headline to entry at point.
+     Several children can be created, by using `org-brain-entry-separator'."
+     (interactive)
+     (let ((entry (org-brain-entry-at-pt))
+           (child-name-string (read-string "Add child headline: ")))
+       (dolist (child-name (split-string child-name-string org-brain-entry-separator))
+         (when (equal (length child-name) 0)
+           (error "Child name must be at least 1 character"))
+         (if (org-brain-filep entry)
+             ;; File entry
+             (with-current-buffer (find-file-noselect (org-brain-entry-path entry))
+               (goto-char (point-min))
+               (if (re-search-forward (concat "^\\(" org-outline-regexp "\\)") nil t)
+                   (progn
+                     (beginning-of-line)
+                     (open-line 1))
+                 (goto-char (point-max)))
+               (insert (concat "* " child-name))
+               (insert (concat "\n"))
+               (org-id-get-create)
+               (insert (concat "\n\n"))
+               (insert (concat "Related Notes:\n\n"))
+               (insert (concat "\n\n\n"))
+               (insert (concat "Reference:\n\n"))
+               (run-hooks 'org-brain-new-entry-hook)
+               (save-buffer))
+           ;; Headline entry
+           (org-with-point-at (org-brain-entry-marker entry)
+             (if (org-goto-first-child)
+                 (open-line 1)
+               (org-end-of-subtree t))
+             (org-insert-heading nil t)
+             (org-do-demote)
+             (insert child-name)
+             (org-id-get-create)
+             (run-hooks 'org-brain-new-entry-hook)
+             (save-buffer)))))
+     (org-brain--revert-if-visualizing))
+
+
+   (setq org-brain-visualize-mode-hook #'delete-other-windows)
+
+
+   (defun org-brain-open-org-noter (entry)
+     "Open `org-noter' on the ENTRY.
+      If run interactively, get ENTRY from context."
+     (interactive (list (org-brain-entry-at-pt)))
+     (org-with-point-at (org-brain-entry-marker entry)
+       (org-noter)))
+
+   (defun org-brain-set-tags (entry)
+     "Modify the ENTRY tags.
+     Use `org-set-tags' on headline ENTRY.
+     Instead sets #+KEYWORDS on file ENTRY.
+     If run interactively, get ENTRY from context."
+     (interactive (list (org-brain-entry-at-pt)))
+     (if (org-brain-filep entry)
+         (with-current-buffer (find-file-noselect (org-brain-entry-path entry))
+           (let ((tag-str (read-string "KEYWORDS: "
+                                       (mapconcat #'identity org-file-tags ":"))))
+             (goto-char (point-min))
+             (when (assoc "KEYWORDS" (org-brain-keywords entry))
+               (re-search-forward "^#\\+KEYWORDS:")
+               (kill-whole-line))
+             (insert (format "#+KEYWORDS: %s\n" tag-str)))
+           ;; From org.el
+           (let ((org-inhibit-startup-visibility-stuff t)
+                 (org-startup-align-all-tables nil))
+             (when (boundp 'org-table-coordinate-overlays)
+               (mapc #'delete-overlay org-table-coordinate-overlays)
+               (setq org-table-coordinate-overlays nil))
+             (org-save-outline-visibility 'use-markers (org-mode-restart)))
+           (save-buffer))
+       (org-with-point-at (org-brain-entry-marker entry)
+         (org-set-tags)
+         (save-buffer)))
+     (org-brain--revert-if-visualizing))
+
+   (defun my/org-brain-add-child ()
+     "Add external child to entry at point.
+     If chosen child entry doesn't exist, create it as a new file.
+     Several children can be added, by using `org-brain-entry-separator'."
+     (interactive)
+     (let ((entry (org-brain-entry-at-pt))
+           (header (read-string "Add child: "))
+           (file (format-time-string "%Y-%m-%dT%H.%M.%S"))
+           (date (format-time-string "%Y-%m-%dT%H.%M.%S")))
+       (my/org-brain-add-relationship entry file header date))
+     (org-brain--revert-if-visualizing))
+
+   (defun my/org-brain-add-relationship (parent child title date)
+     "Add external relationship between PARENT and CHILD."
+     (when (equal parent child)
+       (error "An entry can't be a parent/child to itself"))
+     (unless (member child (org-brain-children parent))
+       (if (org-brain-filep parent)
+           ;; Parent = File
+           (with-current-buffer (find-file-noselect (org-brain-entry-path parent))
+             (goto-char (point-min))
+             (if (re-search-forward "^#\\+CHILDREN:.*$" nil t)
+                 (insert (concat " " (org-brain-entry-identifier child)))
+               (insert (concat "#+CHILDREN: "
+                               (org-brain-entry-identifier child)
+                               "\n\n")))
+             (save-buffer))
+         ;; Parent = Headline
+         (org-entry-add-to-multivalued-property (org-brain-entry-marker parent)
+                                                "CHILDREN"
+                                                (org-brain-entry-identifier child)))
+       (if (org-brain-filep child)
+           ;; Child = File
+           (with-current-buffer (find-file-noselect (org-brain-entry-path child))
+             (goto-char (point-min))
+             (if (re-search-forward "^#\\+PARENTS:.*$" nil t)
+                 (insert (concat " " (org-brain-entry-identifier parent)))
+               (insert (concat "#+PARENTS: "
+                               (org-brain-entry-identifier parent)
+                               "\n\n"))
+
+               (insert (concat"#+TITLE: " title ))
+               (insert "\n")
+               (insert (concat ">>>" (file-name-base buffer-file-name)))
+               (insert "\n")
+               (insert (concat "#+DATE: " (format-time-string "[%Y-%m-%d %H:%M]\n")))
+               (insert "#+KEYWORDS: ")
+               (insert "\n\n\n\n\n\n")
+               (insert "Related:")
+               (insert "\n\n\n\n")
+               (insert "References:")
+               )
+             (save-buffer))
+         ;; Child = Headline
+         (org-entry-add-to-multivalued-property (org-brain-entry-marker child)
+                                                "PARENTS"
+                                                (org-brain-entry-identifier parent)))))
+
+   (defun my/org-brain-visualize-current ()
+     (interactive)
+     (org-brain-visualize (org-brain-entry-at-pt))
+     (delete-other-windows))
+
+   (defun my/org-brain-goto-current-main ()
+     (interactive)
+     (org-brain-goto-current (org-brain-entry-at-pt))
+     (delete-other-windows))
+
+   )
+ #+END_SRC
+** DISABLED memacs
+ #+BEGIN_SRC emacs-lisp
+ (defun memacs-chrome ()
+ (interactive)
+ (shell-command "~/bin/memacs-chrome.sh"))
+
+ (defun my/memacs-org-agenda ()
+    "Opens an org-agenda with activated archive"
+    (interactive)
+    (memacs-chrome)
+    (setq org-agenda-files "~/org/meta/web.org")
+    (org-agenda-list)
+    ;;(call-interactively 'org-agenda-log-mode)
+    (org-agenda-log-mode '(4))
+    (call-interactively 'org-agenda-archives-mode)
+    (org-agenda-archives-mode 'files)
+    )
+
+
+ #+END_SRC
+** DISABLED writeroom-mode
+ #+BEGIN_SRC emacs-lisp
+ (use-package writeroom-mode :ensure t)
+ #+END_SRC
+
+** DISABLED annotate
+ #+BEGIN_SRC emacs-lisp
+ (use-package annotate)
+ #+END_SRC
+** DISABLED htmlize
+ #+BEGIN_SRC emacs-lisp
+ (use-package htmlize)
+ #+END_SRC
+** DISABLED ripgrep
+ #+BEGIN_SRC emacs-lisp
+   (use-package rg
+     :ensure t
+     :init
+     (rg-enable-default-bindings))
+
+   (use-package dumb-jump
+     :config
+     (setq dumb-jump-selector 'ivy)
+     (setq dumb-jump-prefer-searcher 'rg))
+
+ #+END_SRC
+** DISABLED ace-link
+ #+BEGIN_SRC emacs-lisp
+ (use-package ace-link
+   :demand t
+   :config (ace-link-setup-default))
+ #+END_SRC
+
+** DISABLED link-hint
+ #+BEGIN_SRC emacs-lisp
+ (use-package link-hint :ensure t)
+ #+END_SRC
+** DISABLED use-package-hydra
+ #+BEGIN_SRC emacs-lisp
+ (use-package use-package-hydra
+   :ensure t)
+ #+END_SRC
+
+** DISABLED major-mode-hydra
+ #+BEGIN_SRC emacs-lisp
+ (use-package major-mode-hydra
+   :bind
+   ("C-M-m" . major-mode-hydra))
+
+ (setq major-mode-hydra-title-generator
+       '(lambda (mode)
+          (s-concat "n"
+                    (s-repeat 10 " ")
+                    (all-the-icons-icon-for-mode mode :v-adjust 0.05)
+                    " "
+                    (symbol-name mode)
+                    " commands")))
+
+
+ #+END_SRC
+** DISABLED General
+*** DISABLED package
+ #+BEGIN_SRC emacs-lisp
+   (use-package general
+     :after which-key)
+ #+END_SRC
+*** DISABLED configuration
+  #+BEGIN_SRC emacs-lisp
+     (general-create-definer tyrant-def
+       :prefix "C-SPC"
+       :global-prefix "SPC"
+       :keymaps 'boon-moves-map)
+
+     (general-create-definer despot-def
+       :prefix "C-SPC"
+       :global-prefix "SPC"
+       :keymaps 'boon-moves-map)
+
+     (general-define-key
+       :keymaps 'key-translation-map
+       "ESC" (kbd "C-g"))
+
+     (tyrant-def
+
+       ""     nil
+       "SPC" 'counsel-M-x
+       "RET" 'counsel-linux-app
+       "@"  'hycontrol-windows-grid
+       "0"  'delete-window
+       "1"  'delete-other-windows
+       "2"  'split-window-below
+       "3"  'split-window-right
+
+       ;; Buffer operations
+       "b"   '(:ignore t :which-key "buffer")
+       "bb"  'counsel-switch-buffer
+       "bB"  'counsel-switch-buffer-other-window
+       "bk"  'kill-this-buffer
+       "bn"  'next-buffer
+       "bp"  'previous-buffer
+       "bi"  'ibuffer
+
+       ;; Window operations
+       "w"   '(:ignore t :which-key "window")
+       "wu"  'winner-undo
+       "wr"  'winner-redo
+
+
+       ;; File operations
+       "f"  '(:ignore t :which-key "files")
+       "fj"  'dired-jump
+       "fl"  'find-file-literally
+       "fr"  'crux-rename-file-and-buffer
+       "fw"  'write-file
+       "fs"  'save-buffer
+
+       ;; Applications
+       "a"   '(:ignore t :which-key "applications")
+       "ad"  'dired
+       "ac"  'calendar
+       "ag" 'deadgrep
+
+       "ap" '(:keymap projectile-command-map :wk "projectile")
+
+       )
+  #+END_SRC
+** DISABLED boxquote
+ #+BEGIN_SRC emacs-lisp
+ (use-package boxquote
+   :ensure t
+   :defer t
+   :config
+   (setq-default  boxquote-bottom-corner "╰"      ; U+2570
+                  boxquote-side          "│ "     ; U+2572 + space
+                  boxquote-top-and-tail  "────"   ; U+2500 (×4)
+                  boxquote-top-corner    "╭")     ; U+256F
+   (when (package-installed-p 'hydra)
+     (eval-and-compile
+       (defhydra hydra-boxquote (:color blue :hint nil)
+        "
+                                                                     ╭──────────┐
+   Text           External           Apropos         Do              │ Boxquote │
+ ╭───────────────────────────────────────────────────────────────────┴──────────╯
+   [_r_] region        [_f_] file      [_K_] describe-key        [_t_] title
+   [_p_] paragraph     [_b_] buffer    [_F_] describe-function   [_u_] unbox
+   [_a_] buffer        [_s_] shell     [_V_] describe-variable   [_w_] fill-paragraph
+   [_e_] text           ^ ^            [_W_] where-is            [_n_] narrow
+   [_d_] defun         [_y_] yank       ^ ^                      [_c_] narrow to content
+   [_q_] boxquote      [_Y_] yanked     ^ ^                      [_x_] kill
+ --------------------------------------------------------------------------------
+        "
+       ("<esc>" nil "quit")
+       ("x" boxquote-kill)
+       ("Y" boxquote-yank)
+       ("e" boxquote-text)
+       ("u" boxquote-unbox)
+       ("d" boxquote-defun)
+       ("t" boxquote-title)
+       ("r" boxquote-region)
+       ("a" boxquote-buffer)
+       ("q" boxquote-boxquote)
+       ("W" boxquote-where-is)
+       ("p" boxquote-paragraph)
+       ("f" boxquote-insert-file)
+       ("K" boxquote-describe-key)
+       ("s" boxquote-shell-command)
+       ("b" boxquote-insert-buffer)
+       ("y" boxquote-kill-ring-save)
+       ("w" boxquote-fill-paragraph)
+       ("F" boxquote-describe-function)
+       ("V" boxquote-describe-variable)
+       ("n" boxquote-narrow-to-boxquote)
+       ("c" boxquote-narrow-to-boxquote-content)))))
+
+ #+END_SRC
+** DISABLED spray
+ #+BEGIN_SRC emacs-lisp
+   (use-package spray :ensure t)
+ #+END_SRC
+** DISABLED flycheck
+ #+BEGIN_SRC emacs-lisp
+ (defhydra hydra-flycheck (:color blue :hint nil :inherit (hydra-common/heads)
+                                  :pre (progn
+                                         (exwm-input-line-mode))
+                                  :post (progn
+                                          (exwm-input-char-mode)))
+
+
+   "
+                                                                     ╭──────────┐
+    Navigate          Show Errors                  Do                │ Flycheck │
+ ╭───────────────────────────────────────────────────────────────────┴──────────╯
+    ^_p_^revious     [_l_] list errors           [_t_] toggle Flycheck
+       ^^↑^^         [_d_] clear all errors      [_c_] select checker
+     ^_f_^irst        ^ ^                        [_r_] run via compile
+       ^^↓^^          ^ ^                        [_h_] describe checker
+     ^_n_^ext
+ --------------------------------------------------------------------------------
+       "
+   ("c" flycheck-select-checker)
+   ("h" flycheck-describe-checker)
+   ("d" flycheck-clear)
+   ("f" flycheck-first-error)
+   ("l" flycheck-list-errors)
+   ("n" flycheck-next-error :color red)
+   ("p" flycheck-previous-error :color red)
+   ("r" flycheck-compile)
+   ("t" flycheck-mode))
+ #+END_SRC
+** DISABLED boon
+*** DISABLED setup
+ #+BEGIN_SRC emacs-lisp
+     (use-package boon
+       :config
+       (require 'boon-qwerty)
+       (boon-mode)
+
+   )
+ #+END_SRC
+*** DISABLED boon-objed
+ #+BEGIN_SRC emacs-lisp
+   ;; (defvar boon-objed-map (make-sparse-keymap))
+   ;; (append boon-mode-map-alist (cons 'boon-objed-state boon-objed-map))
+
+   (defvar-local boon-objed-state nil "Non-nil when boon objed mode is activated.")
+
+   (defun boon-reset-all-mode-states ()
+     (interactive)
+     (mapcar (lambda (boon-mode)
+               (setq boon-mode nil)) boon-mode-map-alist))
+
+
+
+
+   (defun boon-set-objed-state ()
+     "Switch to objed state."
+     (boon-set-state 'boon-objed-state))
+
+   (setq boon-key-list '
+         ((org-mode . (message "%s" "command from org mode"))
+          (lisp-mode . (message "%s" "command from lisp mode"))
+          (python-mode . (message "%s" "command from python mode"))))
+ #+END_SRC
+*** DISABLED boon-major-mode
+ #+BEGIN_SRC emacs-lisp
+   (defun boon-detect-mode (boon-mode-map)
+     (let ((boon-mode-command (cdr (assoc major-mode boon-mode-map))))
+       (if boon-mode-command (apply boon-mode-command))))
+
+   (setq boon-major-mode-hydra-list '
+         ((org-mode . (hydra-org/body))
+          (emacs-lisp-mode . (hydra-lisp/body))
+          (js2-mode . (hydra-javascript/body))
+          (json-mode . (hydra-json/body))
+          (sql-mode . (hydra-sql/body))
+          (css-mode . (hydra-css/body))
+          (scss-mode . (hydra-scss/body))
+          (javascript-mode . (hydra-javascript/body))
+          (yaml-mode . (hydra-yaml/body))
+          (c++-mode . (hydra-c++/body))
+          (web-mode . (hydra-web/body))
+          (html-mode . (hydra-html/body))
+          (exwm-mode . (hydra-exwm/body))
+          (python-mode . (hydra-python/body))))
+
+   (defun boon-select-major-mode (boon-mode-map)
+     (let ((boon-mode-command (cdr (assoc major-mode boon-mode-map))))
+       (if boon-mode-command (apply boon-mode-command))))
+
+   (defun boon-mode-hydra ()
+     (interactive)
+     (boon-select-major-mode boon-major-mode-hydra-list))
+
+   (define-key boon-command-map (kbd "SPC")   'hydra-master/body)
+   (define-key boon-command-map (kbd "RET")   'counsel-linux-app)
+
+   (define-key boon-command-map  (kbd "m")   'boon-mode-hydra)
+
+   (define-key boon-command-map (kbd "5")     'hydra-narrow/body)
+   (define-key boon-command-map (kbd "8")     'objed-mode)
+
+   (define-key boon-command-map (kbd "g")     'hydra-jump/body)
+   (define-key boon-command-map (kbd "G")     'hydra-goto/body)
+
+   (define-key boon-command-map (kbd "r")     'hydra-search/body)
+   (define-key boon-command-map (kbd "b")     'hydra-register/body)
+
+   (define-key boon-command-map (kbd "/")     'hui-search-web)
+   (define-key boon-command-map (kbd "F")     'my/exwm-counsel-yank-pop)
+   (define-key boon-command-map (kbd "H")     'avy-goto-word-1)
+   (define-key boon-command-map (kbd "h")     'avy-goto-char)
+
+ #+END_SRC
+*** DISABLED boon-special
+ #+BEGIN_SRC emacs-lisp
+   (custom-set-variables
+    '(boon-special-mode-list
+      (quote
+       (
+        magit-mode
+        magit-popup-mode
+        debugger-mode
+        git-rebase-mode
+        help-mode
+        org-agenda-mode
+        ,,*dashboard*
+        ))))
+
+
+ #+END_SRC
+
+** DISABLED google-translate
+ #+BEGIN_SRC emacs-lisp
+ (use-package google-translate)
+ #+END_SRC
+** DISABLED shackle
+ #+BEGIN_SRC emacs-lisp
+ (use-package shackle
+   :config
+   (setq shackle-default-rule '(:same t))
+   (shackle-mode))
+
+ #+END_SRC
+** DISABLED telephone-line
+ #+BEGIN_SRC emacs-lisp
+   (use-package telephone-line
+     :config
+     (telephone-line-defsegment my-vc-info ()
+     (when vc-mode
+     (cond
+     ((string-match "Git[:-]" vc-mode)
+     (let ((branch (mapconcat 'concat (cdr (split-string vc-mode "[:-]")) "-")))
+     (concat "" (format " %s" branch))))
+     ((string-match "SVN-" vc-mode)
+     (let ((revision (cadr (split-string vc-mode "-"))))
+     (concat "" (format "SVN-%s" revision))))
+     (t (format "%s" vc-mode)))))
+
+     (telephone-line-defsegment* telephone-line-boon-mode-segment ()
+          (let ((tag (cond
+                      (boon-command-state  "CMD")
+                      (boon-insert-state   "INS")
+                      (boon-special-state  "SPC")
+                      (boon-objed-state    "OBJ")
+                      )))
+            (if telephone-line-evil-use-short-tag
+                (seq-take tag 1)
+              tag)))
+
+
+     ;; (telephone-line-defsegment* my-airline-position-segment (&optional lines columns)
+     ;;   (let* ((l (number-to-string (if lines lines 1)))
+     ;;          (c (number-to-string (if columns columns 2))))
+     ;;     (if (eq major-mode 'paradox-menu-mode)
+     ;;         (telephone-line-raw mode-line-front-space t)
+     ;;         (concat " " "%" l "l:%" c "c"))))
+
+     ;; (setq tel
+         (setq telephone-line-lhs
+           '((evil   . (telephone-line-boon-mode-segment))
+             (accent . (my-vc-info
+                        telephone-line-process-segment))
+             (nil    . (telephone-line-buffer-segment
+                        telephone-line-projectile-segment))))
+
+     (setq telephone-line-rhs
+           '((nil    . (telephone-line-flycheck-segment
+                        telephone-line-misc-info-segment))
+
+             (accent . (telephone-line-major-mode-segment))
+             (nil    . (telephone-line-hud-segment))))
+                        ;; my-airline-position-segment))))
+
+     (setq display-time-format "%l:%M %p")
+     (setq display-time-default-load-average nil)
+     (setq display-time-use-mail-icon t)
+     (setq display-time-mail-file t)
+
+     (display-time-mode t)
+
+     (telephone-line-mode 1))
+ #+END_SRC
+** DISABLED dashboard
+ #+BEGIN_SRC emacs-lisp
+  (use-package dashboard
+    :init
+    ;(dashboard-setup-startup-hook)
+    :config
+    (setq dashboard-center-content t)
+    (setq dashboard-startup-banner ()  )
+  ;  (add-to-list 'dashboard-items '(agenda) t)
+    (setq dashboard-items '())
+
+  (add-to-list 'dashboard-item-generators  '(custom . dashboard-insert-custom))
+  (add-to-list 'dashboard-items '(custom) t)
+
+      (defvar all-the-icons-scale-factor)
+  (defvar all-the-icons-default-adjust)
+  (defun dashboard-insert-custom (list-size)
+    (let ((all-the-icons-scale-factor 2.00)
+          (all-the-icons-default-adjust -0.00))
+      (mapc (lambda (btn)
+              (when btn
+                (cl-destructuring-bind (label icon fn) btn
+                  (insert
+                   (with-temp-buffer
+                     (insert-text-button
+                      (concat (all-the-icons-octicon icon :face 'font-lock-keyword-face)
+                              (propertize (concat " " label) 'face 'font-lock-keyword-face))
+                      'action `(lambda (_) ,fn)
+                      'follow-link t)
+                     (dashboard-center (- dashboard--width 2) (buffer-string)))
+                   "\n\n"))))
+            `( ("Open project" "briefcase"
+               (call-interactively (or (command-remapping #'projectile-switch-project)
+                                       #'projectile-switch-project)))
+
+               ("Bookmarks" "bookmark"
+               (call-interactively (or (command-remapping #'bookmark-jump)
+                                       #'bookmark-jump)))
+
+               ,(when (fboundp 'org-agenda-list)
+               '("Agenda for this week" "calendar"
+                 (call-interactively #'org-agenda-list)))
+
+
+               ("Capture" "comment"
+                (call-interactively (or (command-remapping #'org-capture)
+                                        #'org-capture)))
+            ))))
+
+
+  (defvar dashboard--width 80)
+  (defvar dashboard--height 0)
+  (defvar dashboard--old-fringe-indicator fringe-indicator-alist)
+  (defun dashboard-center (len s)
+    (concat (make-string (ceiling (max 0 (- len (length s))) 2) ? )
+            s))
+
+
+  (defun avy-dashboard-button (char &optional arg)
+      "Jump to the currently visible CHAR.
+    The window scope is determined by `avy-all-windows' (ARG negates it)."
+      (interactive (list (read-char "char: " t)
+                         current-prefix-arg))
+
+      (avy-with avy-goto-char
+        (avy-jump
+         (if (= 13 char)
+             "\n"
+           (regexp-quote (string char)))
+         :window-flip arg))
+      (push-button arg))
+
+  (define-key dashboard-mode-map "n" #'dashboard/next-button)
+  (define-key dashboard-mode-map "p" #'dashboard/previous-button)
+
+  (define-key dashboard-mode-map [right] #'dashboard/next-button)
+  (define-key dashboard-mode-map [left] #'dashboard/previous-button)
+  (define-key dashboard-mode-map [down] #'dashboard/next-button)
+  (define-key dashboard-mode-map [up] #'dashboard/previous-button)
+
+
+  (define-key dashboard-mode-map "s" #'org-save-all-org-buffers)
+  (define-key dashboard-mode-map [tab] #'avy-dashboard-button)
+
+
+  (define-derived-mode dashboard-mode special-mode
+    (format "Dashboard")
+    "Major mode for the BMACS dashboard buffer."
+    (read-only-mode +1)
+    (global-linum-mode -1)
+    (page-break-lines-mode +1)
+    (setq truncate-lines t)
+    (setq whitespace-style nil)
+    (setq global-whitespace-mode nil)
+    (setq whitespace-mode nil)
+    (setq electric-indent-mode -1)
+    (setq show-trailing-whitespace nil)
+
+    (cl-loop for (car . _cdr) in fringe-indicator-alist
+             collect (cons car nil) into alist
+             finally do (setq fringe-indicator-alist alist)))
+
+  (defun dashboard/next-button ()
+    (interactive)
+    (ignore-errors (goto-char (next-button (point)))))
+  (defun dashboard/previous-button ()
+    (interactive)
+    (ignore-errors (goto-char (previous-button (point))))))
+
+ #+END_SRC
+
+** DISABLED org-brain
+ #+BEGIN_SRC emacs-lisp
+  (use-package org-brain
+    :config
+    (setq org-id-track-globally t)
+    (setq org-id-locations-file "~/.emacs.d/.org-id-locations")
+    (setq org-brain-visualize-default-choices 'all)
+    (setq org-brain-title-max-length 12))
+
+ #+END_SRC
+** DISABLED org-web-tools
+ #+BEGIN_SRC emacs-lisp
+  (use-package org-web-tools
+  :init
+  (setq org-web-tools-attach-archive-retry 15))
+
+ #+END_SRC
+** DISABLED key-chord
+ #+BEGIN_SRC emacs-lisp
+(use-package key-chord
+:ensure t
+:config
+
+(key-chord-mode +1))
+
+(use-package bind-chord)
+(use-package use-package-chords)
+ #+END_SRC
+** DISABLED Brain-fm: Stream music from brain.fm
+   :PROPERTIES:
+   :CREATED:  [2019-06-16 Sun 10:01]
+   :END:
+#+BEGIN_SRC emacs-lisp
+(use-package brain-fm
+  :defer t
+  :config
+  ;; Station 35 is "Focus"
+  (setq brain-fm-station-id 35))
+#+END_SRC
+** DISABLED General setup
+   :PROPERTIES:
+   :CREATED:  [2019-06-16 Sun 10:01]
+   :END:
+#+BEGIN_SRC emacs-lisp
+;; Increase fill-column for programming to 100
+(defun my-prog-mode-init ()
+  ;; Only auto-fill comments in prog-mode
+  (setq-local comment-auto-fill-only-comments t)
+  (setq-local fill-column 100))
+(add-hook 'prog-mode-hook 'my-prog-mode-init)
+#+END_SRC
+*** Flycheck
+To activate shellcheck we need the =shellcheck= package.
+#+BEGIN_SRC txt :tangle arch-pkglist.txt
+shellcheck
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+;; activate virtualenv for flycheck
+;; (from https://github.com/lunaryorn/.emacs.d/blob/master/lisp/flycheck-virtualenv.el)
+(use-package flycheck
+  :hook ((prog-mode ledger-mode) . flycheck-mode)
+  :config
+  ;; Use the load-path from running Emacs when checking elisp files
+  (setq flycheck-emacs-lisp-load-path 'inherit)
+
+  ;; Only do flycheck when I actually safe the buffer
+  (setq flycheck-check-syntax-automatically '(save mode-enable))
+
+  (declare-function python-shell-calculate-exec-path "python")
+
+  (defun flycheck-virtualenv-executable-find (executable)
+    "Find an EXECUTABLE in the current virtualenv if any."
+    (if (bound-and-true-p python-shell-virtualenv-root)
+        (let ((exec-path (python-shell-calculate-exec-path)))
+          (executable-find executable))
+      (executable-find executable)))
+
+  (defun flycheck-virtualenv-setup ()
+    "Setup Flycheck for the current virtualenv."
+    (setq-local flycheck-executable-find #'flycheck-virtualenv-executable-find))
+
+  (add-hook 'python-mode-hook #'flycheck-virtualenv-setup)
+
+  (setq flycheck-python-mypy-cache-dir "/home/daniel/.mypy-cache")
+  (setq flycheck-flake8-maximum-line-length 110))
+#+END_SRC
+** DISABLED Gif-Screencasts: One-frame-per-action GIF recording
+   :PROPERTIES:
+   :CREATED:  [2019-06-16 Sun 10:01]
+   :END:
+You need to install ~scrot~, ImageMagick (~convert~) and optional ~Gifsicle~.
+
+XXX: Use emacs ~keycast~ package to display keys in modeline.
+
+#+BEGIN_SRC emacs-lisp
+(use-package gif-screencast
+  :bind (:map gif-screencast-mode-map
+         ("<f11>" . gif-screencast-toggle-pause)
+         ("<f12>" . gif-screencast-stop)
+         ("<escape>" . gif-screencast-stop))
+  :config (setq gif-screencast-output-directory (expand-file-name "videos/emacs/" "~")))
+#+END_SRC
+** DISABLED Wolfram alpha
+   :PROPERTIES:
+   :CREATED:  [2019-06-16 Sun 10:01]
+   :END:
+#+BEGIN_SRC emacs-lisp
+;; wolfram alpha queries (M-x wolfram-alpha)
+(use-package wolfram
+  :defer t
+  :config
+  (setq wolfram-alpha-app-id "KTKV36-2LRW2LELV8"))
+#+END_SRC
+** DISABLED Configs (yaml/toml/ini/.conf/etc)
+   :PROPERTIES:
+   :CREATED:  [2019-06-16 Sun 10:01]
+   :END:
+#+BEGIN_SRC emacs-lisp
+;; Associate more files with conf-mode
+(use-package conf-mode
+  :mode ("mbsyncrc\\'" "msmtprc\\'" "pylintrc\\'" "\\.cnf\\'"
+         "\\.ini\\.\\(tmpl\\|sample\\)\\'" "\\.service\\'"))
+
+(use-package pkgbuild-mode
+  :mode "PKGBUILD\\'")
+
+(use-package graphviz-dot-mode
+  :mode ("\\.dot\\'")
+  :config
+  (setq graphviz-dot-indent-width 4))
+
+(use-package plantuml-mode
+  :mode ("\\.plantuml\\'")
+  :config
+  (setq plantuml-jar-path "/usr/share/java/plantuml/plantuml.jar"))
+
+(use-package csv-mode
+  :mode "\\.csv\\'"
+  :init (setq csv-separators '("," "	" ";" "|")))
+
+(use-package toml-mode
+  :mode ("\\.toml\\'" "Cargo.lock\\'"))
+
+(use-package systemd
+  :mode ("\\.service\\'" "\\.timer\\'"))
+
+(use-package yaml-mode
+  :mode ("\\.yaml\\'" "\\.yml\\'")
+  :config
+  (add-hook 'yaml-mode-hook #'my-prog-mode-init)
+  (add-hook 'yaml-mode-hook
+            (lambda () (add-hook 'before-save-hook 'whitespace-cleanup nil t))))
+#+END_SRC
+
+** DISABLED LSP: Language Server Protocol
+   :PROPERTIES:
+   :CREATED:  [2019-06-16 Sun 10:01]
+   :END:
+For C/C++/Objective C support install ~ccls~ and =lldb= for debugging.
+#+BEGIN_SRC txt :tangle arch-pkglist.txt
+ccls
+lldb
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package lsp-mode
+  :bind (:map lsp-mode-map
+         ("C-c C-a" . lsp-ui-sideline-apply-code-actions))
+  :config
+  (setq lsp-prefer-flymake nil)
+  (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-cppcheck c/c++-gcc)))
+
+(use-package lsp-ui
+  :defer t
+  :config
+  (setq lsp-ui-doc-use-childframe t)
+  (setq lsp-ui-sideline-show-hover nil)
+  (setq lsp-ui-sideline-show-symbol nil))
+
+(use-package company-lsp
+  :defer t
+  :config
+  (setq company-lsp-enable-snippet t))
+
+(use-package lsp-treemacs
+  :defer t)
+
+(use-package dap-mode
+  :after lsp-mode
+  :config
+  (dap-mode)
+  (dap-ui-mode))
+
+(use-package ccls
+  :hook ((c++-mode c-mode objc-mode) . ccls-lsp-init)
+  :config
+  (defun ccls-lsp-init ()
+    "We need to require ccls before loading lsp in a C buffer.
+Otherwise lsp would use the default clangd backend.
+use-package will load ccls for us simply by calling this function."
+    (lsp)))
+(use-package dap-lldb :after ccls)
+
+(use-package lsp-java
+  :hook (java-mode . java-lsp-init)
+  :config
+  (defun java-lsp-init ()
+    "We need to require java-lsp before loading lsp in a Java buffer.
+use-package will load java-lsp for us simply by calling this function."
+    (setq electric-indent-inhibit nil)  ; Auto-indent code after e.g. {}
+    (lsp)))
+(use-package dap-java :after lsp-java)
+(use-package lsp-java-treemacs :after lsp-java)
+
+;; For groovy and gradle support
+(use-package groovy-mode :defer t)
+#+END_SRC
+
+#+results:
+
+** DISABLED Python
+   :PROPERTIES:
+   :CREATED:  [2019-06-16 Sun 10:01]
+   :END:
+*** LSP with the Microsoft language server
+This needs the =dotnet-sdk= and the microsoft-python-language-server installed.
+#+BEGIN_SRC txt :tangle arch-pkglist.txt
+dotnet-sdk
+#+END_SRC
+
+Get the python language server from github:
+#+BEGIN_SRC shell :tangle no :dir ~/Public
+git clone git@github.com:microsoft/python-language-server.git
+#+END_SRC
+
+#+results:
+
+Then build it:
+#+BEGIN_SRC shell :tangle no :dir ~/Public/python-language-server/src/LanguageServer/Impl
+dotnet build -c Release
+dotnet publish -c Release -r linux-x64
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package lsp-python-ms
+  :defer t
+  ;;:hook (python-mode . lsp-python-ms-init)
+  :config
+  (defun lsp-python-ms-init ()
+    "We need to require ccls before loading lsp in a C buffer.
+Otherwise lsp would use the default clangd backend.
+use-package will load ccls for us simply by calling this function."
+    (lsp))
+
+  ;; Set cache dir to nolitering standards
+  (setq lsp-python-ms-cache-dir (no-littering-expand-var-file-name "lsp-python-ms/cache"))
+
+  (setq lsp-python-ms-dir
+        (expand-file-name "~/Public/python-language-server/output/bin/Release/"))
+
+  (setq lsp-python-ms-executable
+        (expand-file-name "~/Public/python-language-server/output/bin/Release/linux-x64/publish/Microsoft.Python.LanguageServer")))
+#+END_SRC
+
+#+results:
+
+*** Cython
+#+BEGIN_SRC emacs-lisp
+(use-package cython-mode
+  :mode ("\\.pyd\\'" "\\.pyi\\'" "\\.pyx\\'"))
+(use-package flycheck-cython
+  :after (cython-mode flycheck))
+#+END_SRC
+*** Main Python setup
+#+BEGIN_SRC emacs-lisp
+(use-package python
+  :mode (("\\.py\\'" . python-mode)
+         ("\\.xsh\\'" . python-mode))  ; Xonsh script files
+  :interpreter ("python" . python-mode)
+  :bind (:map python-mode-map
+         ("C-x C-e" . python-shell-send-whole-line-or-region)
+         ("C-c C-p" . hydra-python/body)
+         ("C-c C-t" . hydra-python/body)
+         )
+  :hook (python-mode . python-flat-imenu-index)
+  :init
+  ;; Allow setting some python variables via dir-locals.
+  ;; This can be dangerous if someone makes you open an untrusted
+  ;; file with a malicious `.dir-locals' and execute some more
+  ;; malicious python code. But I'm not too worried
+  ;; and I change these often enough that I don't want to save
+  ;; for each variable I allow.
+  ;; TODO: Make the check for extra-pythonpaths more strict.
+  (put 'python-shell-extra-pythonpaths 'safe-local-variable 'listp)
+  ;; Only mark virtualenvs safe that are my home folder
+  (put 'python-shell-virtualenv-root 'safe-local-variable
+       (lambda (p) (s-starts-with-p (expand-file-name "~/.virtualenvs/") (expand-file-name p))))
+  (put 'python-shell-process-environment
+       'safe-local-variable (create-safe-env-p "DJANGO_SETTINGS_MODULE" "ENV_INI_PATH"))
+  :config
+  ;; ipython5 uses prompt_toolkit which doesn't play nice with emacs
+  ;; when setting interpreter to 'ipython', you need additional '--simple-prompt' arg
+  (setq python-shell-interpreter "python")
+  ;;(setq python-shell-interpreter-args "-i")
+  ;; FIXME: run new python interpreter on projectile-switch-project?
+  ;; and only run pshell when it's a pyramid project.
+  ;;(setq python-shell-interpreter "python"
+  ;;      python-shell-interpreter-args "--simple-prompt -i /home/daniel/.virtualenvs/atomx/lib/python3.5/site-packages/pyramid/scripts/pshell.py /home/daniel/atomx/api/development.ini")
+
+  (defun python-enable-highlighting-in-comint (f &rest args)
+    "Workaround so entered python code in comint mode stays highlighted.
+See: https://debbugs.gnu.org/cgi/bugreport.cgi?bug=32344"
+    (if (eq major-mode 'inferior-python-mode)
+        (cl-letf (((symbol-function 'g)
+                   (symbol-function 'add-text-properties))
+                  ((symbol-function 'add-text-properties)
+                   (lambda (start end properties
+                                  &optional object)
+                     (unless (eq (nth 3 properties)
+                                 'comint-highlight-input)
+                       (funcall g start end
+                                properties object)))))
+          (apply f args))
+      (apply f args)))
+  ;; (advice-add 'comint-send-input :around #'python-enable-highlighting-in-comint)
+  ;; (advice-remove 'comint-send-input 'python-enable-highlighting-in-comint)
+  ;; Don't spam message buffer when python-mode can't guess indent-offset
+  (setq python-indent-guess-indent-offset-verbose nil)
+
+  (defun python-shell-send-whole-line-or-region ()
+    "Send whole line or region to inferior Python process."
+    (interactive)
+    (whole-line-or-region-call-with-region 'python-shell-send-region)
+    (deactivate-mark))
+
+  (defhydra hydra-python-test (python-mode-map "C-c C-t" :color blue)
+    "Run Python Tests"
+    ("f" python-test-function "Function")
+    ("m" python-test-method "Method")
+    ("c" python-test-class "Class")
+    ("F" python-test-file "File")
+    ("p" python-test-project "Project")
+    ("q" nil "Cancel"))
+
+  (defun py-isort-add-import-whole-line-or-region ()
+    "Import module(s) from region or whole line."
+    (interactive)
+    (whole-line-or-region-call-with-region 'py-isort-add-import-region))
+
+  (defun python-run-server ()
+    "Start pyramid pserve or django runserver."
+    (interactive)
+    (if (pyramid-project-root)
+        (pyramid-serve)
+      (djangonaut-run-management-command "runserver")))
+
+  (defhydra hydra-python (python-mode-map "C-c C-p" :color blue :hint nil)
+    "
+           ^Tests^           ^Import^                ^Other^
+    ----------------------------------------------------------------
+    [_f_]   Function    [_a_] From ... import     [_P_] Run Python
+    [_m_]   Method      [_i_] Import              [_I_] Pippel
+    [_c_]   Class       [_l_] Import line/region  [_R_] Runserver
+    [_F_]   File        [_r_] Remove imports      [_!_] Start Python
+    [_p_]   Project     [_s_] Sort imports        [_q_] Cancel
+    "
+    ("a" py-isort-add-from-import)
+    ("i" py-isort-add-import)
+    ("l" py-isort-add-import-whole-line-or-region)
+    ("r" py-isort-remove-import)
+    ("s" py-isort-buffer)
+
+    ("f" python-test-function)
+    ("m" python-test-method)
+    ("c" python-test-class)
+    ("F" python-test-file)
+    ("p" python-test-project)
+
+    ("P" run-python)
+    ("I" pippel-list-packages)
+    ("R" python-run-server)
+    ("!" run-python)
+    ("q" nil))
+
+  (defun python-flat-imenu-index ()
+    (setq-local imenu-create-index-function
+                #'python-imenu-create-flat-index)))
+#+END_SRC
+
+#+results:
+: hydra-python/body
+
+*** Anaconda: Code navigation, documentation lookup and completion for Python
+#+BEGIN_SRC emacs-lisp
+(use-package anaconda-mode
+  :bind (:map anaconda-mode-map
+         ("M-." . python-goto-sql-file-or-definition)
+         ("M-," . anaconda-mode-find-assignments))
+  :hook ((python-mode . anaconda-mode)
+         (python-mode . anaconda-eldoc-mode))
+  :config
+  (defun python-goto-sql-file-or-definition (&optional arg)
+    "Call anaconda find-definitions or with prefix ARG find sql file."
+    (interactive "P")
+    (back-button-push-mark-local-and-global)
+    (if arg
+        (projectile-find-sql-file)
+      (anaconda-mode-find-definitions)
+      (recenter))))
+
+(use-package company-anaconda
+  :after anaconda-mode
+  :config (add-to-list 'company-backends 'company-anaconda))
+#+END_SRC
+*** Pippel: List, install, upgrade packages with pip
+#+BEGIN_SRC emacs-lisp
+;; package-list-packages like interface for python packages
+(use-package pippel :defer t)
+#+END_SRC
+*** Pip requirements
+#+BEGIN_SRC emacs-lisp
+;; Syntax highlighting for requirements.txt files
+(use-package pip-requirements
+  :mode (("\\.pip\\'" . pip-requirements-mode)
+         ("requirements.*\\.txt\\'" . pip-requirements-mode)
+         ("requirements\\.in" . pip-requirements-mode)))
+#+END_SRC
+*** Sphinx
+This adds a few sphinx features and fontification for rst buffers.
+You can do `sphinx-compile` (`C-c C-x C-c`) to compile the sphinx docs or
+`sphinx-compile-and-view` (`C-c C-x C-v`) to compile and view.
+
+#+BEGIN_SRC emacs-lisp
+(use-package sphinx-mode
+  :hook (rst-mode . sphinx-mode))
+#+END_SRC
+*** Python-test: Run python tests with unittest, pytest, django
+#+BEGIN_SRC emacs-lisp
+(use-package python-test
+  :defer t
+  :config
+  ;; Set default test backend to pytest
+  (setq python-test-backend 'pytest))
+#+END_SRC
+*** Pyramid
+#+BEGIN_SRC emacs-lisp
+(use-package pyramid
+  :defer t)
+#+END_SRC
+*** Django
+#+BEGIN_SRC emacs-lisp
+(use-package djangonaut
+  :defer t
+  :config
+  (setq djangonaut-run-shell-plus-arguments '("--plain"))
+  (defun djangonaut-run-shell-plus-inferior-python ()
+    (message "test hook"))
+  (setq djangonaut-run-shell-plus-hook '(djangonaut-run-shell-plus-inferior-python))
+
+  (defun djangonaut-shell-plus ()
+    (interactive)
+    (with-current-buffer (djangonaut-run-management-command "shell_plus" "--plain")
+      (let ((python-shell--interpreter nil)
+            (python-shell--interpreter-args nil))
+        (inferior-python-mode))))
+  )
+#+END_SRC
+*** Pydoc: Nicer documentation view
+#+BEGIN_SRC emacs-lisp
+;; Enable (restructured) syntax highlighting for python docstrings
+(use-package python-docstring
+  :hook (python-mode . python-docstring-mode))
+
+(use-package pydoc
+  :after anaconda-mode
+  :bind (:map anaconda-mode-map
+         ("M-?" . pydoc-at-point)))
+#+END_SRC
+*** Isort
+I have a =.isort.cfg= in my home folder that contains a config to
+match the =black= style:
+#+BEGIN_SRC conf :tangle ~/.config/_isort.cfg
+# Auto-generated from emacs config
+# isort config to match `black` style
+[settings]
+line_length=99
+known_third_party=rethinkdb,pydruid,redis,publicsuffix,rapidjson,restalchemy
+multi_line_output=3
+include_trailing_comma=True
+force_grid_wrap=0
+combine_as_imports=True
+indent=4
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+;; Automatically sort and format python imports
+(use-package py-isort
+  :defer t)
+#+END_SRC
+*** Blacken: Auto format Python buffer with black
+If you want =blacken= called as before-save-hook in your project
+put something like this in your =.dir-locals.el=:
+#+BEGIN_SRC emacs-lisp :tangle no
+((python-mode . ((flycheck-checker . python-mypy)
+                 (eval . (blacken-mode)))))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package blacken
+  :defer t
+  :config
+  ;; Allow using Python 3.6-only syntax
+  (setq blacken-allow-py36 t)
+  ;; Skips temporary sanity checks
+  (setq blacken-fast-unsafe t)
+  ;; Use fill-column line-length
+  (setq blacken-line-length 'fill))
+#+END_SRC
+*** Virtualenvwrapper: Automatically switch virtualenvs on projectile switch project
+#+BEGIN_SRC emacs-lisp
+(use-package virtualenvwrapper
+  ;; Automatically switch python venv
+  :hook (projectile-after-switch-project . venv-projectile-auto-workon)
+  :config
+  (venv-initialize-interactive-shells) ;; if you want interactive shell support
+  (venv-initialize-eshell) ;; if you want eshell support
+  (setq venv-location "/home/daniel/.virtualenvs/"))
+#+END_SRC
+
+** DISABLED Web
+   :PROPERTIES:
+   :CREATED:  [2019-06-16 Sun 10:01]
+   :END:
+#+BEGIN_SRC emacs-lisp
+(use-package emmet-mode
+  :hook (web-mode sgml-mode css-mode)
+  :bind (:map emmet-mode-keymap
+         ("<backtab>" . emmet-expand-line)
+         ("\C-c TAB" . emmet-expand-line)
+         ("C-M-p" . emmet-prev-edit-point)
+         ("C-M-n" . emmet-next-edit-point))
+  :config
+  (setq emmet-move-cursor-between-quotes t)
+  (setq emmet-move-cursor-after-expanding t)
+
+  (use-package helm-emmet :after helm :disabled t))
+
+(use-package rainbow-mode
+  :hook (css-mode scss-mode sass-mode emacs-lisp-mode hy-mode))
+
+(use-package scss-mode
+  :defer t
+  :config
+  ;;(setq css-indent-offset 2)
+  ;; turn off annoying auto-compile on save
+  (setq scss-compile-at-save nil))
+
+;; Imenu support for css/scss/less
+(use-package counsel-css
+  :hook (css-mode . counsel-css-imenu-setup))
+
+(use-package sass-mode
+  :mode ("\\.sass\\'"))
+#+END_SRC
+#+BEGIN_SRC emacs-lisp
+;; FIXME: add flycheck support? Only for .vue files?
+;; (flycheck-add-mode 'javascript-eslint 'web-mode)
+(use-package web-mode
+  :mode ("\\.phtml\\'" "\\.tpl\\.php\\'" "\\.tpl\\'" "\\.blade\\.php\\'" "\\.jsp\\'" "\\.as[cp]x\\'"
+         "\\.erb\\'" "\\.html.?\\'" "/\\(views\\|html\\|theme\\|templates\\)/.*\\.php\\'"
+         "\\.jinja2?\\'" "\\.mako\\'" "\\.vue\\'" "_template\\.txt" "\\.ftl\\'")
+  :init (add-to-list 'safe-local-eval-forms '(web-mode-set-engine "django"))
+  :config
+  ;;(setq web-mode-engines-alist '(("django"  . "/templates/.*\\.html\\'")))
+  (setq web-mode-engines-alist '(("django" . "\\.jinja2?\\'")))
+
+  ;; make web-mode play nice with smartparens
+  (setq web-mode-enable-auto-pairing nil)
+
+  (require 'smartparens)
+  (sp-with-modes '(web-mode)
+    (sp-local-pair "%" "%"
+                   :unless '(sp-in-string-p)
+                   :post-handlers '(((lambda (&rest _ignored)
+                                       (just-one-space)
+                                       (save-excursion (insert " ")))
+                                     "SPC" "=" "#")))
+    (sp-local-tag "%" "<% "  " %>")
+    (sp-local-tag "=" "<%= " " %>")
+    (sp-local-tag "#" "<%# " " %>"))
+
+  ;; Flyspell setup
+  ;;http://blog.binchen.org/posts/effective-spell-check-in-emacs.html
+
+  ;; {{ flyspell setup for web-mode
+  (defun web-mode-flyspell-verify ()
+    (let* ((f (get-text-property (- (point) 1) 'face))
+           rlt)
+      (cond
+       ;; Check the words with these font faces, possibly.
+       ;; this *blacklist* will be tweaked in next condition
+       ((not (memq f '(web-mode-html-attr-value-face
+                       web-mode-html-tag-face
+                       web-mode-html-attr-name-face
+                       web-mode-constant-face
+                       web-mode-doctype-face
+                       web-mode-keyword-face
+                       web-mode-comment-face ;; focus on get html label right
+                       web-mode-function-name-face
+                       web-mode-variable-name-face
+                       web-mode-css-property-name-face
+                       web-mode-css-selector-face
+                       web-mode-css-color-face
+                       web-mode-type-face
+                       web-mode-block-control-face)))
+        (setq rlt t))
+       ;; check attribute value under certain conditions
+       ((memq f '(web-mode-html-attr-value-face))
+        (save-excursion
+          (search-backward-regexp "=['\"]" (line-beginning-position) t)
+          (backward-char)
+          (setq rlt (string-match "^\\(value\\|class\\|ng[A-Za-z0-9-]*\\)$"
+                                  (thing-at-point 'symbol)))))
+       ;; finalize the blacklist
+       (t
+        (setq rlt nil)))
+      rlt))
+  (put 'web-mode 'flyspell-mode-predicate 'web-mode-flyspell-verify)
+
+  ;; Don't display doublon (double word) as error
+  (defvar flyspell-check-doublon t
+    "Check doublon (double word) when calling `flyspell-highlight-incorrect-region'.")
+  (make-variable-buffer-local 'flyspell-check-doublon)
+
+  (defadvice flyspell-highlight-incorrect-region (around flyspell-highlight-incorrect-region-hack activate)
+    (if (or flyspell-check-doublon (not (eq 'doublon (ad-get-arg 2))))
+        ad-do-it))
+
+  (defun web-mode-hook-setup ()
+    ;;(flyspell-mode 1)
+    (setq flyspell-check-doublon nil))
+
+  (add-hook 'web-mode-hook 'web-mode-hook-setup)
+  ;; } flyspell setup
+
+  ;; Enable current element highlight
+  (setq web-mode-enable-current-element-highlight t)
+  ;; Show column for current element
+  ;; Like highlight-indent-guide but only one line for current element
+  (setq web-mode-enable-current-column-highlight t)
+
+  ;; Don't indent directly after a <script> or <style> tag
+  (setq web-mode-script-padding 0)
+  (setq web-mode-style-padding 0)
+
+  ;; Set default indent to 2 spaces
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  ;; auto close tags in web-mode
+  (setq web-mode-enable-auto-closing t))
+
+;; Company-web is an alternative emacs plugin for autocompletion in html-mode, web-mode, jade-mode,
+;; slim-mode and use data of ac-html. It uses company-mode.
+(use-package company-web
+  :disabled t  ;; Maybe no completion at all is best for web-mode? At least for the html part?!
+  :after web-mode
+  :commands company-web-html
+  :config
+  (require 'company-web-html)
+
+  ;; Tide completion support in web-mode with company-mode
+  (defun my-web-mode-hook ()
+    "Hook for `web-mode'."
+    (set (make-local-variable 'company-backends)
+         '(company-tide company-web-html company-yasnippet company-files)))
+
+  (add-hook 'web-mode-hook 'my-web-mode-hook)
+
+  ;; Enable JavaScript completion between <script>...</script> etc.
+  (defadvice company-tide (before web-mode-set-up-ac-sources activate)
+    "Set `tide-mode' based on current language before running company-tide."
+    (if (equal major-mode 'web-mode)
+        (let ((web-mode-cur-language
+               (web-mode-language-at-pos)))
+          (if (or (string= web-mode-cur-language "javascript")
+                  (string= web-mode-cur-language "jsx")
+                  )
+              (unless tide-mode (tide-mode))
+            (if tide-mode (tide-mode -1)))))))
+#+END_SRC
+** DISABLED Javascript
+   :PROPERTIES:
+   :CREATED:  [2019-06-16 Sun 10:01]
+   :END:
+Instead of calling =prettier-js= for all projects, rather put this in
+your =.dir-locals.el= where you want the prettier after save hook activated:
+#+BEGIN_SRC emacs-lisp :tangle no
+((js2-mode . ((eval . (prettier-js-mode)))))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package prettier-js
+  :defer t
+  ;;:hook (js2-mode . prettier-js-mode)
+  :init
+  (put 'prettier-js-args 'safe-local-variable 'listp)
+  :config
+  (setq prettier-js-args '(
+                           "--trailing-comma" "all"
+                           ;;"--tab-width" "4"
+                           ;;"--single-quote" "true"
+                           "--bracket-spacing" "false"
+                           ))
+  ;; prettier "--print-width" argument is read from 'fill-column' variable
+  (setq prettier-js-width-mode 'fill))
+
+(use-package json-mode
+  :mode "\\.json\\'")
+
+(use-package js2-mode
+  :interpreter "node"
+  :mode ("\\.js\\'" "\\.pac\\'" "\\.node\\'")
+  :init
+  (add-hook 'js2-mode-hook (lambda ()
+                             ;; electric-layout-mode doesn't play nice with smartparens
+                             ;;(setq-local electric-layout-rules '((?\; . after)))
+                             (setq mode-name "JS2")))
+  :config
+  ;; Don't warn about trailing commas
+  (setq js2-strict-trailing-comma-warning nil)
+
+  (setq js2-basic-offset 2)  ; set javascript indent to 2 spaces
+  )
+
+(use-package js2-imenu-extras
+  :hook (js2-mode . js2-imenu-extras-mode))
+
+;; Connect to chrome
+;; chromium --remote-debugging-port=9222 https://localhost:3000
+;; then in emacs
+;; M-x indium-connect-to-chrome
+
+;; or node
+;; node --inspect myfile.js
+;; node with breakpoint at first line
+;; node --inspect --debug-brk myfile.js
+;; then open the url that node prints:
+;; chrome-devtools://inspector.html?...&ws=127.0.0.1:PORT/PATH
+;; then in emacs:
+;; M-x indium-connect-to-nodejs RET 127.0.0.1 RET PORT RET PATH, PORT, PATH
+
+;; place `.indium' file in static root folder.
+
+(use-package indium
+  :hook (js-mode . indium-interaction-mode)
+  :config
+  (setq indium-update-script-on-save t)
+  (setq indium-chrome-executable "google-chrome-stable"))
+
+(use-package js2-refactor
+  :hook (js2-mode . js2-refactor-mode)
+  :config
+  (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
+  (define-key js2-refactor-mode-map (kbd "C-c r")
+    (defhydra js2-refactor-hydra (:color blue :hint nil)
+      "
+^Functions^                    ^Variables^               ^Buffer^                      ^sexp^               ^Debugging^
+------------------------------------------------------------------------------------------------------------------------------
+[_lp_] Localize Parameter      [_ev_] Extract variable   [_wi_] Wrap buffer in IIFE    [_k_]  js2 kill      [_lt_] log this
+[_ef_] Extract function        [_iv_] Inline variable    [_ig_] Inject global in IIFE  [_ss_] split string  [_dt_] debug this
+[_ip_] Introduce parameter     [_rv_] Rename variable    [_ee_] Expand node at point   [_sl_] forward slurp
+[_em_] Extract method          [_vt_] Var to this        [_cc_] Contract node at point [_ba_] forward barf
+[_ao_] Arguments to object     [_sv_] Split var decl.    [_uw_] unwrap
+[_tf_] Toggle fun exp and decl [_ag_] Add var to globals
+[_ta_] Toggle fun expr and =>  [_ti_] Ternary to if
+[_q_]  quit"
+      ("ee" js2r-expand-node-at-point)
+      ("cc" js2r-contract-node-at-point)
+      ("ef" js2r-extract-function)
+      ("em" js2r-extract-method)
+      ("tf" js2r-toggle-function-expression-and-declaration)
+      ("ta" js2r-toggle-arrow-function-and-expression)
+      ("ip" js2r-introduce-parameter)
+      ("lp" js2r-localize-parameter)
+      ("wi" js2r-wrap-buffer-in-iife)
+      ("ig" js2r-inject-global-in-iife)
+      ("ag" js2r-add-to-globals-annotation)
+      ("ev" js2r-extract-var)
+      ("iv" js2r-inline-var)
+      ("rv" js2r-rename-var)
+      ("vt" js2r-var-to-this)
+      ("ao" js2r-arguments-to-object)
+      ("ti" js2r-ternary-to-if)
+      ("sv" js2r-split-var-declaration)
+      ("ss" js2r-split-string)
+      ("uw" js2r-unwrap)
+      ("lt" js2r-log-this)
+      ("dt" js2r-debug-this)
+      ("sl" js2r-forward-slurp)
+      ("ba" js2r-forward-barf)
+      ("k" js2r-kill)
+      ("q" nil)
+      )))
+
+;; use tern for js autocompletion
+(use-package tern
+  :disabled t  ; We use tide (typescript) also for javascript files
+  :commands tern-mode
+  :init (add-hook 'js-mode-hook 'tern-mode)
+  :config
+  (use-package company-tern
+    :config
+    (setq company-tern-property-marker "")  ; don't show circles for properties
+    (add-to-list 'company-backends 'company-tern)))
+
+(use-package skewer-mode
+  :disabled t  ; Use indium
+  :commands skewer-mode
+  :init
+  (setq httpd-port 8079)  ; set port for simple-httpd used by skewer
+  (add-hook 'js2-mode-hook 'skewer-mode)
+  (add-hook 'css-mode-hook 'skewer-css-mode)
+  (add-hook 'html-mode-hook 'skewer-html-mode))
+
+;; Adds the node_modules/.bin directory to the buffer exec_path.
+;; E.g. support project local eslint installations.
+;; XXX: Maybe add autoload for web and js2 mode?
+;; (eval-after-load 'js2-mode
+;;   '(add-hook 'js2-mode-hook #'add-node-modules-path))
+(use-package add-node-modules-path :defer t)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package ng2-mode :defer t)
+#+END_SRC
+
+Testing with mocha
+#+BEGIN_SRC emacs-lisp
+(use-package mocha :defer t)
+#+END_SRC
