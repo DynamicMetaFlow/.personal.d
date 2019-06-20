@@ -2135,3 +2135,22 @@ Testing with mocha
 #+BEGIN_SRC emacs-lisp
 (use-package mocha :defer t)
 #+END_SRC
+* DISABLED org-archive-subtree-as-completed
+  :PROPERTIES:
+  :CREATED:  [2019-06-18 Tue 13:01]
+  :END:
+#+BEGIN_SRC emacs-lisp
+(defun org-archive-subtree-as-completed ()
+  "Archives the current subtree to today's current journal entry."
+  (interactive)
+  (ignore-errors
+    ;; According to the docs for `org-archive-subtree', the state should be
+    ;; automatically marked as DONE, but I don't notice that:
+    (when (not (equal "DONE" (org-get-todo-state)))
+      (org-todo "DONE")))
+
+  (let* ((org-archive-file (or org-default-completed-file
+                               (todays-journal-entry)))
+         (org-archive-location (format "%s::* Completed Tasvks" org-archive-file)))
+    (org-archive-subtree)))
+#+END_SRC

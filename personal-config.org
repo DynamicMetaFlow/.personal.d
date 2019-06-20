@@ -6,15 +6,20 @@
 
 #+EXPORT_FILE_NAME: index.html
 #+EXPORT_EXCLUDE_TAGS: noexport
-#+CATEGORY: personal
+#+CATEGORY: emacs
+
+#+PROPERTY: header-args :results silent :tangle personal-config.el
 :END:
 #+TITLE: Personal Configuration
-#+PROPERTY: header-args :results silent :tangle personal-config.el
 
-* Modules
-** EXWM Window Manager
-*** setup
-  #+BEGIN_SRC emacs-lisp
+* TODO Personal Configuration
+  :PROPERTIES:
+  :CREATED:  [2019-06-20 Thu 15:53]
+  :END:
+** Modules
+*** EXWM Window Manager
+**** setup
+   #+BEGIN_SRC emacs-lisp
 (use-package exwm
   :config
     (require 'exwm)
@@ -30,13 +35,12 @@
   (setq exwm-workspace-show-all-buffers t)
   (setq exwm-layout-show-all-buffers t)
 
-  (setq exwm-workspace-number 9)
+  (setq exwm-workspace-number 10)
 
   (defun exwm-workspace-number-to-string (number)
     (number-to-string (1+ number)))
 
   (setq exwm-workspace-index-map #'exwm-workspace-number-to-string)
-
 
   (dotimes (i 9)
     (exwm-input-set-key (kbd (format "s-%d" i))
@@ -93,6 +97,24 @@
           (exwm-workspace-switch 0)))
        (t (exwm-workspace-switch  (1+ exwm-workspace-current-index))))))
 
+(defun gpastel-exwm-counsel-yank-pop ()
+	"Same as `counsel-yank-pop' and paste into exwm buffer."
+	(interactive)
+	(let ((inhibit-read-only t)
+	      ;; Make sure we send selected yank-pop candidate to
+	      ;; clipboard:
+	      (yank-pop-change-selection t))
+	  (call-interactively #'counsel-yank-pop))
+	(when (derived-mode-p 'exwm-mode)
+	  ;; https://github.com/ch11ng/exwm/issues/413#issuecomment-386858496
+	  (exwm-input--set-focus (exwm--buffer->id (window-buffer (selected-window))))
+	  ;; (exwm-input--fake-key ?\C-v)
+	  ))
+
+      (exwm-input-set-key (kbd "M-y")
+			  #'gpastel-exwm-counsel-yank-pop)
+
+
   (defun exwm-counsel-yank-pop ()
     "Same as `counsel-yank-pop' and paste into exwm buffer."
     (interactive)
@@ -118,6 +140,26 @@
           (exwm-workspace-switch (1- exwm-workspace-number))))
        (t (exwm-workspace-switch  (1- exwm-workspace-current-index))))))
 
+(defun mf/get-auto-xrandr-line (display)
+  "Returns the parameter for xrandr to automatically configure the display."
+  (concat "--output " display " --auto"))
+
+(defun mf/generate-xrandr-params ()
+  "Generate the parameters for xrandr."
+  (let ((xrandrfile "~/.xrandrrc"))
+   (if (not (file-exists-p xrandrfile))
+       (apply 'concat (mapcar 'mf/get-auto-xrandr-line (mf/get-monitor-list)))
+     (with-temp-puffer
+      (insert-file-contents xrandrfile)
+      (buffer-to-string)))))
+
+(defun app/configure-displays ()
+  "Configure the attached displays"
+  (interactive)
+  (let ((xrandr-params (mf/generate-xrandr-params)))
+    (start-process-shell-command "xrandr" nil (concat "xrandr " xrandr-params))))
+
+
   ;; Quick swtiching between workspaces
   (defvar exwm-toggle-workspace 0
     "Previously selected workspace. Used with `exwm-jump-to-last-exwm'.")
@@ -127,6 +169,52 @@
 
   (defadvice exwm-workspace-switch (before save-toggle-workspace activate)
     (setq exwm-toggle-workspace exwm-workspace-current-index))
+
+(defun mf/make-workspace-list (monitors workspaces)
+  "Return a list for exwm to use for workspace assignment."
+  (let ((result '()))
+    (dotimes (count (* (length monitors) workspaces) result)
+      (setq result (append result
+	       (list (+ count 1)
+		     (nth (if (evenp count) count (- count 1))
+			  monitors)))))))
+(defun mf/get-monitor-list ()
+  "Get a list of connected displays."
+  (let ((xrandr (split-string (shell-command-to-string "xrandr") "\n" ))
+	(result '()))
+    (dotimes (counter (length xrandr) result)
+      (let ((monitor (mf/monitor-from-line (nth counter xrandr))))
+	(when monitor
+	  (setq result (append result (list monitor))))))))
+
+(setq exwm-workspaces-per-monitor 4)
+
+(defun mf/monitor-from-line (line)
+  "Look at a line and return the monitor if it is a matching xrandr line."
+  (save-match-data
+    (and (string-match " connected" line)
+	 (string-match "^[a-zA-Z]+-[0-9]+" line)
+	 (match-string 0 line ))))
+
+
+(defun my-exwm-workspaces ()
+  "Calculates the number of workspaes and assigns them to monitors."
+  (interactive)
+
+  (require 'exwm-randr)
+  (setq exwm-randr-workspace-output-plist
+	(mf/make-workspace-list (mf/get-monitor-list) exwm-workspaces-per-monitor))
+  (add-hook 'exwm-randr-screen-change-hook 'app/configure-displays)
+
+
+  (dotimes (value (* exwm-workspaces-per-monitor (length (mf/get-monitor-list))))
+    (let ((i (+ 1 value)))
+       (exwm-input-set-key
+       (kbd (format "s-%d" i))
+       `(lambda () (interactive)
+	  (exwm-workspace-switch-create ,i)))))
+  (exwm-randr-enable))
+
 
   (defun my-exwm-define-key-chords ()
     "Define local key chords for Exwm buffer."
@@ -151,22 +239,22 @@
 
 
   (window-divider-mode))
-    #+END_SRC
+     #+END_SRC
 
-    #+results:
-    : t
+     #+results:
+     : t
 
-*** packages
-**** xelb
-  #+BEGIN_SRC emacs-lisp
+**** packages
+***** xelb
+   #+BEGIN_SRC emacs-lisp
 (use-package xelb)
-  #+END_SRC
-**** exwm-edit
-  #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+***** exwm-edit
+   #+BEGIN_SRC emacs-lisp
 (use-package exwm-edit)
-  #+END_SRC
-*** keybindings
-  #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+**** keybindings
+   #+BEGIN_SRC emacs-lisp
 (setq exwm-input-line-mode-passthrough t)
 
 (defun exwm-input-line-mode ()
@@ -204,13 +292,6 @@
 
 (defvar exwm-input-prefix-keys-extra nil)
 
-                                        ;(define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
-                                        ;(define-key exwm-mode-map [?\C-c C-f] 'exwm-layout-set-fullscreen)
-                                        ;(define-key exwm-mode-map [?\C-c C-h] 'exwm-floating-hide)
-                                        ;(define-key exwm-mode-map [?\C-c C-k] 'exwm-input-release-keyboard)
-                                        ;(define-key exwm-mode-map [?\C-c C-t C-f] 'exwm-floating-toggle-floating)
-                                        ;(define-key exwm-mode-map [?\C-c C-t C-m] 'exwm-layout-toggle-mode-line)
-
 
 (setq exwm-input-simulation-keys
       '(
@@ -243,7 +324,7 @@
   ;;                       (exwm-input-line-mode)
   ;;                       (hydra-master/body)))
 
-  (exwm-input-set-key (kbd "\\")
+  (exwm-input-set-key (kbd "C-SPC")
                       (lambda ()
                         (interactive)
                         (exwm-input-line-mode)
@@ -255,9 +336,7 @@
   (exwm-input-set-key (kbd "s-<tab>") 'ivy-switch-buffer-exwm)
 
 
-  (exwm-input-set-key (kbd "s-f")   'my/toggle-maximize)
-
-  (exwm-input-set-key (kbd "s-f")   'my/toggle-maximize)
+  (exwm-input-set-key (kbd "s-f")   'toggle-single-window)
 
   (exwm-input-set-key (kbd "s-,")   'winner-undo)
   (exwm-input-set-key (kbd "s-.")   'winner-redo)
@@ -279,13 +358,13 @@
   (exwm-input-set-key (kbd "s-x") 'exwm-input-toggle-keyboard))
 
 
-  #+END_SRC
+   #+END_SRC
 
-  #+results:
-  : my-exwm-keybindings
+   #+results:
+   : my-exwm-keybindings
 
-*** ibuffer
-  #+BEGIN_SRC emacs-lisp
+**** ibuffer
+   #+BEGIN_SRC emacs-lisp
 (setq ibuffer-saved-filter-groups
       (quote (("default"
                ("EXWM" (mode . exwm-mode))))))
@@ -360,9 +439,9 @@
                     (funcall get-buffers-function)))))
     (counsel-ibuffer)))
 
-  #+END_SRC
-*** randr
-  #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+**** randr
+   #+BEGIN_SRC emacs-lisp
 
 (defvar exwm-connected-displays 3
   "Number of connected displays.")
@@ -391,13 +470,13 @@
 (add-hook 'exwm-randr-screen-change-hook #'my/exwm-randr-screen-change)
 
 
-  #+END_SRC
+   #+END_SRC
 
-  #+results:
-  | lambda | nil | (my-exwm-xrandr-hook eDP1) |
+   #+results:
+   | lambda | nil | (my-exwm-xrandr-hook eDP1) |
 
-*** autostart
-  #+BEGIN_SRC emacs-lisp
+**** autostart
+   #+BEGIN_SRC emacs-lisp
 (defun app/autostart (application)
   "Add an application to autostart."
   (add-hook 'exwm-init-hook
@@ -411,7 +490,7 @@
 
 (setq exwm-autostart
       (list
-       "thinkpad-dock"
+       "thinkpad-dock off"
        "compton -b"
        "nm-applet"
        "volumeicon"
@@ -423,6 +502,7 @@
        "redshift-gtk"
        "kdeconnect-indicator"
 ;       "autorandr --change"
+;       "thinkpad-dock on"
        ))
 
 
@@ -433,50 +513,34 @@
             (exwm-input--update-global-prefix-keys)
             (my-exwm-keybindings)
             (my-exwm-autostart)
+            (my-exwm-workspaces)
             (exwm-enable)
             t))
-  #+END_SRC
+   #+END_SRC
 
-  #+results:
-  | (lambda nil (exwm-randr-enable) (exwm-systemtray-enable) (exwm-input--update-global-prefix-keys) (my-exwm-keybindings) (my-exwm-autostart) (exwm-init) t) | ivy-mode | x-wm-set-size-hint | tramp-register-archive-file-name-handler | table--make-cell-map |
-** Discoverability
-*** Hydra
-**** setup
-   #+BEGIN_SRC emacs-lisp
+   #+results:
+   | (lambda nil (exwm-randr-enable) (exwm-systemtray-enable) (exwm-input--update-global-prefix-keys) (my-exwm-keybindings) (my-exwm-autostart) (exwm-init) t) | ivy-mode | x-wm-set-size-hint | tramp-register-archive-file-name-handler | table--make-cell-map |
+*** Discoverability
+**** matcha
+  #+BEGIN_SRC emacs-lisp
+(use-package matcha
+  :load-path "~/Public/matcha/"
+  :ensure nil
+  :config
+  (matcha-setup))
+  #+END_SRC
+**** TODO Converting hydras to transient
+***** setup
+     #+BEGIN_SRC emacs-lisp
 (use-package hydra
   :ensure t
   :defer 0.1
   :config
-
-  (defun counsel-projectile-switch-to-buffer-other-window ()
-    "Jump to a buffer in the current project."
-    (interactive)
-    (other-window 1)
-    (counsel-projectile-switch-to-buffer))
-
-  (defun counsel-projectile-find-dir-other-window ()
-    "Jump to a buffer in the current project."
-    (interactive)
-    (other-window 1)
-    (counsel-projectile-find-dir))
-
-  (defun counsel-projectile-find-file-other-window ()
-    "Jump to a buffer in the current project."
-    (interactive)
-    (other-window 1)
-    (counsel-projectile-find-file))
-
-  (defun counsel-projectile-find-file-dwim-other-window ()
-    "Jump to a buffer in the current project."
-    (interactive)
-    (other-window 1)
-    (counsel-projectile-find-file-dwim))
-
   (setq lv-use-separator t)
   (set-face-attribute 'hydra-face-blue nil :foreground "deep sky blue" :weight 'bold))
-   #+END_SRC
-**** common
-   #+BEGIN_SRC emacs-lisp
+     #+END_SRC
+***** common
+    #+BEGIN_SRC emacs-lisp
 (eval-and-compile
   (defhydra hydra-common  (
                            :color blue
@@ -494,41 +558,35 @@
     ("s-<tab>"  ivy-switch-buffer-exwm)
 
     ("q"   my/switch-to-last-buffer nil)
-    ("@"   counsel-org-capture nil)
+    ("@"   org-capture nil)
     ("W"   hydra-window/body nil)
 
-    ("0" delete-window)
+    ("0" delete-window-balance)
     ("1" delete-other-windows)
     ("2" split-window-below)
     ("3" split-window-right)
-    ("4" split-window-up)
-    ("5" split-window-left)
 
     (";" ace-swap-window)
     ("#" hycontrol-windows-grid)
 
-
-
-
     ))
-   #+END_SRC
+    #+END_SRC
 
-   #+results:
-   : hydra-common/body
+    #+results:
+    : hydra-common/body
 
-**** master
-   #+BEGIN_SRC emacs-lisp
-(eval-and-compile
+***** master
+    #+BEGIN_SRC emacs-lisp
   (defhydra hydra-master (
                           :color blue
-                          :column 2
+                          :column 1
                           :pre (progn
                                  (exwm-input-line-mode))
                           :post (progn
                                   (exwm-input-char-mode))
                           :inherit (hydra-common/heads))
     "Master"
-    ("a" hydra-applications/body "apps")
+    ("a" hydra-agenda/body "agenda")
     ("b" hydra-bookmarks/body "bookmarks")
     ("c" quick-calc "calc")
     ("e" hydra-emacs/body "emacs")
@@ -536,115 +594,20 @@
     ("l" hydra-spell/body "spell")
     ("m" boon-mode-hydra "major")
     ("M" hydra-minor/body nil)
-    ("o" hydra-agenda/body "org-agenda")
     ("p" hydra-projects/body "projects")
     ("s" hydra-search/body "search")
     ("t" hydra-terminal/body "term")
-    ("x" hydra-text/body "text")
+    ("x" hydra-text/body "text"))
+      #+END_SRC
 
+      #+results:
+      : hydra-master/body
 
-
-    ))
-     #+END_SRC
-
-     #+results:
-     : hydra-master/body
-
-**** projects
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-projects (:color blue :hint nil
-                                 :pre (progn
-                                        (exwm-input-line-mode))
-                                 :post (progn
-                                         (exwm-input-char-mode))
-                                 :inherit (hydra-common/heads))
-  "
-                                                                     ╭────────────┐
-     Files             Search          Buffer             Do         │ Projectile │
-   ╭─────────────────────────────────────────────────────────────────┴────────────╯
-     [_f_] file          [_sa_] ag          [_b_] switch         [_g_] magit
-     [_l_] file dwim     [_sr_] rg          [_v_] show all       [_p_] switch
-     [_r_] recent file   [_so_] occur       [_V_] ibuffer        [_P_] commander
-     [_d_] dir           [_sR_] replace     [_K_] kill all       [_i_] info
-     [_o_] other         [_st_] find tag
-     [_u_] test file     [_sT_] make tags
-                                                                         ╭────────┐
-     Other Window      Run             Cache              Do             │ Fixmee │
-   ╭──────────────────────────────────────────────────╯ ╭────────────────┴────────╯
-     [_F_] file          [_U_] test        [_kc_] clear         [_x_] TODO & FIXME
-     [_L_] dwim          [_m_] compile     [_kk_] add current   [_X_] toggle
-     [_D_] dir           [_c_] shell       [_ks_] cleanup
-     [_O_] other         [_C_] command     [_kd_] remove
-     [_B_] buffer
-   --------------------------------------------------------------------------------
-         "
-
-  ("p"   projectile-switch-project)
-  ("sa"   counsel-projectile-ag)
-  ("sr"   counsel-projectile-rg)
-  ("b"   counsel-projectile-switch-to-buffer)
-  ("B"   counsel-projectile-switch-to-buffer-other-window)
-  ("d"   counsel-projectile-find-dir)
-  ("D"   counsel-projectile-find-dir-other-window)
-  ("f"   counsel-projectile-find-file)
-  ("F"   counsel-projectile-find-file-other-window)
-  ("l"   counsel-projectile-find-file-dwim)
-  ("L"   counsel-projectile-find-file-dwim-other-window)
-
-  ("c"   projectile-run-async-shell-command-in-root)
-  ("C"   projectile-run-command-in-root)
-  ("g"   hydra-git/body nil)
-  ("i"   projectile-project-info)
-  ("kc"  projectile-invalidate-cache)
-  ("kd"  projectile-remove-known-project)
-  ("kk"  projectile-cache-current-file)
-  ("K"   projectile-kill-buffers)
-  ("ks"  projectile-cleanup-known-projects)
-  ("m"   projectile-compile-project)
-  ("o"   projectile-find-other-file)
-  ("O"   projectile-find-other-file-other-window)
-  ("P"   projectile-commander)
-  ("r"   projectile-recentf)
-  ("so"   projectile-multi-occur)
-  ("sR"   projectile-replace)
-  ("st"   projectile-find-tag)
-  ("sT"   projectile-regenerate-tags)
-  ("u"   projectile-find-test-file)
-  ("U"   projectile-test-project)
-  ("v"   projectile-display-buffer)
-  ("V"   projectile-ibuffer)
-
-  ("X"   fixmee-mode)
-  ("x"   fixmee-view-listing))
-
-(define-key projectile-mode-map (kbd "C-c o") #'hydra-project/body)
-
-   #+END_SRC
-**** agenda
-    #+BEGIN_SRC emacs-lisp
-(defhydra hydra-agenda (
-                        :color blue
-                        :columns 4
-                        :pre (progn
-                               (exwm-input-line-mode))
-                        :post (progn
-                                (exwm-input-char-mode)))
-  "Agenda"
-
-  ("a" (org-agenda nil " ") "agenda")
-  ("n" howm-list-all "notes")
-  ("c" counsel-org-capture "capture")
-  ("p" org-boxes-workflow "process inbox")
-
-
-
-
-
-
-  )
-    #+END_SRC
-**** emacs
-    #+BEGIN_SRC emacs-lisp
+***** TODO Convert hydra-emacs to transient
+      :PROPERTIES:
+      :CREATED:  [2019-06-20 Thu 15:23]
+      :END:
+     #+BEGIN_SRC emacs-lisp
 (defhydra hydra-emacs (:color blue :hint nil :inherit (hydra-common/heads)
                               :pre (progn
                                      (exwm-input-line-mode))
@@ -683,10 +646,13 @@
   ("e" save-buffers-kill-emacs)
   ("s" hydra-system/body nil)
   )
-    #+END_SRC
+     #+END_SRC
 
-**** terminal
-   #+BEGIN_SRC emacs-lisp
+***** TODO Convert terminal to transient
+      :PROPERTIES:
+      :CREATED:  [2019-06-20 Thu 15:23]
+      :END:
+    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-terminal (:color blue :hint nil :inherit (hydra-common/heads)
                                  :pre (progn
                                         (exwm-input-line-mode))
@@ -714,10 +680,13 @@
   ("p" multi-term-previous)
   ("d" multi-term-dedicated-toggle))
 
-   #+END_SRC
+    #+END_SRC
 
-**** file
-    #+BEGIN_SRC emacs-lisp
+***** TODO Convert hydra-file to transient
+      :PROPERTIES:
+      :CREATED:  [2019-06-20 Thu 15:22]
+      :END:
+     #+BEGIN_SRC emacs-lisp
 (defhydra hydra-file (:color blue :hint nil :inherit (hydra-common/heads)
                              :pre (progn
                                     (exwm-input-line-mode))
@@ -729,22 +698,23 @@
 ╭───────────────────────────────────────────────────────────────────────┴──────╯
   [_f_] open file            [_d_] dired     [_ht_] text
   [_e_] open file extern                   [_hs_] spell
-  [_r_] open recentf                       [_hn_] narrow
-                                         [_hg_] git
+  [_r_] open recentf
+
 --------------------------------------------------------------------------------
       "
   ("f" counsel-find-file)
   ("e" counsel-find-file-extern)
   ("r" counsel-recentf "recent")
-  ("d" dired)
-  ("hn" hydra-narrow/body nil :color blue)
+  ("d" dired-jump)
   ("hs" hydra-spell/body nil  :color blue)
   ("ht" hydra-text/body nil   :color blue)
-  ("hg" hydra-git/body nil   :color blue)
   )
-    #+END_SRC
-**** narrow
-   #+BEGIN_SRC emacs-lisp
+     #+END_SRC
+***** TODO Convert hydra-narrow to transient
+      :PROPERTIES:
+      :CREATED:  [2019-06-20 Thu 15:22]
+      :END:
+    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-narrow (:color blue :hint nil :inherit (hydra-common/heads)
                                :pre (progn
                                       (exwm-input-line-mode))
@@ -768,10 +738,12 @@
   ("c" org-narrow-to-block)
   ("r" narrow-to-region)
   ("w" widen))
-   #+END_SRC
-
-**** spell
-    #+BEGIN_SRC emacs-lisp
+    #+END_SRC
+***** TODO Convert hydra-spell to transient
+      :PROPERTIES:
+      :CREATED:  [2019-06-20 Thu 15:22]
+      :END:
+     #+BEGIN_SRC emacs-lisp
 (defhydra hydra-spell (:color blue :hint nil :inherit (hydra-common/heads)
                               :pre (progn
                                      (exwm-input-line-mode))
@@ -782,7 +754,7 @@
     Flyspell               Ispell                      Gtranslate      │ Spell │
 ╭──────────────────────────────────────────────────────────────────────┴───────╯
   [_k_] correct word       [_w_] check word            [_g_] en ⇆ es
-  [_n_] next error                                     [_G_] any lang
+  [_n_] next error                                   [_G_] any lang
   [_f_] toggle flyspell
   [_p_] toggle prog mode
 --------------------------------------------------------------------------------
@@ -795,10 +767,10 @@
   ("p" flyspell-prog-mode)
   ("k" flyspell-correct-word-generic)
   ("n" flyspell-goto-next-error))
-    #+END_SRC
+     #+END_SRC
 
-**** text
-   #+BEGIN_SRC emacs-lisp
+***** TODO Convert hydra-text to transient
+    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-text (:color blue :hint nil :inherit (hydra-common/heads)
                              :pre (progn
                                     (exwm-input-line-mode))
@@ -843,10 +815,10 @@
   ("U" untabify)
   ("q" hydra-boxquote/body)
   ("x" comment-box))
-   #+END_SRC
+    #+END_SRC
 
-**** git
-    #+BEGIN_SRC emacs-lisp
+***** TODO Convert hydra-git to transient
+     #+BEGIN_SRC emacs-lisp
 (defhydra hydra-git (:color blue :hint nil :inherit (hydra-common/heads)
                             :pre (progn
                                    (exwm-input-line-mode))
@@ -867,10 +839,10 @@
   ("l" magit-log-buffer-file)
   ("s" magit-status)
   ("t" git-timemachine))
-    #+END_SRC
+     #+END_SRC
 
-**** select
-   #+BEGIN_SRC emacs-lisp
+***** TODO Convert hydra-select to transient
+    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-select (:exit t :columns 4)
   "Select"
   ("v" set-mark-command "Start Cursor")
@@ -883,9 +855,9 @@
   ("t" (lambda () (interactive)(set-mark (point))(isearch-forward)) "Till")
   ("w" er/mark-word "Word / Symbol")
   ("s" mc--mark-symbol-at-point "Word / Symbol"))
-   #+END_SRC
-**** delete
-   #+BEGIN_SRC emacs-lisp
+    #+END_SRC
+***** TODO Convert hydra-delete to transient
+    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-delete (:exit t :columns 4)
   "Delete / Cut shortcuts"
   ("$" kill-line "Till line end")
@@ -902,21 +874,73 @@
   ("U" (zop-up-to-char -1) "Untill backwards")
   ("a" zop-to-char "After character")
   ("A" (zop-to-char -1) "After character backwards"))
-   #+END_SRC
-**** paste
-   #+BEGIN_SRC emacs-lisp
+    #+END_SRC
+***** TODO Convert hydra-paste to transient
+    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-paste (:exit t :columns 4)
   "Paste"
   ("p" yank "Paste")
   ("s" (yank-pop -1) "Pop")
-  ("l" my/exwm-counsel-yank-pop "History")
+  ("l"  gpastel-exwm-counsel-yank-pop "History")
   )
 
 
 
-   #+END_SRC
-**** copy
-   #+BEGIN_SRC emacs-lisp
+    #+END_SRC
+***** TODO Convert hydra-window to transient
+    #+BEGIN_SRC emacs-lisp
+(defhydra hydra-window (
+                        :color red
+                        :hint  nil
+                        :inherit (hydra-common/heads)
+                        :pre (progn
+                               (exwm-input-line-mode))
+                        :post (progn
+                                (exwm-input-char-mode))
+                        )
+  "
+                                                                     ╭──────────┐
+  Window         Switch           View                               │  Window  │
+╭────────────────────────────────────────────────────────────────────┴──────────╯
+     ↑          [_b_] ibuffer     [_s_] save
+     _i_          [_p_] projectile  [_d_] delete
+ ← _k_   _l_ →      [_e_] exwm        [_v_] view
+     _o_
+     ↓
+
+   ^ ^
+--------------------------------------------------------------------------------
+    "
+  ("i" windmove-up)
+  ("o" windmove-down)
+  ("k" windmove-left)
+  ("l" windmove-right)
+
+  ("I" buf-move-up)
+  ("O" buf-move-down)
+  ("K" buf-move-left)
+  ("L" buf-move-right)
+
+  ("b" ibuffer)
+  ("p" counsel-projectile-switch-to-buffer)
+  ("e" ivy-switch-buffer-exwm)
+
+  ("s"  ivy-push-view)
+  ("d"  ivy-pop-view)
+  ("v"  ivy-switch-view)
+
+  ("0" delete-window-balance)
+  ("1" delete-other-windows)
+  ("2" split-window-below)
+  ("3" split-window-right)
+
+  (";" ace-swap-window "swap")
+  ("@" hycontrol-windows-grid)
+  )
+    #+END_SRC
+
+***** TODO Convert hydra-copy to transient
+    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-copy (:exit t :columns 4)
   "Copy"
   ("c" whole-line-or-region-copy-region-as-kill "Line / Region")
@@ -928,22 +952,9 @@
   ("f" em-copy-function "Function")
   ("d" em-duplicate-line "Duplicate line"))
 
-   #+END_SRC
-**** help
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-help (:exit t :columns 4)
-  "Help"
-  ("f" counsel-apropos "Function search")
-  ("k" view-lossage "View Keystrokes")
-  ("c" find-function "Function code")
-  ("P" esup "Profile")
-  ("h" helpful-at-point "Help at point")
-  ("p" find-function-at-point "Function at Point")
-  ("l" find-library "Library source"))
-
-   #+END_SRC
-**** jump
-    #+BEGIN_SRC emacs-lisp
+    #+END_SRC
+***** TODO Convert hydra-jump to transient
+     #+BEGIN_SRC emacs-lisp
 (defhydra hydra-jump (:color blue :hint nil :inherit (hydra-common/heads)
                              :pre (progn
                                     (exwm-input-line-mode))
@@ -975,9 +986,9 @@
   ("v" avy-copy-region)
   ("i" avy-isearch)
   )
-    #+END_SRC
-**** register
-   #+BEGIN_SRC emacs-lisp
+     #+END_SRC
+***** TODO Convert hydra-register to transient
+    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-register (:color blue :hint nil :inherit (hydra-common/heads)
                                  :pre (progn
                                         (exwm-input-line-mode))
@@ -988,10 +999,10 @@
                                                                         ╭──────────┐
        Logs                        Registers                Undo        │ Register │
     ╭───────────────────────────────────────────────────────────────────┴──────────╯
-      [_c_] commands history       [^e^] emacs registers    [_u_] undo tree
-      [_o_] messages               [_r_] evil registers
-      [_l_] lossage (keystrokes)   [_m_] evil marks
-      [_d_] diff buffer with file  [_k_] kill ring
+      [_c_] commands history       [^e^] registers        [_u_] undo tree
+      [_o_] messages
+      [_l_] lossage (keystrokes)
+      [_d_] diff buffer with file
     --------------------------------------------------------------------------------
           "
   ("d" joe-diff-buffer-with-file)
@@ -1002,10 +1013,10 @@
   ("o" view-echo-area-messages)
   ("r" evil-show-registers)
   ("u" undo-tree-visualize))
-   #+END_SRC
+    #+END_SRC
 
-**** search
-   #+BEGIN_SRC emacs-lisp
+***** TODO Convert hydra-search to transient
+    #+BEGIN_SRC emacs-lisp
 (defhydra hydra-search (:color blue :hint nil :inherit (hydra-common/heads)
                                :pre (progn
                                       (exwm-input-line-mode))
@@ -1038,21 +1049,126 @@
   ("s" counsel-semantic)
   ("w" swiper-multi))
 
-   #+END_SRC
+    #+END_SRC
 
-   #+results:
-   : hydra-search/body
+    #+results:
+    : hydra-search/body
+***** TODO Convert hydra-bookmarks to transient
+    #+BEGIN_SRC emacs-lisp
+(defhydra hydra-bookmarks (
+                           :color red
+                           :hint nil
+                           :inherit (hydra-common/heads)
+                           :pre (progn
+                                  (exwm-input-line-mode))
+                           :post (progn
+                                   (exwm-input-char-mode)))
 
-**** torus
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-torus (
-                       :color red
+  "
+                                                                   ╭───────────┐
+       List                          Do                            │ Bookmarks │
+╭──────────────────────────────────────────────────────────────────┴───────────╯
+  [_l_] list bookmarks            [_j_] jump to a bookmark
+   ^ ^                            [_m_] set bookmark at point
+   ^ ^                            [_s_] save bookmarks
+--------------------------------------------------------------------------------
+    "
+  ("l" counsel-bookmark)
+  ("j" bookmark-jump)
+  ("m" bookmark-set)
+  ("s" bookmark-save))
+    #+END_SRC
+
+***** TODO Convert hydra-help to transient state
+    #+BEGIN_SRC emacs-lisp
+(defhydra hydra-help (:exit t :columns 4)
+  "Help"
+  ("f" counsel-apropos "Function search")
+  ("k" view-lossage "View Keystrokes")
+  ("c" find-function "Function code")
+  ("P" esup "Profile")
+  ("h" helpful-at-point "Help at point")
+  ("p" find-function-at-point "Function at Point")
+  ("l" find-library "Library source"))
+
+    #+END_SRC
+***** TODO Convert hydra-projects to transient state
+    #+BEGIN_SRC emacs-lisp
+(defhydra hydra-projects (:color blue :hint nil
+                                 :pre (progn
+                                        (exwm-input-line-mode))
+                                 :post (progn
+                                         (exwm-input-char-mode))
+                                 :inherit (hydra-common/heads))
+  "
+                                                                     ╭────────────┐
+     Files             Search          Buffer             Do         │ Projectile │
+   ╭─────────────────────────────────────────────────────────────────┴────────────╯
+     [_f_] file          [_sa_] ag          [_b_] switch         [_g_] magit
+     [_l_] file dwim     [_sr_] rg          [_v_] show all       [_p_] switch
+     [_r_] recent file   [_so_] occur       [_V_] ibuffer        [_P_] commander
+     [_d_] dir           [_sR_] replace     [_K_] kill all       [_i_] info
+     [_o_] other         [_st_] find tag
+     [_u_] test file     [_sT_] make tags
+                                                                         ╭────────┐
+     Other Window      Run             Cache              Do             │ Fixmee │
+   ╭──────────────────────────────────────────────────╯ ╭────────────────┴────────╯
+     [_F_] file          [_U_] test        [_kc_] clear         [_x_] TODO & FIXME
+     [_L_] dwim          [_m_] compile     [_kk_] add current   [_X_] toggle
+     [_D_] dir           [_c_] shell       [_ks_] cleanup
+     [_O_] other         [_C_] command     [_kd_] remove
+     [_B_] buffer
+   --------------------------------------------------------------------------------
+         "
+
+  ("p"   projectile-switch-project)
+  ("sa"  counsel-projectile-ag)
+  ("sr"  counsel-projectile-rg)
+  ("b"   counsel-projectile-switch-to-buffer)
+  ("B"   counsel-projectile-switch-to-buffer-other-window)
+  ("d"   counsel-projectile-find-dir)
+  ("D"   counsel-projectile-find-dir-other-window)
+  ("f"   counsel-projectile-find-file)
+  ("F"   counsel-projectile-find-file-other-window)
+  ("l"   counsel-projectile-find-file-dwim)
+  ("L"   counsel-projectile-find-file-dwim-other-window)
+
+  ("c"   projectile-run-async-shell-command-in-root)
+  ("C"   projectile-run-command-in-root)
+  ("g"   hydra-git/body nil)
+  ("i"   projectile-project-info)
+  ("kc"  projectile-invalidate-cache)
+  ("kd"  projectile-remove-known-project)
+  ("kk"  projectile-cache-current-file)
+  ("K"   projectile-kill-buffers)
+  ("ks"  projectile-cleanup-known-projects)
+  ("m"   projectile-compile-project)
+  ("o"   projectile-find-other-file)
+  ("O"   projectile-find-other-file-other-window)
+  ("P"   projectile-commander)
+  ("r"   projectile-recentf)
+  ("so"   projectile-multi-occur)
+  ("sR"   projectile-replace)
+  ("st"   projectile-find-tag)
+  ("sT"   projectile-regenerate-tags)
+  ("u"   projectile-find-test-file)
+  ("U"   projectile-test-project)
+  ("v"   projectile-display-buffer)
+  ("V"   projectile-ibuffer)
+
+  ("X"   fixmee-mode)
+  ("x"   fixmee-view-listing))
+
+(define-key projectile-mode-map (kbd "C-c o") #'hydra-project/body)
+
+    #+END_SRC
+***** TODO Convert hydra-torus to transient
+    #+BEGIN_SRC emacs-lisp
+(defhydra hydra-torus (:color red
                        :hint nil
                        :inherit (hydra-common/heads)
-                       :pre (progn
-                              (exwm-input-line-mode))
-                       :post (progn
-                               (exwm-input-char-mode)))
+                       :pre (progn  (exwm-input-line-mode))
+                       :post (progn (exwm-input-char-mode)))
   "
                                                                                            ╭─────────┐
     Switch                    Move                        Do                               │  Torus  │
@@ -1099,115 +1215,92 @@
 
   )
 
-   #+END_SRC
+    #+END_SRC
 
-   #+results:
-   : hydra-torus/body
+    #+results:
+    : hydra-torus/body
 
-**** bookmarks
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-bookmarks (
-                           :color red
-                           :hint nil
-                           :inherit (hydra-common/heads)
-                           :pre (progn
-                                  (exwm-input-line-mode))
-                           :post (progn
-                                   (exwm-input-char-mode)))
-
-  "
-                                                                   ╭───────────┐
-       List                          Do                            │ Bookmarks │
-╭──────────────────────────────────────────────────────────────────┴───────────╯
-  [_l_] list bookmarks            [_j_] jump to a bookmark
-   ^ ^                            [_m_] set bookmark at point
-   ^ ^                            [_s_] save bookmarks
---------------------------------------------------------------------------------
-    "
-  ("l" counsel-bookmark)
-  ("j" bookmark-jump)
-  ("m" bookmark-set)
-  ("s" bookmark-save))
-   #+END_SRC
-
-**** applications
-   #+BEGIN_SRC emacs-lisp
+***** TODO Convert hydra-applications to transient
+    #+BEGIN_SRC emacs-lisp
   (defhydra hydra-applications (:exit t :columns 4)
     "Applications"
     ("p" counsel-list-processes "Show Processes")
     ("r" elfeed "RSS Feeds"))
-
-  (defhydra hydra-elfeed-search-mode (:exit t :columns 4)
+    #+END_SRC
+***** TODO Convert hydra-elfeed to transient
+ #+BEGIN_SRC emacs-lisp
+(defhydra hydra-elfeed-search-mode (:exit t :columns 4)
     "Elfeed"
     ("f" elfeed-search-fetch "Fetch feed")
     ("u" elfeed-search-update "Update feed")
     ("o" elfeed-search-show-entry "Show entry"))
 
 
-   #+END_SRC
-**** window
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-window (
-                        :color red
-                        :hint  nil
-                        :inherit (hydra-common/heads)
-                        :pre (progn
-                               (exwm-input-line-mode))
-                        :post (progn
-                                (exwm-input-char-mode))
-                        )
+(defhydra hydra-elfeed-search (:hint nil :color blue :inherit (hydra-elfeed-common/heads))
   "
-                                                                     ╭──────────┐
-  Window         Switch           View                               │  Window  │
-╭────────────────────────────────────────────────────────────────────┴──────────╯
-     ↑          [_b_] ibuffer     [_s_] save
-     _i_          [_p_] projectile  [_d_] delete
- ← _k_   _l_ →      [_e_] exwm        [_v_] view
-     _o_
-     ↓
-
-   ^ ^
+                                                                      ╭────────┐
+  Move   Filter     Entries        Tags          Do                   │ Search │
+╭─────────────────────────────────────────────────────────────────────┴────────╯
+  _p_/_k_    [_s_] live   [_RET_] view     [_r_] read      [_a_] refresh
+  ^ ^↑^ ^    [_S_] set    [_o_] browse     [_u_] unread    [_A_] fetch
+  ^ ^ ^ ^     ^ ^         [_y_] yank url   [_+_] add       [_d_] unjam
+  ^ ^↓^ ^     ^ ^         [_v_] mark       [_-_] remove    [_E_] edit feeds
+  _n_/_j_     ^ ^          ^ ^              ^ ^            [_q_] exit
 --------------------------------------------------------------------------------
-    "
-  ("i" windmove-up)
-  ("o" windmove-down)
-  ("k" windmove-left)
-  ("l" windmove-right)
+        "
+  ("q"    quit-window)
+  ("a"    elfeed-search-update--force)
+  ("A"    elfeed-update)
+  ("d"    elfeed-unjam)
+  ("s"    elfeed-search-live-filter)
+  ("S"    elfeed-search-set-filter)
+  ("RET"  elfeed-search-show-entry)
+  ("o"    elfeed-search-browse-url)
+  ("y"    elfeed-search-yank)
+  ("v"    set-mark-command)
+  ("n"    next-line :color red)
+  ("j"    next-line :color red)
+  ("p"    previous-line :color red)
+  ("k"    previous-line :color red)
+  ("r"    elfeed-search-untag-all-unread)
+  ("u"    elfeed-search-tag-all-unread)
+  ("E"    (lambda() (interactive)(find-file "~/.emacs.d/elfeed.el.gpg")))
+  ("+"    elfeed-search-tag-all)
+  ("-"    elfeed-search-untag-all))
 
-  ("I" buf-move-up)
-  ("O" buf-move-down)
-  ("K" buf-move-left)
-  ("L" buf-move-right)
+(defhydra hydra-elfeed-show (:hint nil :color blue)
+  "
+                                                                      ╭────────┐
+  Scroll       Entries        Tags          Links                     │  Show  │
+╭─────────────────────────────────────────────────────────────────────┴────────╯
+  _S-SPC_    _p_/_k_  [_g_] refresh   [_u_] unread    _S-TAB_
+  ^  ↑  ^    ^ ^↑^ ^  [_o_] browse    [_+_] add       ^  ↑  ^
+  ^     ^    ^ ^ ^ ^  [_y_] yank url  [_-_] remove    ^     ^
+  ^  ↓  ^    ^ ^↓^ ^  [_q_] quit       ^ ^            ^  ↓  ^
+   _SPC_     _n_/_j_  [_s_] search^^                   _TAB_
+--------------------------------------------------------------------------------
+        "
+  ("q"     elfeed-kill-buffer)
+  ("g"     elfeed-show-refresh)
+  ("n"     elfeed-show-next :color red)
+  ("j"     elfeed-show-next :color red)
+  ("p"     elfeed-show-prev :color red)
+  ("k"     elfeed-show-prev :color red)
+  ("s"     hydra-elfeed-search/body)
+  ("o"     elfeed-show-visit)
+  ("y"     elfeed-show-yank)
+  ("u"     (elfeed-show-tag 'unread))
+  ("+"     elfeed-show-tag)
+  ("-"     elfeed-show-untag)
+  ("SPC"   scroll-up :color red)
+  ("S-SPC" scroll-down :color red)
+  ("TAB"   shr-next-link :color red)
+  ("S-TAB" shr-previous-link :color red))
 
-  ("b" ibuffer)
-  ("p" counsel-projectile-switch-to-buffer)
-  ("e" my-counsel-ibuffer-by-exwm-class-name)
+    #+END_SRC
 
-                                        ;  ("s" exwm-workspace-switch)
-                                        ;  ("m" exwm-workspace-move-window)
-
-  ("s"  ivy-push-view)
-  ("d"  ivy-pop-view)
-  ("v"  ivy-switch-view)
-
-  ("0" delete-window)
-  ("1" delete-other-windows)
-  ("2" split-window-below)
-  ("3" split-window-right)
-  ("4" split-window-up)
-  ("5" split-window-left)
-
-  (";" ace-swap-window "swap")
-  ("@" hycontrol-windows-grid)
-
-
-
-
-  )
-   #+END_SRC
-
-**** org-refiler
-   #+BEGIN_SRC emacs-lisp
+***** TODO Convert hydra-org-refiler to transient
+    #+BEGIN_SRC emacs-lisp
 (defvar org-default-projects-dir   "~/org/projects/"                     "Primary GTD directory")
 (defvar org-default-zettelkasten-dir "~/org/notes/"                     "Directory of notes modeled after Zettelkasten includes an Archive, and Notes")
 (defvar org-default-completed-dir  "~/org/projects/completed"            "Directory of completed project files")
@@ -1220,48 +1313,46 @@
 (defvar org-default-completed-file nil                              "Ideas simmering on back burner")
 (defvar org-default-notes-file     "~/org/agenda/inbox.org"   "Non-actionable, personal notes")
 
-(defhydra hydra-org-refiler (org-mode-map "C-c s" :hint nil)
+(defhydra hydra-org-refiler (:hint nil)
   "
-   ^Refile^       ^Calendar^            ^Ref^           ^Move^         ^Update^           ^Go To^
+   ^Update^        ^Refile^         ^Calendar^        ^Ref^         ^Move^           ^Go To^
    ^^^^^^^^^^------------------------------------------------------------------------------------------
-   _t_: tasks      _c c_: calendar  _z d_: web      _m p_: projects   _T_: todo       _g t_: tasks
-   _i_: incubate   _c t_: tickler   _z w_: docs     _m n_: notes      _S_: schedule   _g i_: incubate
-   _w_: waiting    _c d_: delegate  _z i_: images                   _D_: deadline   _g x_: inbox
-   _r_: refile                                                  _R_: rename     _g w_: waiting
-                                                                            _g p_: projects
-                                                                            _g c_: completed
+   _t_: todo      _T_: tasks      _c c_: calendar  _r d_: web      _m p_: projects   _g p_: projects
+   _s_: schedule  _I_: incubate   _c t_: tickler   _r w_: docs     _m n_: notes      _g c_: completed
+   _d_: deadline  _W_: waiting    _c d_: delegate  _r i_: images
+   _h_: headline  _R_: refile
+
+
    "
   ("<up>" org-previous-visible-heading)
   ("<down>" org-next-visible-heading)
   ("k" org-previous-visible-heading)
   ("j" org-next-visible-heading)
 
-  ("t" org-refile-to-task)
-  ("i" org-refile-to-incubate)
-  ("r"  org-refile)
-  ("w" org-refile-to-waiting)
+  ("T" org-refile-to-task)
+  ("I" org-refile-to-incubate)
+  ("W" org-refile-to-waiting)
+  ("R"  org-refile)
+
   ("c c" refile-to-calendar)
   ("c t" refile-to-tickler)
   ("c d" org-refile-to-delegate)
 
-  ("z d" note-to-documents)
-  ("z w" note-to-websites)
-  ("z i" note-to-images)
+  ("r d" note-to-documents)
+  ("r w" note-to-websites)
+  ("r i" note-to-images)
 
   ("m p" org-refile-to-projects-dir)
-  ("m n" org-refile-to-zettelkasten-dir)
-  ("T" org-todo)
-  ("S" org-schedule)
-  ("D" org-deadline)
-  ("R" org-rename-header)
-  ("g t" (find-file org-default-tasks-file))
-  ("g i" (find-file org-default-incubate-file))
-  ("g w" (find-file org-default-waiting-file))
-  ("g x" (find-file org-default-inbox-file))
-  ("g c" (find-file org-default-completed-file))
+  ("m n" org-refile-to-notes-dir)
+
+  ("t" org-todo)
+  ("s" org-schedule)
+  ("d" org-deadline)
+  ("h" org-rename-header)
+
   ("g p" (dired org-default-projects-dir))
   ("g c" (dired org-default-completed-dir))
-  ("[\t]" (org-cycle))
+  ("[\t]" (org-cyce))
 
   ("s" (org-save-all-org-buffers) "save")
 
@@ -1269,29 +1360,19 @@
   ("d" org-cut-subtree "delete")
   ("q" (my/switch-to-last-buffer) "quit" :color blue))
 
-   #+END_SRC
+    #+END_SRC
 
-   #+results:
-   : hydra-org-refiler/body
-**** major-modes
-***** org
-   #+BEGIN_SRC emacs-lisp :results silent
-(defhydra hydra-org (:exit t :columns 4
-                           :inherit (hydra-common/heads))
-
-  "Org mode"
-  ("u" org-up-element "Up element")
-  ("d" org-down-element "Down element")
-  ("b" org-next-block "Next block")
-  ("e" org-export-dispatch "Export")
-  ("t" org-todo "Toggle todo states")
-  ("T" org-babel-tangle "Tangle code")
-  ("c" org-babel-execute-src-block "Run block")
-  ("," outline-show-children "Show node children")
-  ("." org-tree-to-indirect-buffer "Edit in buffer")
-  ("'" org-edit-special "Code buffer"))
-   #+END_SRC
-***** python
+    #+results:
+    : hydra-org-refiler/body
+***** TODO Add modes to hydra-minor modes
+    #+BEGIN_SRC emacs-lisp
+(defhydra hydra-minor (:exit t :columns 4)
+  "Minor modes"
+  ("r" spray-mode "Speed read")
+  ("n" em/narrow-or-widen-dwim "Narrow / Widen")
+  ("i" iedit-mode "Iedit mode"))
+    #+END_SRC
+***** TODO Incorporate hydra-python to matcha mode
    #+BEGIN_SRC emacs-lisp :results silent
 (with-no-warnings
   (defhydra hydra-python (:exit t :columns 4
@@ -1319,141 +1400,18 @@
     ;;("n" flyceck "Run all tests")
     ("f" blacken-buffer "Format buffer code")))
    #+END_SRC
-***** lisp
+*** Modal Editing
+**** boon
+***** setup
    #+BEGIN_SRC emacs-lisp
-(defhydra hydra-lisp (:exit t :columns 4
-                            :inherit (hydra-common/heads))
-  "Lisp"
-  ("r" ielm "Interactive REPL")
-  ("." dumb-jump-go "Jump definition")
-  ("v" flycheck-verify-setup "Verify linting")
-  ("f" elisp-format-buffer "Format buffer")
-  ("d" checkdoc "Lint doc strings")
-  ("l" package-lint-current-buffer "Lint code")
-  ("c" emacs-lisp-byte-compile-and-load "Lisp execute"))
-   #+END_SRC
-***** javascript
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-javascript (:exit t :columns 4
-                                  :inherit (hydra-common/heads))
-  "Javascript"
-  ("," dumb-jump-back "Jump back")
-  ("." dumb-jump-go "Jump to definition")
-  ("l" flycheck-next-error "Next lint error")
-  ("i" npm-mode-npm-init "Initialize NPM")
-  ("f" prettier-js "Format code")
-  ("v" flycheck-verify-setup "Verify linting"))
-   #+END_SRC
-***** rjsx
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-rjsx (:exit t :columns 4
-                            :inherit (hydra-common/heads))
-  "Javascript"
-  ("," dumb-jump-back "Jump back")
-  ("." dumb-jump-go "Jump to definition")
-  ("l" flycheck-next-error "Next lint error")
-  ("i" npm-mode-npm-init "Initialize NPM")
-  ("f" prettier-js "Format code")
-  ("r" indium-connect "REPL")
-  ("h" html-to-react "HTML to react")
-  ("v" flycheck-verify-setup "Verify linting"))
-
-   #+END_SRC
-
-***** css
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-css (:exit t :columns 4
-                           :inherit (hydra-common/heads))
-  "CSS"
-  ("," dumb-jump-back "Jump back")
-  ("." dumb-jump-go "Jump to definition")
-  ("f" web-beautify-css "Format css"))
-   #+END_SRC
-***** scss
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-scss (:exit t :columns 4
-                            :inherit (hydra-common/heads))
-  "SCSS"
-  ("," dumb-jump-back "Jump back")
-  ("." dumb-jump-go "Jump to definition")
-  ("f" web-beautify-css "Format css"))
-   #+END_SRC
-***** web
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-web (:exit t :columns 4
-                           :inherit (hydra-common/heads))
-  "Web"
-  ("f" web-beautify-html "Format buffer")
-  ("o" browser-url-of-buffer "Open in browser"))
-   #+END_SRC
-***** html
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-html (:exit t :columns 4
-                            :inherit (hydra-common/heads))
-  "Html"
-  ("f" web-beautify-html "Format buffer")
-  ("o" browser-url-of-buffer "Open in browser"))
-   #+END_SRC
-
-***** c
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-c (:exit t :columns 4
-                         :inherit (hydra-common/heads))
-  "C"
-  ("." dumb-jump-go "Jump to definition")
-  ("," dumb-jump-back "Jump back")
-  ("i" dumb-jump-quick-look "Definition Info")
-  ("f" clang-format-buffer "Format buffer"))
-   #+END_SRC
-***** json
-   #+BEGIN_SRC emacs-lisp
-(with-no-warnings
-  (defhydra hydra-json (:exit t :columns 4
-                              :inherit (hydra-common/heads))
-    "CSV"
-    (";" yafolding-toggle-all "Fold")
-    ("f" csv-align-fields "Format visually")))
-   #+END_SRC
-***** exwm
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-exwm (:exit t
-                            :columns 4
-                            :color blue
-                            :inherit (hydra-common/heads)
-                            :pre (progn
-                                   (exwm-input-line-mode))
-                            :post (progn
-                                    (exwm-input-char-mode)))
-
-
-  "EXWM"
-  ("s"  #'exwm-input-send-next-key "send key")
-  ("f"  #'exwm-layout-set-fullscreen "fullscreen")
-  ("t"  #'exwm-floating-toggle-floating "toggle floating")
-  ("m"  #'exwm-workspace-move-window "move window")
-
-  )
-   #+END_SRC
-**** minor-modes
-   #+BEGIN_SRC emacs-lisp
-(defhydra hydra-minor (:exit t :columns 4)
-  "Minor modes"
-  ("r" spray-mode "Speed read")
-  ("n" em/narrow-or-widen-dwim "Narrow / Widen")
-  ("i" iedit-mode "Iedit mode"))
-   #+END_SRC
-** Modal Editing
-*** boon
-**** setup
-  #+BEGIN_SRC emacs-lisp
 (use-package boon
   :config
   (require 'boon-qwerty)
   (boon-mode +1))
 
-  #+END_SRC
-**** boon-major-mode
-  #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+***** boon-major-mode
+   #+BEGIN_SRC emacs-lisp
 (defvar-local boon-objed-state nil "Non-nil when boon objed mode is activated.")
 
 (defun boon-select-major-mode (boon-mode-map)
@@ -1470,26 +1428,21 @@
        (python-mode . (message "%s" "command from python mode"))))
 
 (setq boon-major-mode-hydra-list '
-      ((org-mode . (hydra-org/body))
-       (emacs-lisp-mode . (hydra-lisp/body))
-       (clojure-mode . (hydra-clojure/body))
-       (clojurescript-mode . (hydra-clojurescript/body))
-       (js2-mode . (hydra-javascript/body))
-       (rjsx-mode . (hydra-rjsx/body))
-       (json-mode . (hydra-json/body))
-       (sql-mode . (hydra-sql/body))
-       (css-mode . (hydra-css/body))
-       (scss-mode . (hydra-scss/body))
-       (javascript-mode . (hydra-javascript/body))
-       (yaml-mode . (hydra-yaml/body))
-       (php-mode . (hydra-php/body))
-       (c++-mode . (hydra-c/body))
-       (arduino-mode . (hydra-arduino/body))
-       (web-mode . (hydra-web/body))
-       (html-mode . (hydra-html/body))
-       (mhtml-mode . (hydra-html/body))
+      ((org-mode . (matcha-org-mode))
+       (emacs-lisp-mode . (matcha-emacs-lisp-mode))
+       (js-mode . (matcha-indium-mode/body))
+       (js2-mode . (matcha-indium-mode/body))
+       (rjsx-mode . (matcha-indium-mode/body))
+       (json-mode . (matcha-json-mode))
+       (css-mode . (matcha-css-mode))
+       (scss-mode . (matcha-css-mode))
+       (web-mode . (matcha-web-mode/body))
+       (html-mode . (matcha-web-mode/body))
+       (mhtml-mode . (matcha-web-mode/body))
        (exwm-mode . (hydra-exwm/body))
-       (python-mode . (hydra-python/body))))
+       (elfeed-search-mode . (hydra-elfeed-search/body))
+       (python-mode . (matcha-python-mode))))
+
 
 (custom-set-variables
  '(boon-special-mode-list
@@ -1510,9 +1463,9 @@
      ,*dashboard*
      ))))
 
-  #+END_SRC
-**** boon-objed
-  #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+***** boon-objed
+   #+BEGIN_SRC emacs-lisp
 (defun boon-reset-all-mode-states ()
   (interactive)
   (mapcar (lambda (boon-mode)
@@ -1613,9 +1566,9 @@ optional list of changes as its last argument."
 
 
 
-  #+END_SRC
-**** keybindings
-  #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+***** keybindings
+   #+BEGIN_SRC emacs-lisp
 (define-key boon-command-map (kbd "SPC") 'counsel-M-x)
 (define-key boon-command-map (kbd "<return>") 'counsel-linux-app)
 (define-key global-map [escape] 'my/boon-set-command-state)
@@ -1634,9 +1587,8 @@ optional list of changes as its last argument."
 
 (define-key boon-command-map (kbd "g")  'magit-status)
 
-(define-key boon-command-map (kbd "A")  'hydra-agenda/body)
-
-(define-key boon-command-map (kbd "A")  'hydra-agenda/body)
+(define-key boon-command-map (kbd "a")  'hydra-agenda/body)
+(define-key boon-command-map (kbd "A")  'my/org-agenda)
 
 (define-key boon-command-map (kbd "W")  'hydra-window/body)
 (define-key boon-command-map (kbd "J")  'hydra-jump/body)
@@ -1654,13 +1606,13 @@ optional list of changes as its last argument."
 
 (define-key boon-command-map (kbd "T")  'torus-search)
 
-(define-key boon-command-map (kbd "s-h")  'ivy-resume)
+(define-key boon-command-map (kbd "z")  'ivy-resume)
 
-(define-key boon-command-map (kbd "@")  'counsel-org-capture)
+(define-key boon-command-map (kbd "@")  'org-capture)
 
-  #+END_SRC
-*** objed
-  #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+**** objed
+   #+BEGIN_SRC emacs-lisp
 (use-package objed
   :commands objed-mode
   :config
@@ -1672,19 +1624,19 @@ optional list of changes as its last argument."
   (define-key objed-op-map "f" 'counsel-find-file)
   (define-key objed-op-map "b" 'ivy-switch-buffer))
 
-  #+END_SRC
-** Information Management
-*** Hyperbole
-  #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+*** Information Management
+**** Hyperbole
+   #+BEGIN_SRC emacs-lisp
 (use-package hyperbole
   :config
   (add-to-list 'hyperbole-web-search-alist '("DuckDuckGo" . "https://duckduckgo.com/?q=%s"))
 )
-  #+END_SRC
+   #+END_SRC
 
-*** howm
-***** functions
-    #+BEGIN_SRC emacs-lisp
+**** howm
+****** functions
+     #+BEGIN_SRC emacs-lisp
 (defvar howm-view-title-header "#+TITLE:")
 
 (defvar howm-view-header-format
@@ -1887,9 +1839,9 @@ optional list of changes as its last argument."
     (insert "#+INCLUDE: \"" current-buffer "\" :only-contents t :lines \"10-\"\n\n")))
 
 
-    #+END_SRC
-***** package
-     #+BEGIN_SRC emacs-lisp
+     #+END_SRC
+****** package
+      #+BEGIN_SRC emacs-lisp
 (use-package howm
   :init
   (setq howm-template
@@ -1918,10 +1870,10 @@ optional list of changes as its last argument."
   (define-key howm-view-summary-mode-map [tab] 'my/howm-view-summary-open))
 
 
-     #+END_SRC
-** Media
-*** emms
-  #+BEGIN_SRC emacs-lisp
+      #+END_SRC
+*** Media
+**** emms
+   #+BEGIN_SRC emacs-lisp
 (use-package emms
   :commands emms
   :config
@@ -1934,9 +1886,9 @@ optional list of changes as its last argument."
   (emms-mode-line 0)
   (emms-playing-time 1))
 
-  #+END_SRC
-*** circe
-  #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+**** circe
+   #+BEGIN_SRC emacs-lisp
 (use-package circe
   :defer t
   :config
@@ -1962,20 +1914,20 @@ optional list of changes as its last argument."
         circe-default-user "Dynamicmetaflow"
         circe-default-realname "Dynamicmetaflow"
         ))
-  #+END_SRC
-*** pdf-tools
-  #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+**** pdf-tools
+   #+BEGIN_SRC emacs-lisp
 (use-package pdf-tools :ensure t
   :defer 0.1
   :config
   (unless noninteractive
     (pdf-tools-install))
   (setq-default pdf-view-display-size 'fit-page))
-  #+END_SRC
+   #+END_SRC
 
-** Buffers
-*** torus
-  #+BEGIN_SRC emacs-lisp
+*** Buffers
+**** torus
+   #+BEGIN_SRC emacs-lisp
 (use-package torus
   :defer 0.1
   :bind-keymap ("C-x t" . torus-map)
@@ -2034,30 +1986,104 @@ optional list of changes as its last argument."
 
   )
 
-  #+END_SRC
+   #+END_SRC
 
-** Utilities
-*** kdeconnect
-  #+BEGIN_SRC emacs-lisp
+*** Utilities
+**** kdeconnect
+   #+BEGIN_SRC emacs-lisp
 (use-package kdeconnect
   :defer t)
-  #+END_SRC
-*** [[https://github.com/redguardtoo/elpa-mirror][elpa-mirror: Create local emacs package repository]]
- #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+**** [[https://github.com/redguardtoo/elpa-mirror][elpa-mirror: Create local emacs package repository]]
+  #+BEGIN_SRC emacs-lisp
 (use-package elpa-mirror)
- #+END_SRC
+  #+END_SRC
 
- - Use `elpa-mirror` to create local repository which contains all packages you are already using
+  - Use `elpa-mirror` to create local repository which contains all packages you are already using
 
- - Push the repository to github. Tag the repository and emacs setup with same version number (`1.1`, `1.2`...)
+  - Push the repository to github. Tag the repository and emacs setup with same version number (`1.1`, `1.2`...)
 
- - Done
+  - Done
 
- So you could always roll back to last stable version because of full control of the setup and packages
+  So you could always roll back to last stable version because of full control of the setup and packages
 
-* Helpers
-** defun
+**** Wolfram alpha
+  #+BEGIN_SRC emacs-lisp
+;; wolfram alpha queries (M-x wolfram-alpha)
+(use-package wolfram
+  :defer t
+  :config
+  (setq wolfram-alpha-app-id "KTKV36-2LRW2LELV8"))
+  #+END_SRC
+
+  #+results:
+
+**** keycast
  #+BEGIN_SRC emacs-lisp
+(use-package keycast)
+ #+END_SRC
+**** Gif-Screencasts: One-frame-per-action GIF recording
+  You need to install ~scrot~, ImageMagick (~convert~) and optional ~Gifsicle~.
+
+  Use emacs ~keycast~ package to display keys in modeline.
+
+  #+BEGIN_SRC emacs-lisp
+(use-package gif-screencast
+  :bind (:map gif-screencast-mode-map
+         ("<f11>" . gif-screencast-toggle-pause)
+         ("<f12>" . gif-screencast-stop)
+         ("<escape>" . gif-screencast-stop))
+  :config (setq gif-screencast-output-directory (expand-file-name "videos/emacs/" "~")))
+  #+END_SRC
+
+** Helpers
+   :PROPERTIES:
+   :ID:       1524b2e3-5aee-49c2-9fd2-0d985c0926da
+   :END:
+*** defun
+  #+BEGIN_SRC emacs-lisp
+  (defun counsel-projectile-switch-to-buffer-other-window ()
+    "Jump to a buffer in the current project."
+    (interactive)
+    (other-window 1)
+    (counsel-projectile-switch-to-buffer))
+
+  (defun counsel-projectile-find-dir-other-window ()
+    "Jump to a buffer in the current project."
+    (interactive)
+    (other-window 1)
+    (counsel-projectile-find-dir))
+
+  (defun counsel-projectile-find-file-other-window ()
+    "Jump to a buffer in the current project."
+    (interactive)
+    (other-window 1)
+    (counsel-projectile-find-file))
+
+  (defun counsel-projectile-find-file-dwim-other-window ()
+    "Jump to a buffer in the current project."
+    (interactive)
+    (other-window 1)
+    (counsel-projectile-find-file-dwim))
+
+
+(defun my/org-agenda ()
+(interactive)
+(org-agenda nil " "))
+
+(defun my/org-capture-todo ()
+(interactive)
+(org-capture nil "t"))
+
+(defun my/org-capture-note ()
+(interactive)
+(org-capture nil "n"))
+
+(defun my/org-capture-event ()
+(interactive)
+(org-capture nil "e"))
+
+
 (defun get-envvar-name (envvar)
   "Return environment variable name for ENVVAR.
 Code from `read-envvar-name'."
@@ -2135,16 +2161,6 @@ Code from `read-envvar-name'."
      :window-flip arg))
   (hkey-either arg))
 
-(defun my/exwm-counsel-yank-pop ()
-  "Same as `counsel-yank-pop' and paste into exwm buffer."
-  (interactive)
-  (let ((inhibit-read-only t)
-        (yank-pop-change-selection t))
-    (call-interactively #'counsel-yank-pop))
-  (when (derived-mode-p 'exwm-mode)
-    (exwm-input--set-focus (exwm--buffer->id (window-buffer (selected-window))))
-    (exwm-input--fake-key ?\C-v)))
-
 
 (defun my/insert-mode ()
   (interactive)
@@ -2193,21 +2209,24 @@ Code from `read-envvar-name'."
     (goto-char 0)
     (conf-mode)))
 
- #+END_SRC
+  #+END_SRC
 
- #+results:
- : std::pacman-pkg-info
+  #+results:
+  : std::pacman-pkg-info
 
 
 
-  :RELATED:
-  :END:
+   :RELATED:
+   :END:
 
-  :RESOURCES:
-  :END:
-** variables
- #+BEGIN_SRC emacs-lisp
-(exwm-input-set-key (kbd "M-y") #'my/exwm-counsel-yank-pop)
+   :RESOURCES:
+   :END:
+*** variables
+  #+BEGIN_SRC emacs-lisp
+(setq org-agenda-entry-text-maxlines 10)
+(setq org-agenda-entry-text-leaders " ")
+
+(exwm-input-set-key (kbd "M-y") #'gpastel-exwm-counsel-yank-pop)
 
 (setq emms-source-file-default-directory "/home/alexander/org/data/c0/80320c-060b-4348-a413-ee7d8ed40dd6/")
 
@@ -2259,9 +2278,9 @@ Code from `read-envvar-name'."
 
 (setq grep-command "rg")
 
- #+END_SRC
-** appointments and notifications
- #+BEGIN_SRC emacs-lisp
+  #+END_SRC
+*** appointments and notifications
+  #+BEGIN_SRC emacs-lisp
 (setq appt-display-diary nil)
 (appt-activate t)
 (setq appt-display-interval 5)
@@ -2324,9 +2343,9 @@ Code from `read-envvar-name'."
 ;; If we leave Emacs running overnight - reset the appointments one minute after midnight
 (run-at-time "24:01" nil 'bh/org-agenda-to-appt)
 
- #+END_SRC
-** window-snapshots
- #+BEGIN_SRC emacs-lisp
+  #+END_SRC
+*** window-snapshots
+  #+BEGIN_SRC emacs-lisp
 (defvar window-snapshots '())
 
 (defun save-window-snapshot ()
@@ -2351,9 +2370,9 @@ Code from `read-envvar-name'."
       (message "Snapshot %s not found" snapshot-name))))
 
 
- #+END_SRC
-** buffer
- #+BEGIN_SRC emacs-lisp
+  #+END_SRC
+*** buffer
+  #+BEGIN_SRC emacs-lisp
 (defun save-buffer-always ()
   "Save the buffer even if it is not modified."
   (interactive)
@@ -2395,46 +2414,31 @@ Code from `read-envvar-name'."
                       (buffer-list)))
   (delete-other-windows))
 
- #+END_SRC
-** window
- #+BEGIN_SRC emacs-lisp
+  #+END_SRC
+*** window
+  #+BEGIN_SRC emacs-lisp
 (defun delete-window-balance ()
   "Delete window and rebalance the remaining ones."
   (interactive)
   (delete-window)
   (balance-windows))
-(defun split-window-below-focus ()
-  "Split window horizontally and move focus to other window."
+
+(defvar single-window--last-configuration nil "Last window configuration before calling `delete-other-windows'.")
+(defun toggle-single-window ()
+  "Un-maximize current window.
+If multiple windows are active, save window configuration and
+delete other windows.  If only one window is active and a window
+configuration was previously save, restore that configuration."
   (interactive)
-  (split-window-below)
-  (balance-windows)
-  (other-window 1))
+  (if (= (count-windows) 1)
+      (when single-window--last-configuration
+        (set-window-configuration single-window--last-configuration))
+    (setq single-window--last-configuration (current-window-configuration))
+    (delete-other-windows)))
 
-(defun split-window-right-focus ()
-  "Split window vertically and move focus to other window."
-  (interactive)
-  (split-window-right)
-  (balance-windows)
-  (other-window 1))
-
-
-
-(defun my/toggle-maximize ()
-  "Toggle maximization of current window."
-  (interactive)
-  (let ((register ?2))
-
-    (if (eq (get-register register) nil)
-        (progn
-          (set-register register (current-window-configuration))
-          (delete-other-windows))
-      (progn
-        (set-window-configuration (get-register register))
-        (set-register register nil)))))
-
- #+END_SRC
-** editing
- #+BEGIN_SRC emacs-lisp
+  #+END_SRC
+*** editing
+  #+BEGIN_SRC emacs-lisp
 (defun copy-line ()
   (interactive)
   (save-excursion
@@ -2454,9 +2458,9 @@ Code from `read-envvar-name'."
         (call-interactively #'goto-line))
     (linum-mode -1)))
 
- #+END_SRC
-** flycheck
- #+BEGIN_SRC emacs-lisp
+  #+END_SRC
+*** flycheck
+  #+BEGIN_SRC emacs-lisp
 (defun toggle-flycheck-error-list ()
   "Toggle flycheck's error list window.
 If the error list is visible, hide it.  Otherwise, show it."
@@ -2474,9 +2478,9 @@ If the error list is visible, hide it.  Otherwise, show it."
 
 (defun disable-fylcheck-in-org-src-block ()
   (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
- #+END_SRC
-** test-emacs
- #+BEGIN_SRC emacs-lisp
+  #+END_SRC
+*** test-emacs
+  #+BEGIN_SRC emacs-lisp
 (defun test-emacs ()
   "Test if emacs starts correctly."
   (interactive)
@@ -2502,10 +2506,10 @@ If the error list is visible, hide it.  Otherwise, show it."
           (insert output)
           (search-backward "ERROR!"))))))
 
- #+END_SRC
+  #+END_SRC
 
-** time
- #+BEGIN_SRC emacs-lisp
+*** time
+  #+BEGIN_SRC emacs-lisp
 (defun my/insert-created-timestamp()
   "Insert a CREATED property using org-expiry.el for TODO entries"
   (org-entry-put nil "CREATED" (format-time-string "<%Y-%m-%d %a %H:%M>"))
@@ -2514,23 +2518,25 @@ If the error list is visible, hide it.  Otherwise, show it."
   (org-end-of-line)
   (insert " "))
 
- #+END_SRC
-** archive
- #+BEGIN_SRC emacs-lisp
+(add-hook 'org-capture-before-finalize-hook 'my/insert-created-timestamp)
+(add-hook 'org-capture-prepare-finalize-hook 'org-id-store-link)
+  #+END_SRC
+*** archive
+  #+BEGIN_SRC emacs-lisp
 (defun org-archive-done-tasks ()
   (interactive)
   (org-map-entries 'org-archive-subtree "/DONE" 'file))
 
- #+END_SRC
-** org-insert-link
- #+BEGIN_SRC emacs-lisp
+  #+END_SRC
+*** org-insert-link
+  #+BEGIN_SRC emacs-lisp
 (defun org-insert-link-with-default-description (file-name)
   (interactive (list (read-file-name "File: ")))
   (org-insert-link file-name file-name (file-name-nondirectory file-name)))
 
- #+END_SRC
-** expansion
- #+BEGIN_SRC emacs-lisp
+  #+END_SRC
+*** expansion
+  #+BEGIN_SRC emacs-lisp
 (defun check-expansion ()
   (save-excursion
     (if (looking-at "\\_>") t
@@ -2542,9 +2548,9 @@ If the error list is visible, hide it.  Otherwise, show it."
 (defun do-yas-expand ()
   (let ((yas/fallback-behavior 'return-nil))
     (yas/expand)))
- #+END_SRC
-** export-headlines
- #+BEGIN_SRC emacs-lisp
+  #+END_SRC
+*** export-headlines
+  #+BEGIN_SRC emacs-lisp
 (defun my/org-export-headlines-to-org ()
   "Export all subtrees that are *not* tagged with :noexport: to
 separate files.
@@ -2572,9 +2578,9 @@ are exported to a filename derived from the headline text."
            (set-buffer-modified-p modifiedp)))
        "-noexport" 'region-start-level))))
 
- #+END_SRC
-** org-id
- #+BEGIN_SRC emacs-lisp
+  #+END_SRC
+*** org-id
+  #+BEGIN_SRC emacs-lisp
 (defun my/org-add-ids-to-headlines-in-file ()
   "Add CUSTOM_ID properties to all headlines in the
    current file which do not already have one."
@@ -2599,23 +2605,23 @@ are exported to a filename derived from the headline text."
         (org-entry-put pom "EXPORT_FILENAME" id)
         (org-id-add-location id (buffer-file-name (buffer-base-buffer)))
         id)))))
- #+END_SRC
-** nov
- #+BEGIN_SRC emacs-lisp
+  #+END_SRC
+*** nov
+  #+BEGIN_SRC emacs-lisp
 (defun my-nov-font-setup ()
   (face-remap-add-relative 'variable-pitch :family "Liberation Serif"
                            :height 1.0))
- #+END_SRC
-** org-mode-hooks
- #+BEGIN_SRC emacs-lisp
+  #+END_SRC
+*** org-mode-hooks
+  #+BEGIN_SRC emacs-lisp
 (defun my-org-mode-hooks ()
   (visual-line-mode)
   (turn-on-auto-fill)
   (turn-on-flyspell)
   (outline-minor-mode))
- #+END_SRC
-** misc
- #+BEGIN_SRC emacs-lisp
+  #+END_SRC
+*** misc
+  #+BEGIN_SRC emacs-lisp
 (defun my/trim-non-chrome ()
   (delete-if-not (apply-partially 'string-match "- Google Chrome$")
                  ido-temp-list))
@@ -2650,9 +2656,9 @@ are exported to a filename derived from the headline text."
   (interactive)
   (isearch-yank-internal (lambda () (forward-symbol 1) (point))))
 
- #+END_SRC
-** save-hist
- #+BEGIN_SRC emacs-lisp
+  #+END_SRC
+*** save-hist
+  #+BEGIN_SRC emacs-lisp
 (setq savehist-additional-variables
       '(kill-ring
         search-ring
@@ -2670,10 +2676,10 @@ are exported to a filename derived from the headline text."
 
 (savehist-mode 1)
 
- #+END_SRC
+  #+END_SRC
 
-** xref
- #+BEGIN_SRC emacs-lisp
+*** xref
+  #+BEGIN_SRC emacs-lisp
 (custom-set-variables '(xref-show-xrefs-function #'ivy-xref-show-xrefs))
 
 (defun my-xref-show-pos-in-buf--same-window (func &rest args)
@@ -2685,10 +2691,10 @@ are exported to a filename derived from the headline text."
 (advice-add 'xref--show-pos-in-buf
             :around #'my-xref-show-pos-in-buf--same-window)
 
- #+END_SRC
-** counsel-network
-Control network manager from Emacs
-#+BEGIN_SRC emacs-lisp
+  #+END_SRC
+*** counsel-network
+ Control network manager from Emacs
+ #+BEGIN_SRC emacs-lisp
 (defvar counsel-network-manager-history nil
   "Network manager history.")
 
@@ -2708,15 +2714,112 @@ Control network manager from Emacs
                           (message "Connecting to \"%s\".." network)
                           (async-shell-command
                            (format "nmcli device wifi connect %s" (shell-quote-argument network))))))))
-#+END_SRC
+ #+END_SRC
 
-#+results:
-: counsel-network-manager
+ #+results:
+ : counsel-network-manager
 
-* Activities
-** Org
-*** org-todo
-#+BEGIN_SRC emacs-lisp
+*** memacs
+ #+BEGIN_SRC emacs-lisp
+(defun memacs-chrome ()
+(interactive)
+(shell-command "~/bin/memacs-chrome.sh"))
+
+(defun my/memacs-org-agenda ()
+   "Opens an org-agenda with activated archive"
+   (interactive)
+   (memacs-chrome)
+   (setq org-agenda-files "~/org/agenda/web.org")
+   (org-agenda-list)
+   ;;(call-interactively 'org-agenda-log-mode)
+   (org-agenda-log-mode '(4))
+   (call-interactively 'org-agenda-archives-mode)
+   (org-agenda-archives-mode 'files)
+   )
+
+ #+END_SRC
+*** org-log
+ #+BEGIN_SRC emacs-lisp
+(add-to-list 'org-log-note-headings
+             '(property . "Property %-12s from %-12S %t"))
+
+(defun my/org-property-change-note (prop val)
+  (message (concat "Changing " prop " from \n" val))
+  (if (not 'my/org-property-previous-val)
+      (if (not (member prop my/org-property-ignored-properties))
+      (org-add-log-setup 'property prop my/org-property-previous-val))))
+
+
+(defun org-add-log-note (&optional _purpose)
+  "Pop up a window for taking a note, and add this note later."
+  (remove-hook 'post-command-hook 'org-add-log-note)
+  (setq org-log-note-window-configuration (current-window-configuration))
+  (delete-other-windows)
+  (move-marker org-log-note-return-to (point))
+  (pop-to-buffer-same-window (marker-buffer org-log-note-marker))
+  (goto-char org-log-note-marker)
+  (org-switch-to-buffer-other-window "*Org Note*")
+  (erase-buffer)
+  (if (memq org-log-note-how '(time state))
+      (org-store-log-note)
+    (let ((org-inhibit-startup t)) (org-mode))
+    (insert (format "# Insert note for %s.
+# Finish with C-c C-c, or cancel with C-c C-k.\n\n"
+                    (cond
+                     ((eq org-log-note-purpose 'clock-out) "stopped clock")
+                     ((eq org-log-note-purpose 'done)  "closed todo item")
+                     ((eq org-log-note-purpose 'state)
+                      (format "state change from \"%s\" to \"%s\""
+                              (or org-log-note-previous-state "")
+                              (or org-log-note-state "")))
+                     ((eq org-log-note-purpose 'reschedule)
+                      "rescheduling")
+                     ((eq org-log-note-purpose 'delschedule)
+                      "no longer scheduled")
+                     ((eq org-log-note-purpose 'redeadline)
+                      "changing deadline")
+                     ((eq org-log-note-purpose 'deldeadline)
+                      "removing deadline")
+                     ((eq org-log-note-purpose 'refile)
+                      "refiling")
+                     ((eq org-log-note-purpose 'note)
+                      "this entry")
+                     ((eq org-log-note-purpose 'property)
+                      (format "\"%s\" property change from \"%s\""
+                              (or org-log-note-state "")
+                              (or org-log-note-previous-state "")))
+                     (t (error "This should not happen")))))
+    (when org-log-note-extra (insert org-log-note-extra))
+    (setq-local org-finish-function 'org-store-log-note)
+    (run-hooks 'org-log-buffer-setup-hook)))
+
+(add-hook 'org-property-changed-functions 'my/org-property-change-note)
+
+(defun my/org-insert-link-all ()
+  (interactive)
+  (while org-stored-links
+    (with-simulated-input "RET RET"
+      (org-insert-link))
+    (if (last org-stored-links)
+        (progn
+          (if (org-in-item-p)
+              (org-insert-item)
+            (insert ", "))))))
+
+
+;; Record time and note when a task is completed
+(setq org-log-done 'note)
+
+;; Record time and note when the scheduled date of a task is modified
+(setq org-log-reschedule 'note)
+
+
+ #+END_SRC
+
+** Activities
+*** Org
+**** org-todo
+ #+BEGIN_SRC emacs-lisp
 ;; Keep tasks with dates on the global todo lists
 (setq org-agenda-todo-ignore-with-date nil)
 
@@ -2782,9 +2885,12 @@ Control network manager from Emacs
               ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
               ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
 
-#+END_SRC
-*** org-refile
-#+BEGIN_SRC emacs-lisp
+ #+END_SRC
+**** org-refile
+     :PROPERTIES:
+     :CREATED:  [2019-06-19 Wed 17:53]
+     :END:
+ #+BEGIN_SRC emacs-lisp
 (setq org-refile-targets (quote ((nil :maxlevel . 9)
                                  (org-agenda-files :maxlevel . 9)
                                  )))
@@ -2799,9 +2905,12 @@ Control network manager from Emacs
 
 (setq org-refile-target-verify-function 'bh/verify-refile-target)
 
-#+END_SRC
-*** org-clock
-#+BEGIN_SRC emacs-lisp
+ #+END_SRC
+**** org-clock
+     :PROPERTIES:
+     :CREATED:  [2019-06-19 Wed 17:53]
+     :END:
+ #+BEGIN_SRC emacs-lisp
 (setq org-agenda-clock-consistency-checks
       (quote (:max-duration "4:00"
                             :min-duration 0
@@ -2859,9 +2968,12 @@ Control network manager from Emacs
 (setq org-global-properties (quote (("Effort_ALL" . "0:15 0:30 0:45 1:00 2:00 3:00 4:00 5:00 6:00 0:00")
                                     ("STYLE_ALL" . "habit"))))
 
-#+END_SRC
-*** org-tags
-#+BEGIN_SRC emacs-lisp
+ #+END_SRC
+**** org-tags
+     :PROPERTIES:
+     :CREATED:  [2019-06-19 Wed 17:53]
+     :END:
+ #+BEGIN_SRC emacs-lisp
 (setq org-fast-tag-selection-include-todo t)
 
 (setq org-tag-alist (quote (("WAITING" . ?w)
@@ -2875,9 +2987,12 @@ Control network manager from Emacs
 ;; Allow setting single tags without the menu
 (setq org-fast-tag-selection-single-key (quote expert))
 
-#+END_SRC
-*** org-expiry
-#+BEGIN_SRC emacs-lisp
+ #+END_SRC
+**** org-expiry
+     :PROPERTIES:
+     :CREATED:  [2019-06-19 Wed 17:53]
+     :END:
+ #+BEGIN_SRC emacs-lisp
 (require 'org-expiry)
 
 (setq org-expiry-inactive-timestamps t)
@@ -2885,9 +3000,12 @@ Control network manager from Emacs
 
 (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
-#+END_SRC
-*** org-babel
-#+BEGIN_SRC emacs-lisp
+ #+END_SRC
+**** org-babel
+     :PROPERTIES:
+     :CREATED:  [2019-06-19 Wed 17:53]
+     :END:
+ #+BEGIN_SRC emacs-lisp
 (setq org-confirm-babel-evaluate nil
       org-src-fontify-natively t
       org-src-tab-acts-natively t
@@ -2937,9 +3055,12 @@ Control network manager from Emacs
 (setq org-ditaa-jar-path "~/.emacs.d/ditaa0_9/ditaa0_9.jar")
 
 
-#+END_SRC
-*** org-habit
-#+BEGIN_SRC emacs-lisp
+ #+END_SRC
+**** org-habit
+     :PROPERTIES:
+     :CREATED:  [2019-06-19 Wed 17:53]
+     :END:
+ #+BEGIN_SRC emacs-lisp
 (setq org-habit-show-habits-only-for-today t)
 (setq org-agenda-tags-column -100
       org-habit-graph-column 45
@@ -2948,18 +3069,14 @@ Control network manager from Emacs
 
 (setq org-habit-show-habits nil)
 
-#+END_SRC
-*** org-directory
- #+BEGIN_SRC emacs-lisp
-(setq org-directory "~/org/agenda/")
-(setq org-file-inbox (concat org-directory "inbox.org"))
-(setq org-file-journal (concat org-directory "/archive/journal/journal.org"))
-(setq org-file-reference (concat org-directory "reference.org"))
-(setq org-file-calendar (concat org-directory "calendar.org"))
  #+END_SRC
-*** org-agenda
- #+BEGIN_SRC emacs-lisp
+**** org-agenda
+     :PROPERTIES:
+     :CREATED:  [2019-06-19 Wed 17:47]
+     :END:
+  #+BEGIN_SRC emacs-lisp
 (require 'org-agenda)
+(require 'org-habit)
 
 (setq org-agenda-files (apply 'append
                               (mapcar
@@ -2969,6 +3086,8 @@ Control network manager from Emacs
                                '("~/org/agenda/" "~/org/projects/" "~/.personal.d/" "~/.emacs.d/"))))
 
 (setq org-agenda-timegrid-use-ampm t)
+
+(setq org-agenda-use-time-grid nil)
 
 
 (setq org-show-entry-below (quote ((default))))
@@ -2989,8 +3108,6 @@ Control network manager from Emacs
 
 (setq org-agenda-auto-exclude-function 'bh/org-auto-exclude-function)
 
-;; Agenda log mode items to display (closed and state changes by default)
-(setq org-agenda-log-mode-items (quote (closed clock state)))
 
 ;; For tag searches ignore tasks with scheduled and deadline dates
 (setq org-agenda-tags-todo-honor-ignore-options t)
@@ -3059,12 +3176,15 @@ Control network manager from Emacs
 ;; Start the weekly agenda on Monday
 (setq org-agenda-start-on-weekday 1)
 
+(setq org-default-priority ?C)
+
+
 ;; Use sticky agenda's so they persist
 ;;(setq org-agenda-sticky t)
 
 ;; Custom agenda command definitions
 (setq org-agenda-custom-commands
-      (quote (("N" "Notes" tags "NOTE"
+      (quote (("n" "Notes" tags "note"
                ((org-agenda-overriding-header "Notes")
                 (org-tags-match-list-sublevels t)))
               ("h" "Habits" tags-todo "STYLE=\"habit\""
@@ -3073,9 +3193,9 @@ Control network manager from Emacs
                  '(todo-state-down effort-up category-keep))))
               (" " "Agenda"
                ((agenda "" nil)
-                (tags "REFILE"
-                      ((org-agenda-overriding-header "Tasks to Refile")
-                       (org-tags-match-list-sublevels nil)))
+                (tags-todo "-DONE+REFILE"
+                           ((org-agenda-overriding-header "Tasks to Refile")
+                            (org-tags-match-list-sublevels nil)))
                 (tags-todo "-CANCELLED/!"
                            ((org-agenda-overriding-header "Stuck Projects")
                             (org-agenda-skip-function 'bh/skip-non-stuck-projects)
@@ -3086,7 +3206,8 @@ Control network manager from Emacs
                             (org-agenda-skip-function 'bh/skip-non-projects)
                             (org-tags-match-list-sublevels 'indented)
                             (org-agenda-sorting-strategy
-                             '(category-keep))))
+                             '(priority-down
+                               category-keep))))
                 (tags-todo "-CANCELLED/!NEXT"
                            ((org-agenda-overriding-header (concat "Next Tasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
@@ -3096,9 +3217,8 @@ Control network manager from Emacs
                             (org-tags-match-list-sublevels t)
                             (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
-                            (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-sorting-strategy
-                             '(todo-state-down effort-up category-keep))))
+                             '(priority-down effort-up category-keep))))
                 (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
                            ((org-agenda-overriding-header (concat "Subtasks"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
@@ -3107,7 +3227,6 @@ Control network manager from Emacs
                             (org-agenda-skip-function 'bh/skip-non-project-tasks)
                             (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
-                            (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-sorting-strategy
                              '(category-keep))))
                 (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
@@ -3118,9 +3237,9 @@ Control network manager from Emacs
                             (org-agenda-skip-function 'bh/skip-project-tasks)
                             (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
-                            (org-agenda-todo-ignore-with-date bh/hide-scheduled-and-waiting-next-tasks)
                             (org-agenda-sorting-strategy
-                             '(category-keep))))
+                             '(todo-state-down
+                               category-keep))))
                 (tags-todo "-CANCELLED+WAITING|HOLD/!"
                            ((org-agenda-overriding-header (concat "Waiting and Postponed"
                                                                   (if bh/hide-scheduled-and-waiting-next-tasks
@@ -3129,10 +3248,16 @@ Control network manager from Emacs
                             (org-agenda-skip-function 'bh/skip-non-tasks)
                             (org-tags-match-list-sublevels nil)
                             (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
-                            (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)))
+                            (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
+                            (org-agenda-sorting-strategy
+                             '(todo-state-down
+                               category-keep))))) nil)
 
-                )
-               nil))))
+              ("c" "Completed" ((tags "-REFILE/+DONE"
+                                      ((org-agenda-overriding-header "Completed Tasks")
+                                       (org-tags-match-list-sublevels nil)))))
+
+              )))
 ;; Limit restriction lock highlighting to the headline only
 (setq org-agenda-restriction-lock-highlight-subtree nil)
 
@@ -3153,16 +3278,35 @@ Control network manager from Emacs
 ;;
 (setq org-agenda-cmp-user-defined 'bh/agenda-sort)
 
- #+END_SRC
-*** org-archive
-#+BEGIN_SRC emacs-lisp
+  #+END_SRC
+**** org-directory
+     :PROPERTIES:
+     :CREATED:  [2019-06-19 Wed 17:53]
+     :END:
+  #+BEGIN_SRC emacs-lisp
+(setq org-agenda-directory "~/org/agenda/")
+(setq org-ref-directory "~/org/notes/")
+(setq org-meta-directory "~/org/meta/")
+
+(setq org-file-inbox (concat org-agenda-directory      "inbox.org"))
+(setq org-file-journal (concat org-agenda-directory    "/archive/journal/journal.org"))
+(setq org-file-reference (concat org-ref-directory  "reference.org"))
+(setq org-file-calendar (concat org-agenda-directory   "calendar.org"))
+  #+END_SRC
+**** org-archive
+     :PROPERTIES:
+     :CREATED:  [2019-06-19 Wed 17:53]
+     :END:
+ #+BEGIN_SRC emacs-lisp
 (setq org-archive-mark-done nil)
 
-(setq org-archive-location "~/org/agenda/archive/%s_archive::/datetree/* Archived Tasks")
-
-#+END_SRC
-*** bh functions
-#+BEGIN_SRC emacs-lisp
+(setq org-archive-location "~/org/agenda/log.org::datetree/* Completed Tasks")
+ #+END_SRC
+**** bh functions
+     :PROPERTIES:
+     :CREATED:  [2019-06-19 Wed 17:53]
+     :END:
+ #+BEGIN_SRC emacs-lisp
 (defmacro bh/agenda-sort-test (fn a b)
   "Test for agenda sort"
   `(cond
@@ -3575,18 +3719,26 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
      ((and (member (org-get-todo-state) (list "NEXT"))
            (bh/is-project-p))
       "TODO"))))
-#+END_SRC
-*** capture templates
- #+BEGIN_SRC emacs-lisp
-(setq org-capture-templates
-      (quote (("t" "Task" entry (file org-file-inbox) (file "~/.emacs.d/templates/todo.tmplt") :clock-in t :clock-resume t)
-              ("n" "Note" entry (file org-file-inbox) (file "~/.emacs.d/templates/note.tmplt")  :clock-in t :clock-resume t)
-              ("e" "Event" entry (file+headline org-file-calendar "Calendar") (file "~/.emacs.d/templates/event.tmplt")  :clock-in t :clock-resume t))))
-
  #+END_SRC
-** GTD
-*** org-refile-directly
+**** capture templates
+     :PROPERTIES:
+     :ID:       b0c2f0a6-9fc8-4745-9b77-00af7eeb7c7a
+     :CREATED:  [2019-06-19 Wed 17:53]
+     :END:
   #+BEGIN_SRC emacs-lisp
+(setq org-capture-templates
+      (quote (
+      ("a" "Appointment" entry (file org-file-inbox) (file "~/.emacs.d/templates/event.tmplt")  :clock-in t :clock-resume t)
+      ("t" "Task" entry (file org-file-inbox) (file "~/.emacs.d/templates/todo.tmplt") :clock-in t :clock-resume t)
+      ("n" "Note" entry (file org-file-inbox) (file "~/.emacs.d/templates/note.tmplt") :clock-in t :clock-resume t)
+      ("j" "Journal" entry (file+datetree "~/org/agenda/log.org")  "** %^{Title}  :journal: \n\n %?" :clock-in t :clock-resume t)
+      ("l" "Log Time" entry (file+datetree "~/org/agenda/log.org") "** %^{Activity}  :time:" :clock-in t :clock-resume t)
+      )))
+
+  #+END_SRC
+*** GTD
+**** org-refile-directly
+   #+BEGIN_SRC emacs-lisp
 (setq org-refile-use-outline-path 'file
       org-outline-path-complete-in-steps nil)
 
@@ -3619,21 +3771,21 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
       (if org-refile-directly-show-after
           (save-current-buffer (dump-it file-dest contents))
         (save-window-excursion (dump-it file-dest contents))))))
-  #+END_SRC
+   #+END_SRC
 
-*** org-boxes-workflow
-  #+BEGIN_SRC emacs-lisp
+**** org-boxes-workflow
+   #+BEGIN_SRC emacs-lisp
 (defun org-boxes-workflow ()
   "Load the default tasks file and start our hydra on the first task shown."
   (interactive)
   (find-file org-default-inbox-file)
   (goto-char (point-min))
-  (org-next-visible-heading 2)
+  (org-next-visible-heading 1)
   (hydra-org-refiler/body))
 
-  #+END_SRC
-*** org-refile-to
-  #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+**** org-refile-to
+   #+BEGIN_SRC emacs-lisp
 (defun org-refile-to-incubate ()
   "Refile (move) the current Org subtree to `org-default-incubate-file'."
   (interactive)
@@ -3680,16 +3832,10 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
   (interactive)
   (org-refile-subtree-to-file org-default-personal-dir))
 
-(defun org-refile-to-zettelkasten-dir ()
+(defun org-refile-to-notes-dir ()
   "Move the current subtree to a file in the `zettelkasten' directory."
   (interactive)
-  (org-refile-notes-to-file org-default-zettelkasten-dir))
-
-(defun org-refile-to-zettelkasten-dir-2 ()
-  "Move the current subtree to a file in the `zettelkasten' directory."
-  (interactive)
-  (org-refile-subtree-to-file org-default-zettelkasten-dir))
-
+  (org-refile-notes-to-file org-default-notes-dir))
 
 (defun org-refile-to-headline (file headline)
   (let ((pos (save-excursion
@@ -3712,10 +3858,10 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 
   (org-refile-directly "~/org/notes/cross-reference.org")
   (kill-line))
-  #+END_SRC
+   #+END_SRC
 
-*** note-to
-  #+BEGIN_SRC emacs-lisp
+**** note-to
+   #+BEGIN_SRC emacs-lisp
 (defun note-to-websites ()
   (interactive)
   (org-refile-to-headline org-file-reference "Websites"))
@@ -3752,9 +3898,9 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
   (org-refile-directly org-default-delegate-file)
   (kill-line))
 
-  #+END_SRC
-*** org-refile-subtree-to-file
-  #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+**** org-refile-subtree-to-file
+   #+BEGIN_SRC emacs-lisp
 (defun org-refile-subtree-to-file (dir)
   "Archive the org-mode subtree and create an entry in the
  directory folder specified by DIR. It attempts to move as many of
@@ -3769,16 +3915,16 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
          (filename   (org-filename-from-title head))
          (filepath   (format "%s/%s.org" dir filename)))
     (apply #'delete-region area)
-    (org-create-org-file filepath head body tags properties)))
+    (org-create-org-file filepath head body)))
 
-(defun org-create-org-file (filepath header body tags properties)
+(defun org-create-org-file (filepath header body)
   "Create a new Org file by FILEPATH. The contents of the file is
  pre-populated with the HEADER, BODY and any associated TAGS."
   (find-file-other-window filepath)
   (org-set-file-property "TITLE" header t)
   (org-set-file-property "CATEGORY" "project")
-  (when tags
-    (org-set-file-property "FILETAGS" (s-join " " tags)))
+;  (when tags
+;    (org-set-file-property "FILETAGS" (s-join " " tags)))
 
   ;;  Insert any drawer properties as #+PROPERTY entries:
   (when properties
@@ -3799,9 +3945,9 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
   (insert "* TODO " header)
   (insert "\n")
   (insert body))
-  #+END_SRC
-*** org-refile-notes-to-file
-  #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+**** org-refile-notes-to-file
+   #+BEGIN_SRC emacs-lisp
 (defun org-refile-notes-to-file (dir)
   "Archive the org-mode subtree and create an entry in the
   directory folder specified by DIR. It attempts to move as many of
@@ -3823,7 +3969,7 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
   pre-populated with the HEADER, BODY and any associated TAGS."
   (find-file filepath)
   (org-set-file-property "TITLE" header t)
-  (org-set-file-property "DATE" (format-time-string "[%Y-%m-%d %H:%M]"))
+  (org-set-file-property "DATE" (format-time-string "<%Y-%m-%d %H:%M>"))
   (org-set-file-property "KEYWORDS" (s-join "" tags))
   (goto-char (point-min))
   (when (re-search-forward "REFILE" nil t)
@@ -3837,9 +3983,9 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
   (insert body)
   (goto-char (point-min))
   (save-buffer))
-  #+END_SRC
-*** org-rename-header
-  #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+**** org-rename-header
+   #+BEGIN_SRC emacs-lisp
 (defun org-rename-header (label)
   "Rename the current section's header to LABEL, and moves the
   point to the end of the line."
@@ -3848,25 +3994,9 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
                              (substring-no-properties (org-get-heading t t t t)))))
   (org-back-to-heading)
   (replace-string (org-get-heading t t t t) label))
-  #+END_SRC
-*** org-archive-subtree-as-completed
-  #+BEGIN_SRC emacs-lisp
-(defun org-archive-subtree-as-completed ()
-  "Archives the current subtree to today's current journal entry."
-  (interactive)
-  (ignore-errors
-    ;; According to the docs for `org-archive-subtree', the state should be
-    ;; automatically marked as DONE, but I don't notice that:
-    (when (not (equal "DONE" (org-get-todo-state)))
-      (org-todo "DONE")))
-
-  (let* ((org-archive-file (or org-default-completed-file
-                               (todays-journal-entry)))
-         (org-archive-location (format "%s::" org-archive-file)))
-    (org-archive-subtree)))
-  #+END_SRC
-*** todays-journal-entry
-  #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+**** todays-journal-entry
+   #+BEGIN_SRC emacs-lisp
 (defun todays-journal-entry ()
   "Return the full pathname to the day's journal entry file.
   Granted, this assumes each journal's file entry to be formatted
@@ -3877,9 +4007,9 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
   (let* ((daily-name   (format-time-string "%Y-%m-%d"))
          (file-name    (concat org-journal-dir daily-name)))
     (expand-file-name file-name)))
-  #+END_SRC
-*** org-subtree-metadata helpers
-  #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+**** org-subtree-metadata helpers
+   #+BEGIN_SRC emacs-lisp
 (defun org-subtree-metadata ()
   "Return a list of key aspects of an org-subtree. Includes the
   following: header text, body contents, list of tags, region list
@@ -3986,9 +4116,9 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 
         (insert (format "#+%s: %s\n" (upcase key) value))))))
 
-  #+END_SRC
-** Journal
- #+BEGIN_SRC emacs-lisp
+   #+END_SRC
+*** Review journal configuration
+  #+BEGIN_SRC emacs-lisp
 (setq journal-author "Alexander Soto")
 
 ;; This is the base folder where all your "books"
@@ -4049,7 +4179,7 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
      '("Short description: "
        "#+TITLE: "
        (read-string "Title: ") \n
-       "#+DATE: " (format-time-string "[%Y-%m-%d %H:%M]") \n
+       "#+DATE: " (format-time-string "<%Y-%m-%d %H:%M>") \n
        "#+KEYWORDS: "
        (read-string "Keyword: ") \n \n
 
@@ -4065,14 +4195,34 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
 
        )))
 
- #+END_SRC
-* Keybindings
-#+BEGIN_SRC emacs-lisp
-(define-key global-map (kbd "C-x b") 'ivy-switch-buffer-non-exwm)
-(define-key org-agenda-mode-map (kbd "x") 'org-agenda-exit)
-#+END_SRC
-** unbound keys
+  #+END_SRC
+** Keybindings
+ Define keys for specific modes
+*** global-map
  #+BEGIN_SRC emacs-lisp
+(define-key global-map (kbd "C-x b") 'ivy-switch-buffer-non-exwm)
+
+(define-key global-map (kbd "C-1") 'my/org-capture-todo)
+(define-key global-map (kbd "C-2") 'my/org-capture-note)
+(define-key global-map (kbd "C-3") 'my/org-capture-event)
+
+(global-set-key (kbd "<C-tab>") 'module/previous-window)
+
+
+
+ #+END_SRC
+*** org-mode
+ #+BEGIN_SRC emacs-lisp
+(org-defkey org-mode-map [(control tab)] 'module/previous-window)
+ #+END_SRC
+*** org-agenda
+ #+BEGIN_SRC emacs-lisp
+(define-key org-agenda-mode-map (kbd "x") 'org-agenda-exit)
+ #+END_SRC
+
+*** unbound
+ Define keys that are unbound in specific modes
+  #+BEGIN_SRC emacs-lisp
  (define-key winner-mode-map (kbd "C-c <left>") nil)
  (define-key winner-mode-map (kbd "C-c <right>") nil)
  (define-key global-map (kbd "C-c <tab>") nil)
@@ -4080,41 +4230,29 @@ Skip project and sub-project tasks, habits, and loose non-project tasks."
  (define-key global-map (kbd "C-c ,") nil)
  (define-key global-map (kbd "C-c C-j") nil)
  (define-key org-mode-map (kbd "<tab>") nil)
- #+END_SRC
-* Org-Babel Load Files
-#+BEGIN_SRC emacs-lisp
+  #+END_SRC
+** Load Files
+ Load files related to encryption configuration
+ #+BEGIN_SRC emacs-lisp
 (org-babel-load-file "~/.personal.d/encryption.org")
-#+END_SRC
-* TODO Emacs Maintainance
-  :PROPERTIES:
-  :CREATED:  [2019-06-16 Sun 16:56]
-  :END:
-** TODO Setup elpa-mirror
+ #+END_SRC
+** HOLD Maintainance                                                   :HOLD:
    :PROPERTIES:
-   :ID:       5c4b4be4-7437-4d83-98a7-5a470f3a1e9d
+   :CREATED:  [2019-06-20 Thu 15:49]
    :END:
-
- - Description:
-
-
-
- - Resources:
-** TODO Read more about brain.fm
-   :PROPERTIES:
-   :ID:       16355c18-fd8e-4461-bfbb-c767a256c742
-   :END:
-
- - Description:
- Consider purchasing a subscription to brain.fm or finding the audio files online, or another source
-
-
- - Resources:
-** HOLD Create literate configation of system dotfiles                 :HOLD:
-   :PROPERTIES:
-   :TASK:
-   :ID:       c407f939-5ce0-4635-98e3-1a77e894bfb4
-   :CREATED:  [2019-06-16 Sun 13:43]
-   :END:
-*** TODO Identify what dotfiles configuration should be saved
-*** TODO Create org file to store configuration files
-*** TODO Review configuration org file
+*** Create literate configation of system dotfiles
+    :PROPERTIES:
+    :CREATED:  [2019-06-20 Thu 15:36]
+    :END:
+    :LOGBOOK:
+    - CLOSING NOTE [2019-06-20 Thu 15:36]
+    :END:
+**** TODO Identify what dotfiles configuration should be saved
+**** TODO Create org file to store configuration files
+**** TODO Review configuration org file
+*** Add the org-property extension to emacs
+    :PROPERTIES:
+    :ID:       22c5a74e-ddab-4a54-8296-a83e32bc2473
+    :CREATED:  <2019-06-18 Tue 18:13>
+    :END:
+  Description: Add the org property extension to org-agenda to allow viewing of properties inside drawers of headings.
