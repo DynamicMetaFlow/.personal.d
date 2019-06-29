@@ -1,13 +1,4 @@
 # ignore everything
-*
 
-# git stuff
-!.gitignore
-
-!personal-config.org
-!disabled.org
-
-!css
-!css/style.css
-!index.html
-!README.org
+encryption
+encryption/encryption.org
