@@ -557,11 +557,7 @@
 *** common
 #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/modules/module-hydra.el
 (defhydra hydra-common  (:color blue
-                                :hint nil
-                                :pre (progn
-                                       (exwm-input-line-mode))
-                                :post (progn
-                                        (exwm-input-char-mode)))
+                         :hint nil)
   ("RET"   counsel-linux-app nil)
   ("SPC"   counsel-M-x nil)
 
@@ -586,10 +582,6 @@
     (defhydra hydra-master (
                             :color blue
                             :column 1
-                            :pre (progn
-                                   (exwm-input-line-mode))
-                            :post (progn
-                                    (exwm-input-char-mode))
                             :inherit (hydra-common/heads))
       "Master"
       ("a" hydra-applications/body "apps")
@@ -607,11 +599,7 @@
        #+END_SRC
 *** hydra-emacs
  #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/modules/module-hydra.el
-  (defhydra hydra-emacs (:color blue :hint nil :inherit (hydra-common/heads)
-                                :pre (progn
-                                       (exwm-input-line-mode))
-                                :post (progn
-                                        (exwm-input-char-mode)))
+  (defhydra hydra-emacs (:color blue :hint nil :inherit (hydra-common/heads))
 
     "
                                                                          ╭───────┐
@@ -649,11 +637,7 @@
 
 *** hydra-terminal
 #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/modules/module-hydra.el
-  (defhydra hydra-terminal (:color blue :hint nil :inherit (hydra-common/heads)
-                                   :pre (progn
-                                          (exwm-input-line-mode))
-                                   :post (progn
-                                           (exwm-input-char-mode)))
+  (defhydra hydra-terminal (:color blue :hint nil :inherit (hydra-common/heads))
 
     "
                                                                         ╭──────────┐
@@ -680,11 +664,8 @@
 
 *** hydra-file
 #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/modules/module-hydra.el
-  (defhydra hydra-file (:color blue :hint nil :inherit (hydra-common/heads)
-                               :pre (progn
-                                      (exwm-input-line-mode))
-                               :post (progn
-                                       (exwm-input-char-mode)))
+  (defhydra hydra-file (:color blue :hint nil :inherit (hydra-common/heads))
+
     "
                                                                           ╭──────┐
        Ivy                    Dired            Hydras                     │ File │
@@ -705,11 +686,8 @@
     #+END_SRC
 *** hydra-narrow
 #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/modules/module-hydra.el
-  (defhydra hydra-narrow (:color blue :hint nil :inherit (hydra-common/heads)
-                                 :pre (progn
-                                        (exwm-input-line-mode))
-                                 :post (progn
-                                         (exwm-input-char-mode)))
+  (defhydra hydra-narrow (:color blue :hint nil :inherit (hydra-common/heads))
+
     "
                                                                         ╭────────┐
       Narrow                                                            │ Narrow │
@@ -731,11 +709,8 @@
    #+END_SRC
 *** hydra-spell
 #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/modules/module-hydra.el
-  (defhydra hydra-spell (:color blue :hint nil :inherit (hydra-common/heads)
-                                :pre (progn
-                                       (exwm-input-line-mode))
-                                :post (progn
-                                        (exwm-input-char-mode)))
+  (defhydra hydra-spell (:color blue :hint nil :inherit (hydra-common/heads))
+
     "
                                                                          ╭───────┐
       Flyspell               Ispell                      Gtranslate      │ Spell │
@@ -758,11 +733,8 @@
 
 *** hydra-text
 #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/modules/module-hydra.el
-  (defhydra hydra-text (:color blue :hint nil :inherit (hydra-common/heads)
-                               :pre (progn
-                                      (exwm-input-line-mode))
-                               :post (progn
-                                       (exwm-input-char-mode)))
+  (defhydra hydra-text (:color blue :hint nil :inherit (hydra-common/heads))
+
 
     "
                                                                                ╭──────┐
@@ -809,11 +781,8 @@
     :CREATED:  [2019-06-20 Thu 17:11]
     :END:
 #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/modules/module-hydra.el
-  (defhydra hydra-git (:color blue :hint nil :inherit (hydra-common/heads)
-                              :pre (progn
-                                     (exwm-input-line-mode))
-                              :post (progn
-                                      (exwm-input-char-mode)))
+  (defhydra hydra-git (:color blue :hint nil :inherit (hydra-common/heads))
+
     "
                                                                            ╭─────┐
      Magit                          VC                    Timemachine      │ Git │
@@ -839,12 +808,7 @@
   (defhydra hydra-window (
                           :color red
                           :hint  nil
-                          :inherit (hydra-common/heads)
-                          :pre (progn
-                                 (exwm-input-line-mode))
-                          :post (progn
-                                  (exwm-input-char-mode))
-                          )
+                          :inherit (hydra-common/heads))
     "
                                                                        ╭──────────┐
     Window         Switch           View                               │  Window  │
@@ -891,11 +855,8 @@
     :CREATED:  [2019-06-20 Thu 17:12]
     :END:
 #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/modules/module-hydra.el
-  (defhydra hydra-jump (:color blue :hint nil :inherit (hydra-common/heads)
-                               :pre (progn
-                                      (exwm-input-line-mode))
-                               :post (progn
-                                       (exwm-input-char-mode)))
+  (defhydra hydra-jump (:color blue :hint nil :inherit (hydra-common/heads))
+
     "
                                                                           ╭──────┐
     Window          WordChar        Line         iSearch                  │ Jump │
@@ -925,11 +886,8 @@
       #+END_SRC
 *** hydra-register
 #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/modules/module-hydra.el
-  (defhydra hydra-register (:color blue :hint nil :inherit (hydra-common/heads)
-                                   :pre (progn
-                                          (exwm-input-line-mode))
-                                   :post (progn
-                                           (exwm-input-char-mode)))
+  (defhydra hydra-register (:color blue :hint nil :inherit (hydra-common/heads))
+
 
     "
                                                                           ╭──────────┐
@@ -953,11 +911,8 @@
 
 *** hydra-search
 #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/modules/module-hydra.el
-  (defhydra hydra-search (:color blue :hint nil :inherit (hydra-common/heads)
-                                 :pre (progn
-                                        (exwm-input-line-mode))
-                                 :post (progn
-                                         (exwm-input-char-mode)))
+  (defhydra hydra-search (:color blue :hint nil :inherit (hydra-common/heads))
+
     "
                                                                             ╭────────┐
          Files                             Buffer                           │ Search │
@@ -994,11 +949,7 @@
   (defhydra hydra-bookmarks (
                              :color red
                              :hint nil
-                             :inherit (hydra-common/heads)
-                             :pre (progn
-                                    (exwm-input-line-mode))
-                             :post (progn
-                                     (exwm-input-char-mode)))
+                             :inherit (hydra-common/heads))
 
     "
                                                                      ╭───────────┐
@@ -1030,12 +981,7 @@
      #+END_SRC
 *** hydra-projects
 #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/modules/module-hydra.el
-  (defhydra hydra-projects (:color blue :hint nil
-                                   :pre (progn
-                                          (exwm-input-line-mode))
-                                   :post (progn
-                                           (exwm-input-char-mode))
-                                   :inherit (hydra-common/heads))
+  (defhydra hydra-projects (:color blue :hint nil :inherit (hydra-common/heads))
     "
                                                                        ╭────────────┐
        Files             Search          Buffer             Do         │ Projectile │
@@ -1100,11 +1046,8 @@
      #+END_SRC
 *** hydra-torus
 #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/modules/module-hydra.el
-  (defhydra hydra-torus (:color red
-                         :hint nil
-                         :inherit (hydra-common/heads)
-                         :pre (progn  (exwm-input-line-mode))
-                         :post (progn (exwm-input-char-mode)))
+  (defhydra hydra-torus (:color red :hint nil :inherit (hydra-common/heads))
+
     "
                                                                                              ╭─────────┐
       Switch                    Move                        Do                               │  Torus  │
@@ -1270,11 +1213,8 @@
      (defhydra hydra-exwm (:exit t
                      :columns 2
                      :color blue
-                     :inherit (hydra-common/heads)
-                     :pre (progn
-                            (exwm-input-line-mode))
-                     :post (progn
-                             (exwm-input-char-mode)))
+                     :inherit (hydra-common/heads))
+
      "EXWM"
      ("0" delete-window "delete")
 
@@ -1843,7 +1783,7 @@
 (define-key modalka-mode-map (kbd "y")  'hydra-paste/body)
 (define-key modalka-mode-map (kbd "z")  'ivy-resume)
 
-(define-key modalka-mode-map (kbd "A")  'org-agenda-current-subtree-or-region)
+(define-key modalka-mode-map (kbd "A")  nil)
 (define-key modalka-mode-map (kbd "B")  'ivy-switch-buffer-exwm)
 (define-key modalka-mode-map (kbd "C")  nil)
 (define-key modalka-mode-map (kbd "D")  nil)
@@ -2336,9 +2276,10 @@
    :CREATED:  [2019-06-28 Fri 16:56]
    :END:
 #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/helpers.el
- (after "desktop-environment-autoloads"
-    (setq desktop-environment-screenshot-partial-command "scrot -s screenshot.png")
-    (setq desktop-environment-screenshot-directory "~/Pictures"))
+(use-package desktop-environment
+  :config
+  (setq desktop-environment-screenshot-partial-command "scrot -s screenshot.png")
+  (setq desktop-environment-screenshot-directory "~/Pictures"))
 
 #+END_SRC
 ** json-mode
@@ -2641,6 +2582,43 @@
  )
 #+END_SRC
 
+** exwm
+#+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/helpers/helper-exwm.el
+(defun my/switch-to-last-buffer ()
+    "Switch to last open buffer in current window."
+    (interactive)
+    (switch-to-buffer (other-buffer (current-buffer) 1)))
+
+  (defun ivy-ignore-exwm-buffers (str)
+    (let ((buf (get-buffer str)))
+      (when buf
+        (with-current-buffer buf
+          (or
+           (file-remote-p (or (buffer-file-name) default-directory))
+           (eq major-mode 'exwm-mode))))))
+
+  (defun ivy-ignore-non-exwm-buffers (str)
+    (let ((buf (get-buffer str)))
+      (if buf
+          (with-current-buffer buf
+            (or
+             (file-remote-p (or (buffer-file-name) default-directory))
+             (not (eq major-mode 'exwm-mode))))
+        t)))
+
+  (defun ivy-switch-buffer-exwm ()
+    "Like ivy-switch-buffer but only shows EXWM buffers."
+    (interactive)
+    (let ((ivy-ignore-buffers (append ivy-ignore-buffers '(ivy-ignore-non-exwm-buffers))))
+      (ivy-switch-buffer)))
+
+  (defun ivy-switch-buffer-non-exwm ()
+    "Like ivy-switch-buffer but hides all EXWM buffers."
+    (interactive)
+    (let ((ivy-ignore-buffers (append ivy-ignore-buffers '(ivy-ignore-exwm-buffers))))
+      (ivy-switch-buffer)))
+
+#+END_SRC
 * Activities
 ** org
    :PROPERTIES:
@@ -3713,9 +3691,10 @@
    :LOGBOOK:
    - CLOSING NOTE [2019-06-28 Fri 09:51]
    :END:
-*** hydra-autoloads
+*** hydra
 #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/activity/activity-org-refiler.el
-  (after "hydra-autoloads"
+  (use-package hydra
+    :config
 #+END_SRC
 *** org-refile-directly
 #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/activity/activity-org-refiler.el
@@ -4116,7 +4095,7 @@
 
 
   #+END_SRC
-*** auto-loads-end
+*** end
 #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/activity/activity-org-refiler.el
 )
   #+END_SRC
@@ -4130,7 +4109,8 @@
    :END:
 *** org-journal-autoloads
 #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/activity/activity-org-journal.el
-      (after "org-journal-autoloads"
+      (use-package org-journal
+        :config
 #+END_SRC
 *** journal
   #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/activity/activity-org-journal.el
@@ -4216,10 +4196,30 @@
 #+END_SRC
 ** Global
 #+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/bindings/bindings.el
-      (general-define-key
-;      "C-x b"     'ivy-switch-buffer-non-exwm
-
-)
+(general-define-key
+"C-x b"    #'ivy-switch-buffer-non-exwm
+"<print>"  #'desktop-environment-screenshot
+"C-4"      #'my/org-capture-appt
+"C-1"      #'my/org-capture-task
+"C-2"      #'my/org-capture-journal
+"C-3"      #'my/org-capture-note
+"s-p"      #'my/switch-to-last-buffer
+"s-SPC"    #'exwm-jump-to-last-exwm
+"s-<tab>"  #'ivy-switch-buffer-exwm
+"s-f"      #'toggle-single-window
+"s-,"      #'winner-undo
+"s-."      #'winner-redo
+"s-r"      #'exwm-reset
+"s-w"      #'exwm-workspace-switch
+"s-l"      #'windmove-right
+"s-k"      #'windmove-left
+"s-i"      #'windmove-up
+"s-o"      #'windmove-down
+"s-L"      #'buf-move-right
+"s-K"      #'buf-move-left
+"s-I"      #'buf-move-up
+"s-O"      #'buf-move-down
+"s-x"      #'exwm-input-toggle-keyboard)
 
 #+END_SRC
 ** Modes

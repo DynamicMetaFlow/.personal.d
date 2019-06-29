@@ -107,7 +107,7 @@
 (define-key modalka-mode-map (kbd "y")  'hydra-paste/body)
 (define-key modalka-mode-map (kbd "z")  'ivy-resume)
 
-(define-key modalka-mode-map (kbd "A")  'org-agenda-current-subtree-or-region)
+(define-key modalka-mode-map (kbd "A")  nil)
 (define-key modalka-mode-map (kbd "B")  'ivy-switch-buffer-exwm)
 (define-key modalka-mode-map (kbd "C")  nil)
 (define-key modalka-mode-map (kbd "D")  nil)

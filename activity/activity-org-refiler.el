@@ -1,4 +1,5 @@
-  (after "hydra-autoloads"
+  (use-package hydra
+    :config
 
   (setq org-refile-use-outline-path 'file
         org-outline-path-complete-in-steps nil)

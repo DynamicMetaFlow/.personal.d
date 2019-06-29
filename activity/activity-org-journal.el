@@ -1,4 +1,5 @@
-      (after "org-journal-autoloads"
+      (use-package org-journal
+        :config
 
       (setq journal-author "Alexander Soto")
 

@@ -2159,280 +2159,251 @@ Testing with mocha
     (org-archive-subtree)))
  #+END_SRC
 * EXWM Window Manager
-** exwm-autoloads
-#+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/module-exwm.el
- (after "exwm-autoloads"
-#+END_SRC
 ** setup
-#+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/module-exwm.el
-      (require 'exwm)
-      (require 'exwm-randr)
-;      (require 'exwm-systemtray)
+#+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/modules/module-exwm.el
+(use-package exwm
+  :if (string= (getenv "EXWM_ENABLE") "t")
+  :config
+  (require 'exwm)
+  (require 'exwm-randr)
 
-      (setq display-time-mode t)
-      (setq display-battery-mode nil)
+  (setq display-time-mode t)
+  (setq display-battery-mode nil)
 
-      (setq fringe-mode '(7 . 1))
+  (setq fringe-mode '(7 . 1))
 
-      (setq use-dialog-box nil)
-      (setq exwm-workspace-show-all-buffers t)
-      (setq exwm-layout-show-all-buffers t)
+  (setq use-dialog-box nil)
+  (setq exwm-workspace-show-all-buffers t)
+  (setq exwm-layout-show-all-buffers t)
 
-      (setq exwm-workspace-number 8)
+  (setq exwm-workspace-number 8)
 
-      (defun exwm-workspace-number-to-string (number)
-        (number-to-string (1- number)))
+  (defun exwm-workspace-number-to-string (number)
+    (number-to-string (1- number)))
 
-      (setq exwm-workspace-index-map #'exwm-workspace-number-to-string)
+  (setq exwm-workspace-index-map #'exwm-workspace-number-to-string)
 
-      (dotimes (i 8)
-        (exwm-input-set-key (kbd (format "s-%d" i))
-                            `(lambda ()
-                               (interactive)
-                               (exwm-workspace-switch-create (1- ,i)))))
+  (dotimes (i 8)
+    (exwm-input-set-key (kbd (format "s-%d" i))
+                        `(lambda ()
+                           (interactive)
+                           (exwm-workspace-switch-create (1- ,i)))))
 
-      (ido-mode 0)
+  (ido-mode 0)
 
-      (setq display-time-default-load-average nil)
+  (setq display-time-default-load-average nil)
 
-      (setq window-divider-default-bottom-width 2
-            window-divider-default-right-width 2)
+  (setq window-divider-default-bottom-width 2
+        window-divider-default-right-width 2)
 
-      (setq exwm-manage-configurations '((t char-mode t)))
+  (setq exwm-manage-configurations '((t char-mode t)))
 
-      (defvar exwm-toggle-workspace 0
-        "Previously selected workspace. Used with `exwm-jump-to-last-exwm'.")
+  (defvar exwm-toggle-workspace 0
+    "Previously selected workspace. Used with `exwm-jump-to-last-exwm'.")
 
-      (defun exwm-jump-to-last-exwm ()
-        (interactive)
-        (exwm-workspace-switch exwm-toggle-workspace))
+  (defun exwm-jump-to-last-exwm ()
+    (interactive)
+    (exwm-workspace-switch exwm-toggle-workspace))
 
-      (defadvice exwm-workspace-switch (before save-toggle-workspace activate)
-        (setq exwm-toggle-workspace exwm-workspace-current-index))
+  (defadvice exwm-workspace-switch (before save-toggle-workspace activate)
+    (setq exwm-toggle-workspace exwm-workspace-current-index))
 
-      (defun my/exwm-rename-buffer-to-title () (exwm-workspace-rename-buffer exwm-title))
+  (defun my/exwm-rename-buffer-to-title () (exwm-workspace-rename-buffer exwm-title))
 
-      (add-hook 'exwm-update-title-hook 'my/exwm-rename-buffer-to-title)
+  (add-hook 'exwm-update-title-hook 'my/exwm-rename-buffer-to-title)
 
-      (add-hook 'exwm-floating-setup-hook 'exwm-layout-hide-mode-line)
-      (add-hook 'exwm-floating-exit-hook 'exwm-layout-show-mode-line)
+  (add-hook 'exwm-floating-setup-hook 'exwm-layout-hide-mode-line)
+  (add-hook 'exwm-floating-exit-hook 'exwm-layout-show-mode-line)
 
-      (defun my-exwm-workspace-display-current ()
-        "Display current workspace index."
-        (interactive)
-        (let ((message-log-max))
-          (message (elt exwm-workspace--switch-history
-                        exwm-workspace-current-index))))
+  (defun my-exwm-workspace-display-current ()
+    "Display current workspace index."
+    (interactive)
+    (let ((message-log-max))
+      (message (elt exwm-workspace--switch-history
+                    exwm-workspace-current-index))))
 
-      (defvar exwm-workspace-switch-wrap t
-        "Whether `exwm-workspace-next' and `exwm-workspace-prev' should wrap.")
+  (defvar exwm-workspace-switch-wrap t
+    "Whether `exwm-workspace-next' and `exwm-workspace-prev' should wrap.")
 
-      (defun exwm-workspace-next ()
-        "Switch to next exwm-workspaceective (to the right)."
-        (interactive)
-        (let* ((only-workspace? (equal exwm-workspace-number 1))
-               (overflow? (= exwm-workspace-current-index
-                             (1- exwm-workspace-number))))
-          (cond
-           (only-workspace? nil)
-           (overflow?
-            (when exwm-workspace-switch-wrap
-              (exwm-workspace-switch 0)))
-           (t (exwm-workspace-switch  (1+ exwm-workspace-current-index))))))
+  (defun exwm-workspace-next ()
+    "Switch to next exwm-workspaceective (to the right)."
+    (interactive)
+    (let* ((only-workspace? (equal exwm-workspace-number 1))
+           (overflow? (= exwm-workspace-current-index
+                         (1- exwm-workspace-number))))
+      (cond
+       (only-workspace? nil)
+       (overflow?
+        (when exwm-workspace-switch-wrap
+          (exwm-workspace-switch 0)))
+       (t (exwm-workspace-switch  (1+ exwm-workspace-current-index))))))
 
-      (defun gpastel-exwm-counsel-yank-pop ()
-        "Same as `counsel-yank-pop' and paste into exwm buffer."
-        (interactive)
-        (let ((inhibit-read-only t)
-              ;; Make sure we send selected yank-pop candidate to
-              ;; clipboard:
-              (yank-pop-change-selection t))
-          (call-interactively #'counsel-yank-pop))
-        (when (derived-mode-p 'exwm-mode)
-          ;; https://github.com/ch11ng/exwm/issues/413#issuecomment-386858496
-          (exwm-input--set-focus (exwm--buffer->id (window-buffer (selected-window))))
-          ;; (exwm-input--fake-key ?\C-v)
-          ))
+  (defun gpastel-exwm-counsel-yank-pop ()
+    "Same as `counsel-yank-pop' and paste into exwm buffer."
+    (interactive)
+    (let ((inhibit-read-only t)
+          ;; Make sure we send selected yank-pop candidate to
+          ;; clipboard:
+          (yank-pop-change-selection t))
+      (call-interactively #'counsel-yank-pop))
+    (when (derived-mode-p 'exwm-mode)
+      ;; https://github.com/ch11ng/exwm/issues/413#issuecomment-386858496
+      (exwm-input--set-focus (exwm--buffer->id (window-buffer (selected-window))))
+      ;; (exwm-input--fake-key ?\C-v)
+      ))
 
-      (exwm-input-set-key (kbd "M-y")
-                          #'gpastel-exwm-counsel-yank-pop)
-
-
-      (defun exwm-counsel-yank-pop ()
-        "Same as `counsel-yank-pop' and paste into exwm buffer."
-        (interactive)
-        (let ((inhibit-read-only t)
-              ;; Make sure we send selected yank-pop candidate to
-              ;; clipboard:
-              (yank-pop-change-selection t))
-          (call-interactively #'counsel-yank-pop))
-        (when (derived-mode-p 'exwm-mode)
-          (exwm-input--set-focus (exwm--buffer->id (window-buffer (selected-window))))
-          (exwm-input--fake-key ?\C-v)))
+  (exwm-input-set-key (kbd "M-y")
+                      #'gpastel-exwm-counsel-yank-pop)
 
 
-      (defun exwm-workspace-prev ()
-        "Switch to next exwm-workspaceective (to the right)."
-        (interactive)
-        (let* ((only-workspace? (equal exwm-workspace-number 1))
-               (overflow? (= exwm-workspace-current-index 0)))
-          (cond
-           (only-workspace? nil)
-           (overflow?
-            (when exwm-workspace-switch-wrap
-              (exwm-workspace-switch (1- exwm-workspace-number))))
-           (t (exwm-workspace-switch  (1- exwm-workspace-current-index))))))
-
-      (defun mf/get-auto-xrandr-line (display)
-        "Returns the parameter for xrandr to automatically configure the display."
-        (concat "--output " display " --auto"))
-
-      (defun mf/generate-xrandr-params ()
-        "Generate the parameters for xrandr."
-        (let ((xrandrfile "~/.xrandrrc"))
-          (if (not (file-exists-p xrandrfile))
-              (apply 'concat (mapcar 'mf/get-auto-xrandr-line (mf/get-monitor-list)))
-            (with-temp-puffer
-             (insert-file-contents xrandrfile)
-             (buffer-to-string)))))
-
-      (defun app/configure-displays ()
-        "Configure the attached displays"
-        (interactive)
-        (let ((xrandr-params (mf/generate-xrandr-params)))
-          (start-process-shell-command "xrandr" nil (concat "xrandr " xrandr-params))))
+  (defun exwm-counsel-yank-pop ()
+    "Same as `counsel-yank-pop' and paste into exwm buffer."
+    (interactive)
+    (let ((inhibit-read-only t)
+          ;; Make sure we send selected yank-pop candidate to
+          ;; clipboard:
+          (yank-pop-change-selection t))
+      (call-interactively #'counsel-yank-pop))
+    (when (derived-mode-p 'exwm-mode)
+      (exwm-input--set-focus (exwm--buffer->id (window-buffer (selected-window))))
+      (exwm-input--fake-key ?\C-v)))
 
 
-      ;; Quick swtiching between workspaces
-      (defvar exwm-toggle-workspace 0
-        "Previously selected workspace. Used with `exwm-jump-to-last-exwm'.")
-      (defun exwm-jump-to-last-exwm ()
-        (interactive)
-        (exwm-workspace-switch exwm-toggle-workspace))
+  (defun exwm-workspace-prev ()
+    "Switch to next exwm-workspaceective (to the right)."
+    (interactive)
+    (let* ((only-workspace? (equal exwm-workspace-number 1))
+           (overflow? (= exwm-workspace-current-index 0)))
+      (cond
+       (only-workspace? nil)
+       (overflow?
+        (when exwm-workspace-switch-wrap
+          (exwm-workspace-switch (1- exwm-workspace-number))))
+       (t (exwm-workspace-switch  (1- exwm-workspace-current-index))))))
 
-      (defadvice exwm-workspace-switch (before save-toggle-workspace activate)
-        (setq exwm-toggle-workspace exwm-workspace-current-index))
+  (defun mf/get-auto-xrandr-line (display)
+    "Returns the parameter for xrandr to automatically configure the display."
+    (concat "--output " display " --auto"))
 
-      (defun mf/make-workspace-list (monitors workspaces)
-        "Return a list for exwm to use for workspace assignment."
-        (let ((result '()))
-          (dotimes (count (* (length monitors) workspaces) result)
-            (setq result (append result
-                                 (list (+ count 1)
-                                       (nth (if (evenp count) count (- count 1))
-                                            monitors)))))))
-      (defun mf/get-monitor-list ()
-        "Get a list of connected displays."
-        (let ((xrandr (split-string (shell-command-to-string "xrandr") "\n" ))
-              (result '()))
-          (dotimes (counter (length xrandr) result)
-            (let ((monitor (mf/monitor-from-line (nth counter xrandr))))
-              (when monitor
-                (setq result (append result (list monitor))))))))
+  (defun mf/generate-xrandr-params ()
+    "Generate the parameters for xrandr."
+    (let ((xrandrfile "~/.xrandrrc"))
+      (if (not (file-exists-p xrandrfile))
+          (apply 'concat (mapcar 'mf/get-auto-xrandr-line (mf/get-monitor-list)))
+        (with-temp-puffer
+         (insert-file-contents xrandrfile)
+         (buffer-to-string)))))
 
-      (setq exwm-workspaces-per-monitor 4)
-
-      (defun mf/monitor-from-line (line)
-        "Look at a line and return the monitor if it is a matching xrandr line."
-        (save-match-data
-          (and (string-match " connected" line)
-               (string-match "^[a-zA-Z]+-[0-9]+" line)
-               (match-string 0 line ))))
+  (defun app/configure-displays ()
+    "Configure the attached displays"
+    (interactive)
+    (let ((xrandr-params (mf/generate-xrandr-params)))
+      (start-process-shell-command "xrandr" nil (concat "xrandr " xrandr-params))))
 
 
-      (defun my-exwm-workspaces ()
-        "Calculates the number of workspaes and assigns them to monitors."
-        (interactive)
+  ;; Quick swtiching between workspaces
+  (defvar exwm-toggle-workspace 0
+    "Previously selected workspace. Used with `exwm-jump-to-last-exwm'.")
+  (defun exwm-jump-to-last-exwm ()
+    (interactive)
+    (exwm-workspace-switch exwm-toggle-workspace))
 
-        (require 'exwm-randr)
-        (setq exwm-randr-workspace-output-plist
-              (mf/make-workspace-list (mf/get-monitor-list) exwm-workspaces-per-monitor))
-        (add-hook 'exwm-randr-screen-change-hook 'app/configure-displays)
+  (defadvice exwm-workspace-switch (before save-toggle-workspace activate)
+    (setq exwm-toggle-workspace exwm-workspace-current-index))
 
+  (defun mf/make-workspace-list (monitors workspaces)
+    "Return a list for exwm to use for workspace assignment."
+    (let ((result '()))
+      (dotimes (count (* (length monitors) workspaces) result)
+        (setq result (append result
+                             (list (+ count 1)
+                                   (nth (if (evenp count) count (- count 1))
+                                        monitors)))))))
+  (defun mf/get-monitor-list ()
+    "Get a list of connected displays."
+    (let ((xrandr (split-string (shell-command-to-string "xrandr") "\n" ))
+          (result '()))
+      (dotimes (counter (length xrandr) result)
+        (let ((monitor (mf/monitor-from-line (nth counter xrandr))))
+          (when monitor
+            (setq result (append result (list monitor))))))))
 
-        (dotimes (value (* exwm-workspaces-per-monitor (length (mf/get-monitor-list))))
-          (let ((i (+ 1 value)))
-            (exwm-input-set-key
-             (kbd (format "s-%d" i))
-             `(lambda () (interactive)
-                (exwm-workspace-switch-create ,i)))))
-        (exwm-randr-enable))
+  (setq exwm-workspaces-per-monitor 4)
 
-
-      (defun my-exwm-define-key-chords ()
-        "Define local key chords for Exwm buffer."
-        (map-keymap
-         (lambda (event-type key-chord-map)
-           (when (eq event-type 'key-chord)
-             (map-keymap
-              (lambda (key _)
-                (define-key exwm-mode-map (string key)
-                  (lambda ()
-                    (interactive)
-                    (exwm-input--fake-key key))))
-              key-chord-map)))
-         (current-global-map)))
-
-      (defun my/trim-non-chrome ()
-        (delete-if-not (apply-partially 'string-match "- Google Chrome$")
-                       ido-temp-list))
-
-      (add-hook 'exwm-manage-finish-hook
-                (defun my/exwm-manage-hook ()
-                  (when (string-match "Google-chrome" exwm-class-name)
-                                              ;                (exwm-workspace-move-window 0)
-                                              ;                (exwm-layout-hide-mode-line)
-                    (setq ido-make-buffer-list-hook 'my/trim-non-chrome))))
-
-      (add-hook 'exwm-update-title-hook
-                (defun my/exwm-title-hook ()
-                  (when (string-match "Google-chrome" exwm-class-name)
-                    (exwm-workspace-rename-buffer exwm-title))))
-
-      (setq browse-url-chrome-arguments '("--new-window"))
-
-      (add-hook 'exwm-workspace-switch-hook #'my-exwm-workspace-display-current)
-      (advice-add 'exwm-workspace-add :after #'my-exwm-workspace-display-current)
-      (advice-add 'exwm-workspace-delete :after #'my-exwm-workspace-display-current)
+  (defun mf/monitor-from-line (line)
+    "Look at a line and return the monitor if it is a matching xrandr line."
+    (save-match-data
+      (and (string-match " connected" line)
+           (string-match "^[a-zA-Z]+-[0-9]+" line)
+           (match-string 0 line ))))
 
 
-      (window-divider-mode)
+  (defun my-exwm-workspaces ()
+    "Calculates the number of workspaes and assigns them to monitors."
+    (interactive)
 
-      (defun ivy-ignore-exwm-buffers (str)
-        (let ((buf (get-buffer str)))
-          (when buf
-            (with-current-buffer buf
-              (or
-               (file-remote-p (or (buffer-file-name) default-directory))
-               (eq major-mode 'exwm-mode))))))
+    (require 'exwm-randr)
+    (setq exwm-randr-workspace-output-plist
+          (mf/make-workspace-list (mf/get-monitor-list) exwm-workspaces-per-monitor))
+    (add-hook 'exwm-randr-screen-change-hook 'app/configure-displays)
 
-      (defun ivy-ignore-non-exwm-buffers (str)
-        (let ((buf (get-buffer str)))
-          (if buf
-              (with-current-buffer buf
-                (or
-                 (file-remote-p (or (buffer-file-name) default-directory))
-                 (not (eq major-mode 'exwm-mode))))
-            t)))
 
-      (defun ivy-switch-buffer-exwm ()
-        "Like ivy-switch-buffer but only shows EXWM buffers."
-        (interactive)
-        (let ((ivy-ignore-buffers (append ivy-ignore-buffers '(ivy-ignore-non-exwm-buffers))))
-          (ivy-switch-buffer)))
+    (dotimes (value (* exwm-workspaces-per-monitor (length (mf/get-monitor-list))))
+      (let ((i (+ 1 value)))
+        (exwm-input-set-key
+         (kbd (format "s-%d" i))
+         `(lambda () (interactive)
+            (exwm-workspace-switch-create ,i)))))
+    (exwm-randr-enable))
 
-      (defun ivy-switch-buffer-non-exwm ()
-        "Like ivy-switch-buffer but hides all EXWM buffers."
-        (interactive)
-        (let ((ivy-ignore-buffers (append ivy-ignore-buffers '(ivy-ignore-exwm-buffers))))
-          (ivy-switch-buffer)))
+
+  (defun my-exwm-define-key-chords ()
+    "Define local key chords for Exwm buffer."
+    (map-keymap
+     (lambda (event-type key-chord-map)
+       (when (eq event-type 'key-chord)
+         (map-keymap
+          (lambda (key _)
+            (define-key exwm-mode-map (string key)
+              (lambda ()
+                (interactive)
+                (exwm-input--fake-key key))))
+          key-chord-map)))
+     (current-global-map)))
+
+  (defun my/trim-non-chrome ()
+    (delete-if-not (apply-partially 'string-match "- Google Chrome$")
+                   ido-temp-list))
+
+  (add-hook 'exwm-manage-finish-hook
+            (defun my/exwm-manage-hook ()
+              (when (string-match "Google-chrome" exwm-class-name)
+                                        ;                (exwm-workspace-move-window 0)
+                                        ;                (exwm-layout-hide-mode-line)
+                (setq ido-make-buffer-list-hook 'my/trim-non-chrome))))
+
+  (add-hook 'exwm-update-title-hook
+            (defun my/exwm-title-hook ()
+              (when (string-match "Google-chrome" exwm-class-name)
+                (exwm-workspace-rename-buffer exwm-title))))
+
+  (setq browse-url-chrome-arguments '("--new-window"))
+
+  (add-hook 'exwm-workspace-switch-hook #'my-exwm-workspace-display-current)
+  (advice-add 'exwm-workspace-add :after #'my-exwm-workspace-display-current)
+  (advice-add 'exwm-workspace-delete :after #'my-exwm-workspace-display-current)
+
+
+  (window-divider-mode)
+
+
      #+END_SRC
 
      #+results:
      : t
 
 ** keybindings
-#+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/module-exwm.el
+#+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/modules/module-exwm.el
   (setq exwm-input-line-mode-passthrough t)
 
   (defun exwm-input-line-mode ()
@@ -2459,10 +2430,6 @@ Testing with mocha
     (cl-pushnew (elt key 0) exwm-input-prefix-keys)
     (exwm-input-set-key key function))
 
-  (defun my/switch-to-last-buffer ()
-    "Switch to last open buffer in current window."
-    (interactive)
-    (switch-to-buffer (other-buffer (current-buffer) 1)))
 
   (define-key minibuffer-inactive-mode-map [mouse-1] #'ignore)
 
@@ -2496,19 +2463,13 @@ Testing with mocha
     "Add the key bindings for exwm."
     (exwm-input-set-key (kbd "<print>") #'desktop-environment-screenshot)
 
-    ;; (exwm-input-set-key (kbd "C-SPC")
-    ;;                     (lambda ()
-    ;;                       (interactive)
-    ;;                       (exwm-input-line-mode)
-    ;;                       (hydra-master/body)))
-
     (exwm-input-set-key (kbd "C-SPC")
                         (lambda ()
                           (interactive)
                           (exwm-input-line-mode)
-                          (boon-mode-hydra)))
+                          (modalka-mode-hydra)))
 
-  (exwm-input-set-key (kbd "C-=")
+  (exwm-input-set-key (kbd "C-4")
                         (lambda ()
                           (interactive)
                           (exwm-input-line-mode)
@@ -2518,31 +2479,19 @@ Testing with mocha
                           (interactive)
                           (exwm-input-line-mode)
                           (my/org-capture-task)))
-  (exwm-input-set-key (kbd "C-2")
-                        (lambda ()
-                          (interactive)
-                          (exwm-input-line-mode)
-                          (my/org-capture-log)))
 
-  (exwm-input-set-key (kbd "C-3")
+  (exwm-input-set-key (kbd "C-2")
                         (lambda ()
                           (interactive)
                           (exwm-input-line-mode)
                           (my/org-capture-journal)))
 
 
-  (exwm-input-set-key (kbd "C-4")
+  (exwm-input-set-key (kbd "C-3")
                         (lambda ()
                           (interactive)
                           (exwm-input-line-mode)
                           (my/org-capture-note)))
-
-
-  (exwm-input-set-key (kbd "C-0")
-                        (lambda ()
-                          (interactive)
-                          (exwm-input-line-mode)
-                          (my/org-capture-emacs)))
 
 
   (exwm-input-set-key (kbd "s-p")   'my/switch-to-last-buffer)
@@ -2569,13 +2518,14 @@ Testing with mocha
     (exwm-input-set-key (kbd "s-I") 'buf-move-up)
     (exwm-input-set-key (kbd "s-O") 'buf-move-down)
 
-    (exwm-input-set-key (kbd "s-x") 'exwm-input-toggle-keyboard))
+    (exwm-input-set-key (kbd "s-x") 'exwm-input-toggle-keyboard)
+)
 
 
    #+END_SRC
 
 ** ibuffer
-#+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/module-exwm.el
+#+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/modules/module-exwm.el
   (setq ibuffer-saved-filter-groups
         (quote (("default"
                  ("EXWM" (mode . exwm-mode))))))
@@ -2652,7 +2602,7 @@ Testing with mocha
 
    #+END_SRC
 ** randr
-#+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/module-exwm.el
+#+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/modules/module-exwm.el
   (defvar exwm-connected-displays 3
     "Number of connected displays.")
 
@@ -2683,7 +2633,7 @@ Testing with mocha
    #+END_SRC
 
 ** autostart
-#+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/module-exwm.el
+#+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/modules/module-exwm.el
   (defun app/autostart (application)
     "Add an application to autostart."
     (add-hook 'exwm-init-hook
@@ -2719,11 +2669,5 @@ Testing with mocha
 ;             (my-exwm-autostart)
 ;              (my-exwm-workspaces)
               (exwm-enable)
-              t))
+              t)))
    #+END_SRC
-
-** autoload-ends
-#+BEGIN_SRC emacs-lisp :tangle ~/.personal.d/module-exwm.el
- )
-#+END_SRC
-    

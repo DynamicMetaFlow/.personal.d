@@ -1,9 +1,5 @@
 (defhydra hydra-common  (:color blue
-                                :hint nil
-                                :pre (progn
-                                       (exwm-input-line-mode))
-                                :post (progn
-                                        (exwm-input-char-mode)))
+                         :hint nil)
   ("RET"   counsel-linux-app nil)
   ("SPC"   counsel-M-x nil)
 
@@ -26,10 +22,6 @@
     (defhydra hydra-master (
                             :color blue
                             :column 1
-                            :pre (progn
-                                   (exwm-input-line-mode))
-                            :post (progn
-                                    (exwm-input-char-mode))
                             :inherit (hydra-common/heads))
       "Master"
       ("a" hydra-applications/body "apps")
@@ -45,11 +37,7 @@
       ("t" hydra-terminal/body "term")
       ("x" hydra-text/body "text"))
 
-  (defhydra hydra-emacs (:color blue :hint nil :inherit (hydra-common/heads)
-                                :pre (progn
-                                       (exwm-input-line-mode))
-                                :post (progn
-                                        (exwm-input-char-mode)))
+  (defhydra hydra-emacs (:color blue :hint nil :inherit (hydra-common/heads))
 
     "
                                                                          ╭───────┐
@@ -84,11 +72,7 @@
     ("s" hydra-system/body nil)
     )
 
-  (defhydra hydra-terminal (:color blue :hint nil :inherit (hydra-common/heads)
-                                   :pre (progn
-                                          (exwm-input-line-mode))
-                                   :post (progn
-                                           (exwm-input-char-mode)))
+  (defhydra hydra-terminal (:color blue :hint nil :inherit (hydra-common/heads))
 
     "
                                                                         ╭──────────┐
@@ -111,11 +95,8 @@
     ("p" multi-term-previous)
     ("d" multi-term-dedicated-toggle))
 
-  (defhydra hydra-file (:color blue :hint nil :inherit (hydra-common/heads)
-                               :pre (progn
-                                      (exwm-input-line-mode))
-                               :post (progn
-                                       (exwm-input-char-mode)))
+  (defhydra hydra-file (:color blue :hint nil :inherit (hydra-common/heads))
+
     "
                                                                           ╭──────┐
        Ivy                    Dired            Hydras                     │ File │
@@ -134,11 +115,8 @@
     ("ht" hydra-text/body nil   :color blue)
     )
 
-  (defhydra hydra-narrow (:color blue :hint nil :inherit (hydra-common/heads)
-                                 :pre (progn
-                                        (exwm-input-line-mode))
-                                 :post (progn
-                                         (exwm-input-char-mode)))
+  (defhydra hydra-narrow (:color blue :hint nil :inherit (hydra-common/heads))
+
     "
                                                                         ╭────────┐
       Narrow                                                            │ Narrow │
@@ -158,11 +136,8 @@
     ("r" narrow-to-region)
     ("w" widen))
 
-  (defhydra hydra-spell (:color blue :hint nil :inherit (hydra-common/heads)
-                                :pre (progn
-                                       (exwm-input-line-mode))
-                                :post (progn
-                                        (exwm-input-char-mode)))
+  (defhydra hydra-spell (:color blue :hint nil :inherit (hydra-common/heads))
+
     "
                                                                          ╭───────┐
       Flyspell               Ispell                      Gtranslate      │ Spell │
@@ -182,11 +157,8 @@
     ("k" flyspell-correct-word-generic)
     ("n" flyspell-goto-next-error))
 
-  (defhydra hydra-text (:color blue :hint nil :inherit (hydra-common/heads)
-                               :pre (progn
-                                      (exwm-input-line-mode))
-                               :post (progn
-                                       (exwm-input-char-mode)))
+  (defhydra hydra-text (:color blue :hint nil :inherit (hydra-common/heads))
+
 
     "
                                                                                ╭──────┐
@@ -227,11 +199,8 @@
     ("q" hydra-boxquote/body)
     ("x" comment-box))
 
-  (defhydra hydra-git (:color blue :hint nil :inherit (hydra-common/heads)
-                              :pre (progn
-                                     (exwm-input-line-mode))
-                              :post (progn
-                                      (exwm-input-char-mode)))
+  (defhydra hydra-git (:color blue :hint nil :inherit (hydra-common/heads))
+
     "
                                                                            ╭─────┐
      Magit                          VC                    Timemachine      │ Git │
@@ -251,12 +220,7 @@
   (defhydra hydra-window (
                           :color red
                           :hint  nil
-                          :inherit (hydra-common/heads)
-                          :pre (progn
-                                 (exwm-input-line-mode))
-                          :post (progn
-                                  (exwm-input-char-mode))
-                          )
+                          :inherit (hydra-common/heads))
     "
                                                                        ╭──────────┐
     Window         Switch           View                               │  Window  │
@@ -297,11 +261,8 @@
     ("@" hycontrol-windows-grid)
     )
 
-  (defhydra hydra-jump (:color blue :hint nil :inherit (hydra-common/heads)
-                               :pre (progn
-                                      (exwm-input-line-mode))
-                               :post (progn
-                                       (exwm-input-char-mode)))
+  (defhydra hydra-jump (:color blue :hint nil :inherit (hydra-common/heads))
+
     "
                                                                           ╭──────┐
     Window          WordChar        Line         iSearch                  │ Jump │
@@ -329,11 +290,8 @@
     ("i" avy-isearch)
     )
 
-  (defhydra hydra-register (:color blue :hint nil :inherit (hydra-common/heads)
-                                   :pre (progn
-                                          (exwm-input-line-mode))
-                                   :post (progn
-                                           (exwm-input-char-mode)))
+  (defhydra hydra-register (:color blue :hint nil :inherit (hydra-common/heads))
+
 
     "
                                                                           ╭──────────┐
@@ -354,11 +312,8 @@
     ("r" evil-show-registers)
     ("u" undo-tree-visualize))
 
-  (defhydra hydra-search (:color blue :hint nil :inherit (hydra-common/heads)
-                                 :pre (progn
-                                        (exwm-input-line-mode))
-                                 :post (progn
-                                         (exwm-input-char-mode)))
+  (defhydra hydra-search (:color blue :hint nil :inherit (hydra-common/heads))
+
     "
                                                                             ╭────────┐
          Files                             Buffer                           │ Search │
@@ -389,11 +344,7 @@
   (defhydra hydra-bookmarks (
                              :color red
                              :hint nil
-                             :inherit (hydra-common/heads)
-                             :pre (progn
-                                    (exwm-input-line-mode))
-                             :post (progn
-                                     (exwm-input-char-mode)))
+                             :inherit (hydra-common/heads))
 
     "
                                                                      ╭───────────┐
@@ -419,12 +370,7 @@
     ("p" find-function-at-point "Function at Point")
     ("l" find-library "Library source"))
 
-  (defhydra hydra-projects (:color blue :hint nil
-                                   :pre (progn
-                                          (exwm-input-line-mode))
-                                   :post (progn
-                                           (exwm-input-char-mode))
-                                   :inherit (hydra-common/heads))
+  (defhydra hydra-projects (:color blue :hint nil :inherit (hydra-common/heads))
     "
                                                                        ╭────────────┐
        Files             Search          Buffer             Do         │ Projectile │
@@ -486,11 +432,8 @@
 
   (define-key projectile-mode-map (kbd "C-c o") #'hydra-project/body)
 
-  (defhydra hydra-torus (:color red
-                         :hint nil
-                         :inherit (hydra-common/heads)
-                         :pre (progn  (exwm-input-line-mode))
-                         :post (progn (exwm-input-char-mode)))
+  (defhydra hydra-torus (:color red :hint nil :inherit (hydra-common/heads))
+
     "
                                                                                              ╭─────────┐
       Switch                    Move                        Do                               │  Torus  │
@@ -636,11 +579,8 @@
      (defhydra hydra-exwm (:exit t
                      :columns 2
                      :color blue
-                     :inherit (hydra-common/heads)
-                     :pre (progn
-                            (exwm-input-line-mode))
-                     :post (progn
-                             (exwm-input-char-mode)))
+                     :inherit (hydra-common/heads))
+
      "EXWM"
      ("0" delete-window "delete")
 
