@@ -1,5 +1,31 @@
+(setq howm-template
+      ":HIDDEN:
+  #+PARENTS:
+  #+CHILDREN:
+  #+FRIENDS:
+
+  :RELATED:
+  %file
+  %title
+
+  :RESOURCES:
+
+  :END:
+  #+TITLE: %cursor
+  %fname
+  %date
+  #+CATEGORY:
+  #+KEYWORDS:
+
+    ")
+
 (use-package howm
-:config
+  :config
+  (require 'howm)
+
+  (define-key howm-view-summary-mode-map (kbd "M-C-m") 'howm-open-new-frame-summary)
+  (define-key howm-view-summary-mode-map [tab] 'my/howm-view-summary-open)
+
 
   (defvar howm-view-title-header "#+TITLE:")
 
@@ -200,30 +226,4 @@
       (setq current-buffer buffer-file-name)
       (switch-to-buffer "*scratch*")
       (insert "\n\n")
-      (insert "#+INCLUDE: \"" current-buffer "\" :only-contents t :lines \"10-\"\n\n")))
-
- (require 'howm)
-(setq howm-template
-  ":HIDDEN:
-  #+PARENTS:
-  #+CHILDREN:
-  #+FRIENDS:
-
-  :RELATED:
-  %file
-  %title
-
-  :RESOURCES:
-
-  :END:
-  #+TITLE: %cursor
-  %fname
-  %date
-  #+CATEGORY:
-  #+KEYWORDS:
-
-    ")
-
-    (define-key howm-view-summary-mode-map (kbd "M-C-m") 'howm-open-new-frame-summary)
-    (define-key howm-view-summary-mode-map [tab] 'my/howm-view-summary-open)
-)
+      (insert "#+INCLUDE: \"" current-buffer "\" :only-contents t :lines \"10-\"\n\n"))))

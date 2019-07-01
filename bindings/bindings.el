@@ -35,6 +35,8 @@
 
       (general-def org-agenda-mode-map
       "x"   'org-agenda-exit
+      "'"   'org-agenda-set-restriction-lock-from-agenda
+      "\\"   'org-agenda-remove-restriction-lock
 
       )
 )

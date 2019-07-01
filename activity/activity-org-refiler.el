@@ -40,7 +40,7 @@
     (find-file org-default-inbox-file)
     (goto-char (point-min))
     (org-next-visible-heading 1)
-    (hydra-org-refiler/body))
+    (org-agenda-process))
 
   (defun org-refile-to-incubate ()
     "Refile (move) the current Org subtree to `org-default-incubate-file'."

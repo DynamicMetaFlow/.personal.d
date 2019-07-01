@@ -1,29 +1,29 @@
- (after "org-contrib-autoloads"
+(after "org-contrib-autoloads"
 
-   (defun my/org-add-ids-to-headlines-in-file ()
-     "Add CUSTOM_ID properties to all headlines in the
+(defun my/org-add-ids-to-headlines-in-file ()
+  "Add CUSTOM_ID properties to all headlines in the
       current file which do not already have one."
-     (interactive)
-     (org-map-entries (lambda () (my/org-custom-id-get (point) 'create))))
+  (interactive)
+  (org-map-entries (lambda () (my/org-custom-id-get (point) 'create))))
 
-   (defun my/org-custom-id-get (&optional pom create prefix)
-     "Get the CUSTOM_ID property of the entry at point-or-marker POM.
+(defun my/org-custom-id-get (&optional pom create prefix)
+  "Get the CUSTOM_ID property of the entry at point-or-marker POM.
       If POM is nil, refer to the entry at point. If the entry does
       not have an CUSTOM_ID, the function returns nil. However, when
       CREATE is non nil, create a CUSTOM_ID if none is present
       already. PREFIX will be passed through to `org-id-new'. In any
       case, the CUSTOM_ID of the entry is returned."
-     (interactive)
-     (org-with-point-at pom
-       (let ((id (org-entry-get nil "EXPORT_FILE_NAME")))
-         (cond
-          ((and id (stringp id) (string-match "\\S-" id))
-           id)
-          (create
-           (setq id (org-id-new (concat prefix "h")))
-           (org-entry-put pom "EXPORT_FILENAME" id)
-           (org-id-add-location id (buffer-file-name (buffer-base-buffer)))
-           id)))))
+  (interactive)
+  (org-with-point-at pom
+    (let ((id (org-entry-get nil "EXPORT_FILE_NAME")))
+      (cond
+       ((and id (stringp id) (string-match "\\S-" id))
+        id)
+       (create
+        (setq id (org-id-new (concat prefix "h")))
+        (org-entry-put pom "EXPORT_FILENAME" id)
+        (org-id-add-location id (buffer-file-name (buffer-base-buffer)))
+        id)))))
 
    (defun my-org-mode-hooks ()
      (visual-line-mode)
@@ -116,7 +116,7 @@
 
 
    ;; Record time and note when a task is completed
-   (setq org-log-done 'note)
+;   (setq org-log-done 'note)
 
    ;; Record time and note when the scheduled date of a task is modified
    (setq org-log-reschedule 'note)

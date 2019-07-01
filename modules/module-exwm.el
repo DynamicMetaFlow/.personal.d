@@ -1,5 +1,5 @@
 (use-package exwm
-;  :if (string= (getenv "EXWM_ENABLE") "t")
+  :if (string= (getenv "EXWM_ENABLE") "t")
   :config
   (require 'exwm)
   (require 'exwm-randr)
@@ -263,104 +263,104 @@
     (let ((ivy-ignore-buffers (append ivy-ignore-buffers '(ivy-ignore-exwm-buffers))))
       (ivy-switch-buffer)))
 
-  (setq exwm-input-line-mode-passthrough t)
+(setq exwm-input-line-mode-passthrough t)
 
-  (defun exwm-input-line-mode ()
-    "Set exwm window to line-mode and show mode line"
-    (call-interactively #'exwm-input-grab-keyboard)
-    (exwm-layout-show-mode-line))
+(defun exwm-input-line-mode ()
+  "Set exwm window to line-mode and show mode line"
+  (call-interactively #'exwm-input-grab-keyboard)
+  (exwm-layout-show-mode-line))
 
-  (defun exwm-input-char-mode ()
-    "Set exwm window to char-mode and hide mode line"
-    (call-interactively #'exwm-input-release-keyboard)
-    (exwm-layout-hide-mode-line))
+(defun exwm-input-char-mode ()
+  "Set exwm window to char-mode and hide mode line"
+  (call-interactively #'exwm-input-release-keyboard)
+  (exwm-layout-hide-mode-line))
 
-  (defun exwm-input-toggle-mode ()
-    "Toggle between line- and char-mode"
-    (with-current-buffer (window-buffer)
-      (when (eq major-mode 'exwm-mode)
-        (if (equal (second (second mode-line-process)) "line")
-            (exwm-input-char-mode)
-          (exwm-input-line-mode)))))
+(defun exwm-input-toggle-mode ()
+  "Toggle between line- and char-mode"
+  (with-current-buffer (window-buffer)
+    (when (eq major-mode 'exwm-mode)
+      (if (equal (second (second mode-line-process)) "line")
+          (exwm-input-char-mode)
+        (exwm-input-line-mode)))))
 
-  (defun exwm-input-set-global-key (key function)
-    "Add KEY to `exwm-input-prefix-keys' and bind FUNCTION to KEY
+(defun exwm-input-set-global-key (key function)
+  "Add KEY to `exwm-input-prefix-keys' and bind FUNCTION to KEY
           in exwm keymap"
-    (cl-pushnew (elt key 0) exwm-input-prefix-keys)
-    (exwm-input-set-key key function))
+  (cl-pushnew (elt key 0) exwm-input-prefix-keys)
+  (exwm-input-set-key key function))
 
-  (defun my/switch-to-last-buffer ()
-    "Switch to last open buffer in current window."
-    (interactive)
-    (switch-to-buffer (other-buffer (current-buffer) 1)))
+(defun my/switch-to-last-buffer ()
+  "Switch to last open buffer in current window."
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) 1)))
 
-  (define-key minibuffer-inactive-mode-map [mouse-1] #'ignore)
+(define-key minibuffer-inactive-mode-map [mouse-1] #'ignore)
 
-  (push ?\s-  exwm-input-prefix-keys)
+(push ?\s-  exwm-input-prefix-keys)
 
-  (defvar exwm-input-prefix-keys-extra nil)
+(defvar exwm-input-prefix-keys-extra nil)
 
 
-  (setq exwm-input-simulation-keys
-        '(
-          ;; movement
-          ([?\C-b] . [left])
-          ([?\C-f] . [right])
-          ([?\C-p] . [up])
-          ([?\C-n] . [down])
-          ([?\C-a] . [home])
-          ([?\C-e] . [end])
-          ([?\M-v] . [prior])
-          ([?\C-v] . [next])
-          ([?\C-d] . [delete])
-          ([?\C-k] . [S-end delete])
+(setq exwm-input-simulation-keys
+      '(
+        ;; movement
+        ([?\C-b] . [left])
+        ([?\C-f] . [right])
+        ([?\C-p] . [up])
+        ([?\C-n] . [down])
+        ([?\C-a] . [home])
+        ([?\C-e] . [end])
+        ([?\M-v] . [prior])
+        ([?\C-v] . [next])
+        ([?\C-d] . [delete])
+        ([?\C-k] . [S-end delete])
 
-          ;; cut/paste
-          ([?\C-w] . [?\C-x])
-          ([?\M-w] . [?\C-c])
-          ([?\C-y] . [?\C-v])
-          ;; search
-          ([?\C-s] . [?\C-f])))
+        ;; cut/paste
+        ([?\C-w] . [?\C-x])
+        ([?\M-w] . [?\C-c])
+        ([?\C-y] . [?\C-v])
+        ;; search
+        ([?\C-s] . [?\C-f])))
 
-  (defun my-exwm-keybindings ()
-    "Add the key bindings for exwm."
-    (exwm-input-set-key (kbd "<print>") #'desktop-environment-screenshot)
+(defun my-exwm-keybindings ()
+  "Add the key bindings for exwm."
+  (exwm-input-set-key (kbd "<print>") #'desktop-environment-screenshot)
 
-    ;; (exwm-input-set-key (kbd "C-SPC")
-    ;;                     (lambda ()
-    ;;                       (interactive)
-    ;;                       (exwm-input-line-mode)
-    ;;                       (hydra-master/body)))
+  ;; (exwm-input-set-key (kbd "C-SPC")
+  ;;                     (lambda ()
+  ;;                       (interactive)
+  ;;                       (exwm-input-line-mode)
+  ;;                       (hydra-master/body)))
 
-    (exwm-input-set-key (kbd "C-SPC")
-                        (lambda ()
-                          (interactive)
-                          (exwm-input-line-mode)
-                          (modalka-mode-hydra)))
+  (exwm-input-set-key (kbd "C-SPC")
+                      (lambda ()
+                        (interactive)
+                        (exwm-input-line-mode)
+                        (modalka-mode-hydra)))
 
   (exwm-input-set-key (kbd "C-4")
-                        (lambda ()
-                          (interactive)
-                          (exwm-input-line-mode)
-                          (my/org-capture-appt)))
+                      (lambda ()
+                        (interactive)
+                        (exwm-input-line-mode)
+                        (my/org-capture-appt)))
   (exwm-input-set-key (kbd "C-1")
-                        (lambda ()
-                          (interactive)
-                          (exwm-input-line-mode)
-                          (my/org-capture-task)))
+                      (lambda ()
+                        (interactive)
+                        (exwm-input-line-mode)
+                        (my/org-capture-task)))
 
   (exwm-input-set-key (kbd "C-2")
-                        (lambda ()
-                          (interactive)
-                          (exwm-input-line-mode)
-                          (my/org-capture-journal)))
+                      (lambda ()
+                        (interactive)
+                        (exwm-input-line-mode)
+                        (my/org-capture-journal)))
 
 
   (exwm-input-set-key (kbd "C-3")
-                        (lambda ()
-                          (interactive)
-                          (exwm-input-line-mode)
-                          (my/org-capture-note)))
+                      (lambda ()
+                        (interactive)
+                        (exwm-input-line-mode)
+                        (my/org-capture-note)))
 
 
   (exwm-input-set-key (kbd "s-p")   'my/switch-to-last-buffer)
@@ -368,160 +368,160 @@
   (exwm-input-set-key (kbd "s-<tab>") 'ivy-switch-buffer-exwm)
 
 
-    (exwm-input-set-key (kbd "s-f")   'toggle-single-window)
+  (exwm-input-set-key (kbd "s-f")   'toggle-single-window)
 
-    (exwm-input-set-key (kbd "s-,")   'winner-undo)
-    (exwm-input-set-key (kbd "s-.")   'winner-redo)
+  (exwm-input-set-key (kbd "s-,")   'winner-undo)
+  (exwm-input-set-key (kbd "s-.")   'winner-redo)
 
-    (exwm-input-set-key (kbd "s-r") 'exwm-reset)
-    (exwm-input-set-key (kbd "s-w") 'exwm-workspace-switch)
+  (exwm-input-set-key (kbd "s-r") 'exwm-reset)
+  (exwm-input-set-key (kbd "s-w") 'exwm-workspace-switch)
 
-    (exwm-input-set-key (kbd "s-l") 'windmove-right)
-    (exwm-input-set-key (kbd "s-k") 'windmove-left)
-    (exwm-input-set-key (kbd "s-i") 'windmove-up)
-    (exwm-input-set-key (kbd "s-o") 'windmove-down)
-
-
-    (exwm-input-set-key (kbd "s-L") 'buf-move-right)
-    (exwm-input-set-key (kbd "s-K") 'buf-move-left)
-    (exwm-input-set-key (kbd "s-I") 'buf-move-up)
-    (exwm-input-set-key (kbd "s-O") 'buf-move-down)
-
-    (exwm-input-set-key (kbd "s-x") 'exwm-input-toggle-keyboard))
-
-  (setq ibuffer-saved-filter-groups
-        (quote (("default"
-                 ("EXWM" (mode . exwm-mode))))))
-                                          ;       ("org-mode" (mode . org-mode))
-                                          ;       ("git" (mode . magit-status-mode))
-                                          ;       ("dired" (mode . dired-mode))
-                                          ;       ("emacs" (or
-                                          ;                (name . "^\\*scratch\\*$")
-                                          ;                (name . "^\\*Messages\\*$")
-                                          ;                (name . "^\\*Bookmark List\\*$")
-                                          ;                (name . "^\\*GNU Emacs\\*$")))))))
-
-  (add-hook 'ibuffer-mode-hook
-            (lambda ()
-              (ibuffer-switch-to-saved-filter-groups "default")))
+  (exwm-input-set-key (kbd "s-l") 'windmove-right)
+  (exwm-input-set-key (kbd "s-k") 'windmove-left)
+  (exwm-input-set-key (kbd "s-i") 'windmove-up)
+  (exwm-input-set-key (kbd "s-o") 'windmove-down)
 
 
-  (define-ibuffer-column size-h
-    (:name "Size")
-    (cond
-     ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
-     ((> (buffer-size) 100000) (format "%7.0fk" (/ (buffer-size) 1000.0)))
-     ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
-     (t (format "%8d" (buffer-size)))))
+  (exwm-input-set-key (kbd "s-L") 'buf-move-right)
+  (exwm-input-set-key (kbd "s-K") 'buf-move-left)
+  (exwm-input-set-key (kbd "s-I") 'buf-move-up)
+  (exwm-input-set-key (kbd "s-O") 'buf-move-down)
 
-  (define-ibuffer-column exwm-class
-    (:name "Class")
-    (cond
-     (exwm-class-name (format "%s" exwm-class-name))
-     (t (format "%s" ""))))
+  (exwm-input-set-key (kbd "s-x") 'exwm-input-toggle-keyboard))
 
-  ;; Needs work to look good, major-mode is not equal to ibuffer-formats mode
-  (define-ibuffer-column exwm-mode
-    (:name "EXWM-Mode")
-    (cond
-     ((string-equal major-mode "exwm-mode") (format "%s" exwm-class-name))
-     (t (format "%s" mode-name))))
+(setq ibuffer-saved-filter-groups
+      (quote (("default"
+               ("EXWM" (mode . exwm-mode))))))
+                                        ;       ("org-mode" (mode . org-mode))
+                                        ;       ("git" (mode . magit-status-mode))
+                                        ;       ("dired" (mode . dired-mode))
+                                        ;       ("emacs" (or
+                                        ;                (name . "^\\*scratch\\*$")
+                                        ;                (name . "^\\*Messages\\*$")
+                                        ;                (name . "^\\*Bookmark List\\*$")
+                                        ;                (name . "^\\*GNU Emacs\\*$")))))))
 
-  (setq ibuffer-formats
-        '((mark modified read-only locked " "
-                (name 50 50 :left :elide)
-                " "
-                (size-h 16 16 :right)
-                " "
-                (exwm-mode 18 18 :left :elide)
-                " " filename-and-process)
-          (mark modified read-only locked " "
-                (name 50 50 :left :elide)
-                " "
-                (size-h 16 16 :right)
-                " "
-                (mode 18 18 :left :elide)
-                (exwm-class 18 18 :left :elide)
-                " " filename-and-process)
-          (mark " "
-                (name 16 -1)
-                " " filename)))
-
-  (defun my-counsel-ibuffer-by-exwm-class-name ()
-    "`counsel-ibuffer' limited to Exwm buffers of same X class."
-    (interactive)
-    (require 'ibuffer)
-    (cl-letf*
-        ((class-name exwm-class-name)
-         (get-buffers-function
-          (symbol-function 'counsel-ibuffer--get-buffers))
-         ((symbol-function 'counsel-ibuffer--get-buffers)
+(add-hook 'ibuffer-mode-hook
           (lambda ()
-            (--filter (with-current-buffer (cdr it)
-                        (and (eq major-mode 'exwm-mode)
-                             (string-equal exwm-class-name class-name)))
-                      (funcall get-buffers-function)))))
-      (counsel-ibuffer)))
-
-  (defvar exwm-connected-displays 3
-    "Number of connected displays.")
-
-  ;; Update exwm-randr-workspace-output-plist with 2 or 3 outputs named
-  ;; 'primary' and 'other-1'/'other-2'.
-  ;; With 3 outputs connected the first workspace will be primary,
-  ;; second workspace goes to 'other-2' and all others to 'other-1'.
-  ;; With 2 outputs, first workspace is 'primary' display and rest 'other-1'.
-  ;; And with only one connected output, primary has all workspaces.
-  (defun my/exwm-randr-screen-change ()
-    (let* ((connected-cmd "xrandr -q|awk '/ connected/ {print $1}'")
-           (connected (process-lines "bash" "-lc" connected-cmd))
-           (primary (car connected))  ; Primary display is always first in list
-           (other-1 (cadr connected))
-           (other-2 (caddr connected)))
-      (setq exwm-connected-displays (length connected))
-      (setq exwm-randr-workspace-monitor-plist
-            (append (list 0 primary)
-                    (list 1 (or other-2 other-1 primary))
-                    (mapcan (lambda (i) (list i (or other-1 other-2 primary)))
-                            (number-sequence 2 exwm-workspace-number))))
-      (exwm-randr-refresh)
-      (message "Randr: %s monitors refreshed." (string-join connected ", "))))
-
-  (add-hook 'exwm-randr-screen-change-hook #'my/exwm-randr-screen-change)
-
-  (defun app/autostart (application)
-    "Add an application to autostart."
-    (add-hook 'exwm-init-hook
-              `(lambda ()
-                 (start-process-shell-command "autostart-process" nil ,application))))
-
-  (defun my-exwm-autostart ()
-    "Add applications that will be loaded after exwm init is done."
-    (mapcar (lambda (program) (app/autostart program)) exwm-autostart))
+            (ibuffer-switch-to-saved-filter-groups "default")))
 
 
-  (setq exwm-autostart
-        (list
-;         "thinkpad-dock off"
-;         "compton -b"
-;         "thinkpad-touchpad off"
-;         "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
-;         "/usr/lib/gpaste/gpaste-daemon"
-;         "pamac-tray"
-;         "redshift-gtk"
-;         "kdeconnect-indicator"
-;         "autorandr --change"
-;         "thinkpad-dock on"
-         ))
+(define-ibuffer-column size-h
+  (:name "Size")
+  (cond
+   ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
+   ((> (buffer-size) 100000) (format "%7.0fk" (/ (buffer-size) 1000.0)))
+   ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
+   (t (format "%8d" (buffer-size)))))
+
+(define-ibuffer-column exwm-class
+  (:name "Class")
+  (cond
+   (exwm-class-name (format "%s" exwm-class-name))
+   (t (format "%s" ""))))
+
+;; Needs work to look good, major-mode is not equal to ibuffer-formats mode
+(define-ibuffer-column exwm-mode
+  (:name "EXWM-Mode")
+  (cond
+   ((string-equal major-mode "exwm-mode") (format "%s" exwm-class-name))
+   (t (format "%s" mode-name))))
+
+(setq ibuffer-formats
+      '((mark modified read-only locked " "
+              (name 50 50 :left :elide)
+              " "
+              (size-h 16 16 :right)
+              " "
+              (exwm-mode 18 18 :left :elide)
+              " " filename-and-process)
+        (mark modified read-only locked " "
+              (name 50 50 :left :elide)
+              " "
+              (size-h 16 16 :right)
+              " "
+              (mode 18 18 :left :elide)
+              (exwm-class 18 18 :left :elide)
+              " " filename-and-process)
+        (mark " "
+              (name 16 -1)
+              " " filename)))
+
+(defun my-counsel-ibuffer-by-exwm-class-name ()
+  "`counsel-ibuffer' limited to Exwm buffers of same X class."
+  (interactive)
+  (require 'ibuffer)
+  (cl-letf*
+      ((class-name exwm-class-name)
+       (get-buffers-function
+        (symbol-function 'counsel-ibuffer--get-buffers))
+       ((symbol-function 'counsel-ibuffer--get-buffers)
+        (lambda ()
+          (--filter (with-current-buffer (cdr it)
+                      (and (eq major-mode 'exwm-mode)
+                           (string-equal exwm-class-name class-name)))
+                    (funcall get-buffers-function)))))
+    (counsel-ibuffer)))
+
+(defvar exwm-connected-displays 3
+  "Number of connected displays.")
+
+;; Update exwm-randr-workspace-output-plist with 2 or 3 outputs named
+;; 'primary' and 'other-1'/'other-2'.
+;; With 3 outputs connected the first workspace will be primary,
+;; second workspace goes to 'other-2' and all others to 'other-1'.
+;; With 2 outputs, first workspace is 'primary' display and rest 'other-1'.
+;; And with only one connected output, primary has all workspaces.
+(defun my/exwm-randr-screen-change ()
+  (let* ((connected-cmd "xrandr -q|awk '/ connected/ {print $1}'")
+         (connected (process-lines "bash" "-lc" connected-cmd))
+         (primary (car connected))  ; Primary display is always first in list
+         (other-1 (cadr connected))
+         (other-2 (caddr connected)))
+    (setq exwm-connected-displays (length connected))
+    (setq exwm-randr-workspace-monitor-plist
+          (append (list 0 primary)
+                  (list 1 (or other-2 other-1 primary))
+                  (mapcan (lambda (i) (list i (or other-1 other-2 primary)))
+                          (number-sequence 2 exwm-workspace-number))))
+    (exwm-randr-refresh)
+    (message "Randr: %s monitors refreshed." (string-join connected ", "))))
+
+(add-hook 'exwm-randr-screen-change-hook #'my/exwm-randr-screen-change)
+
+(defun app/autostart (application)
+  "Add an application to autostart."
+  (add-hook 'exwm-init-hook
+            `(lambda ()
+               (start-process-shell-command "autostart-process" nil ,application))))
+
+(defun my-exwm-autostart ()
+  "Add applications that will be loaded after exwm init is done."
+  (mapcar (lambda (program) (app/autostart program)) exwm-autostart))
 
 
-  (add-hook 'after-init-hook
-            (lambda ()
-              (exwm-randr-enable)
-;              (exwm-systemtray-enable)
-              (exwm-input--update-global-prefix-keys)
-              (my-exwm-keybindings)
-;             (my-exwm-autostart)
-;              (my-exwm-workspaces)
-              (exwm-enable)
-              t)))
+(setq exwm-autostart
+      (list
+                                        ;         "thinkpad-dock off"
+                                        ;         "compton -b"
+                                        ;         "thinkpad-touchpad off"
+                                        ;         "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
+                                        ;         "/usr/lib/gpaste/gpaste-daemon"
+                                        ;         "pamac-tray"
+                                        ;         "redshift-gtk"
+                                        ;         "kdeconnect-indicator"
+                                        ;         "autorandr --change"
+                                        ;         "thinkpad-dock on"
+       ))
+
+
+(add-hook 'after-init-hook
+          (lambda ()
+            (exwm-randr-enable)
+                                        ;              (exwm-systemtray-enable)
+            (exwm-input--update-global-prefix-keys)
+            (my-exwm-keybindings)
+                                        ;             (my-exwm-autostart)
+                                        ;              (my-exwm-workspaces)
+            (exwm-enable)
+            t)))

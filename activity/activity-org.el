@@ -217,146 +217,194 @@
         org-habit-preceding-days 28
         org-agenda-start-with-log-mode nil)
 
-  (setq org-habit-show-habits nil)
+  (setq org-habit-show-habits t)
 
-  (setq org-agenda-entry-text-maxlines 10)
+(setq org-agenda-entry-text-maxlines 10)
 
-  (setq org-agenda-entry-text-leaders " ")
+(setq org-agenda-entry-text-leaders " ")
 
-  (setq org-agenda-inhibit-startup t)
+(setq org-agenda-inhibit-startup t)
 
-  (setq org-agenda-use-tag-inheritance nil)
+(setq org-agenda-use-tag-inheritance nil)
 
+(setq org-agenda-files (apply 'append
+                              (mapcar
+                               (lambda (directory)
+                                 (directory-files-recursively
+                                  directory org-agenda-file-regexp))
+                               '("~/org/agenda/" ))))
+
+(setq org-agenda-timegrid-use-ampm t)
+
+(setq org-agenda-use-time-grid nil)
+
+
+(setq org-show-entry-below (quote ((default))))
+
+;; Tags with fast selection keys
+;; Disable the default org-mode stuck projects agenda view
+(setq org-stuck-projects (quote ("" nil nil "")))
+
+;; Limit restriction lock highlighting to the headline only
+(setq org-agenda-restriction-lock-highlight-subtree nil)
+
+;; Always hilight the current agenda line
+(add-hook 'org-agenda-mode-hook
+          '(lambda () (hl-line-mode 1))
+          'append)
+
+
+
+(setq org-agenda-auto-exclude-function 'bh/org-auto-exclude-function)
+
+
+;; For tag searches ignore tasks with scheduled and deadline dates
+(setq org-agenda-tags-todo-honor-ignore-options t)
+
+
+
+(setq org-agenda-inhibit-startup t)
+
+(setq org-agenda-span 'week)
+
+(setq org-agenda-follow-indirect t)
+
+(defvar org-timeline-files nil
+  "The files to be included in `org-timeline-all-files'. Follows
+          the same rules as `org-agenda-files'")
+
+(setq org-timeline-files '("~/org/agenda/archive"))
+
+
+;; Overwrite the current window with the agenda
+(setq org-agenda-window-setup 'current-window)
+
+;; Do not dim blocked tasks
+(setq org-agenda-dim-blocked-tasks nil)
+
+;; Compact the block agenda view
+(setq org-agenda-compact-blocks t)
+
+;; Agenda clock report parameters
+(setq org-agenda-clockreport-parameter-plist
+      (quote (:link t :maxlevel 5 :fileskip0 t :compact nil :narrow 80)))
+
+;; Agenda log mode items to display (closed and state changes by default)
+(setq org-agenda-log-mode-items (quote (closed state clock)))
+
+;; Keep tasks with dates on the global todo lists
+(setq org-agenda-todo-ignore-with-date nil)
+
+;; Keep tasks with deadlines on the global todo lists
+(setq org-agenda-todo-ignore-deadlines nil)
+
+;; Keep tasks with scheduled dates on the global todo lists
+(setq org-agenda-todo-ignore-scheduled nil)
+
+;; Keep tasks with timestamps on the global todo lists
+(setq org-agenda-todo-ignore-timestamp nil)
+
+;; Remove completed deadline tasks from the agenda view
+(setq org-agenda-skip-deadline-if-done t)
+
+;; Remove completed scheduled tasks from the agenda view
+(setq org-agenda-skip-scheduled-if-done t)
+
+;; Remove completed items from search results
+(setq org-agenda-skip-timestamp-if-done t)
+
+;; Include agenda archive files when searching for things
+(setq org-agenda-text-search-extra-files (quote (agenda-archives)))
+
+;; Show all future entries for repeating tasks
+(setq org-agenda-repeating-timestamp-show-all t)
+
+;; Show all agenda dates - even if they are empty
+(setq org-agenda-show-all-dates t)
+
+;; Start the weekly agenda on Monday
+(setq org-agenda-start-on-weekday 1)
+
+(setq org-default-priority ?C)
+
+(defun set-agenda/personal ()
+  (interactive)
   (setq org-agenda-files (apply 'append
                                 (mapcar
                                  (lambda (directory)
                                    (directory-files-recursively
                                     directory org-agenda-file-regexp))
-                                 '("~/org/projects/" "~/org/agenda/" ))))
+                                 '("~/org/agenda/" )))))
 
-  (setq org-agenda-timegrid-use-ampm t)
-
-  (setq org-agenda-use-time-grid nil)
-
-
-  (setq org-show-entry-below (quote ((default))))
-
-  ;; Tags with fast selection keys
-  ;; Disable the default org-mode stuck projects agenda view
-  (setq org-stuck-projects (quote ("" nil nil "")))
-
-  ;; Limit restriction lock highlighting to the headline only
-  (setq org-agenda-restriction-lock-highlight-subtree nil)
-
-  ;; Always hilight the current agenda line
-  (add-hook 'org-agenda-mode-hook
-            '(lambda () (hl-line-mode 1))
-            'append)
+(defun set-agenda/projects ()
+  (interactive)
+  (setq org-agenda-files (apply 'append
+                                (mapcar
+                                 (lambda (directory)
+                                   (directory-files-recursively
+                                    directory org-agenda-file-regexp))
+                                 '("~/org/projects/" )))))
 
 
+(defun agenda/calendar ()
+  (interactive)
+  (org-agenda nil "S"))
 
-  (setq org-agenda-auto-exclude-function 'bh/org-auto-exclude-function)
+(defun my/agenda ()
+  (interactive)
+  (org-agenda nil " "))
 
+(defun agenda/waiting ()
+  (interactive)
+  (org-agenda nil "w"))
 
-  ;; For tag searches ignore tasks with scheduled and deadline dates
-  (setq org-agenda-tags-todo-honor-ignore-options t)
+(defun agenda/someday ()
+  (interactive)
+  (org-agenda nil "s"))
 
-
-
-  (setq org-agenda-inhibit-startup t)
-
-  (setq org-agenda-span 'day)
-
-  (setq org-agenda-follow-indirect t)
-
-  (defvar org-timeline-files nil
-    "The files to be included in `org-timeline-all-files'. Follows
-          the same rules as `org-agenda-files'")
-
-  (setq org-timeline-files '("~/org/agenda/archive"))
-
-
-  ;; Overwrite the current window with the agenda
-  (setq org-agenda-window-setup 'current-window)
-
-  ;; Do not dim blocked tasks
-  (setq org-agenda-dim-blocked-tasks nil)
-
-  ;; Compact the block agenda view
-  (setq org-agenda-compact-blocks t)
-
-  ;; Agenda clock report parameters
-  (setq org-agenda-clockreport-parameter-plist
-        (quote (:link t :maxlevel 5 :fileskip0 t :compact nil :narrow 80)))
-
-  ;; Agenda log mode items to display (closed and state changes by default)
-  (setq org-agenda-log-mode-items (quote (closed state clock)))
-
-  ;; Keep tasks with dates on the global todo lists
-  (setq org-agenda-todo-ignore-with-date nil)
-
-  ;; Keep tasks with deadlines on the global todo lists
-  (setq org-agenda-todo-ignore-deadlines nil)
-
-  ;; Keep tasks with scheduled dates on the global todo lists
-  (setq org-agenda-todo-ignore-scheduled nil)
-
-  ;; Keep tasks with timestamps on the global todo lists
-  (setq org-agenda-todo-ignore-timestamp nil)
-
-  ;; Remove completed deadline tasks from the agenda view
-  (setq org-agenda-skip-deadline-if-done t)
-
-  ;; Remove completed scheduled tasks from the agenda view
-  (setq org-agenda-skip-scheduled-if-done t)
-
-  ;; Remove completed items from search results
-  (setq org-agenda-skip-timestamp-if-done t)
-
-  ;; Include agenda archive files when searching for things
-  (setq org-agenda-text-search-extra-files (quote (agenda-archives)))
-
-  ;; Show all future entries for repeating tasks
-  (setq org-agenda-repeating-timestamp-show-all t)
-
-  ;; Show all agenda dates - even if they are empty
-  (setq org-agenda-show-all-dates t)
-
-  ;; Start the weekly agenda on Monday
-  (setq org-agenda-start-on-weekday 1)
-
-  (setq org-default-priority ?C)
-
-(defun my/org-agenda ()
-(interactive)
-(org-agenda nil " "))
+(defun agenda/next-tasks ()
+  (interactive)
+  (org-agenda nil "n"))
 
 
-  ;; Use sticky agenda's so they persist
-  ;;(setq org-agenda-sticky t)
 
-  ;; Custom agenda command definitions
-  (setq org-agenda-custom-commands
-        (quote (("n" "Notes" tags "note"
-                 ((org-agenda-overriding-header "Notes")
-                  (org-tags-match-list-sublevels t)))
-                ("h" "Habits" tags-todo "STYLE=\"habit\""
-                 ((org-agenda-overriding-header "Habits")
-                  (org-agenda-sorting-strategy
-                   '(todo-state-down effort-up category-keep))))
-                (" " "Agenda"
-                 ((agenda "" nil)
-                  (tags-todo "-DONE+REFILE"
-                             ((org-agenda-overriding-header "Tasks to Refile")
-                              (org-tags-match-list-sublevels nil)))
+;; Use sticky agenda's so they persist
+;;(setq org-agenda-sticky t)
 
-  (tags-todo "-CANCELLED/!"
-                             ((org-agenda-overriding-header "Stuck Projects")
-                              (org-agenda-skip-function 'bh/skip-non-stuck-projects)
+;; Custom agenda command definitions
+(setq org-agenda-custom-commands
+      (quote (("h" "Habits" tags-todo "STYLE=\"habit\""
+               ((org-agenda-overriding-header "Habits")
+                (org-agenda-sorting-strategy
+                 '(todo-state-down effort-up category-keep))))
+
+              ("S" "Schedule" agenda "" nil)
+
+
+
+
+              ("s" "Someday/Maybe"
+               ((tags-todo "-CANCELLED/!"
+                           ((org-agenda-overriding-header "Stuck Projects")
+                            (org-agenda-skip-function 'bh/skip-non-stuck-projects)
+                            (org-agenda-sorting-strategy
+                             '(category-keep))))
+
+                                  (tags-todo "HOLD/!"
+                             ((org-agenda-overriding-header (concat "Someday/Maybe"
+                                                                    (if bh/hide-scheduled-and-waiting-next-tasks
+                                                                        ""
+                                                                      " (including WAITING and SCHEDULED tasks)")))
+                              (org-agenda-skip-function 'bh/skip-non-tasks)
+                              (org-tags-match-list-sublevels nil)
+                              (org-agenda-todo-ignore-scheduled bh/hide-scheduled-and-waiting-next-tasks)
+                              (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
                               (org-agenda-sorting-strategy
-                               '(category-keep))))
+                               '(todo-state-down
+                                 category-keep))))) nil)
 
-  (tags-todo "-HOLD-CANCELLED/!"
+                (" " "Agenda"
+                 ((tags-todo "-HOLD-CANCELLED/!"
                              ((org-agenda-overriding-header "Projects")
                               (org-agenda-skip-function 'bh/skip-non-projects)
                               (org-tags-match-list-sublevels 'indented)
@@ -364,7 +412,7 @@
                                '(priority-down
                                  category-keep))))
 
-  (tags-todo "-CANCELLED/!NEXT"
+                  (tags-todo "-CANCELLED/!NEXT"
                              ((org-agenda-overriding-header (concat "Next Tasks"
                                                                     (if bh/hide-scheduled-and-waiting-next-tasks
                                                                         ""
@@ -388,7 +436,7 @@
                                '(category-keep))))
 
 
-  (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
+                  (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
                              ((org-agenda-overriding-header (concat "Actions"
                                                                     (if bh/hide-scheduled-and-waiting-next-tasks
                                                                         ""
@@ -400,7 +448,18 @@
                                '(todo-state-down
                                  category-keep))))
 
-                  (tags-todo "-CANCELLED+WAITING|HOLD/!"
+
+                  ) nil)
+
+                ("c" "Completed" ((tags "-REFILE/+DONE"
+                                        ((org-agenda-overriding-header "Completed Tasks")
+                                         (org-tags-match-list-sublevels nil)))))
+
+                ("n" "Next Tasks" ((tags "-REFILE/+NEXT"
+                                        ((org-agenda-overriding-header "Next Tasks")
+                                         (org-tags-match-list-sublevels nil)))))
+
+                ("w" "Waiting" ((tags-todo "WAITING"
                              ((org-agenda-overriding-header (concat "Waiting and Postponed"
                                                                     (if bh/hide-scheduled-and-waiting-next-tasks
                                                                         ""
@@ -411,131 +470,128 @@
                               (org-agenda-todo-ignore-deadlines bh/hide-scheduled-and-waiting-next-tasks)
                               (org-agenda-sorting-strategy
                                '(todo-state-down
-                                 category-keep))))) nil)
-
-                ("c" "Completed" ((tags "-REFILE/+DONE"
-                                        ((org-agenda-overriding-header "Completed Tasks")
-                                         (org-tags-match-list-sublevels nil)))))
+                                 category-keep))))))
 
                 )))
-  ;; Limit restriction lock highlighting to the headline only
-  (setq org-agenda-restriction-lock-highlight-subtree nil)
+
+             ;; Limit restriction lock highlighting to the headline only
+             (setq org-agenda-restriction-lock-highlight-subtree nil)
 
 
-  ;; Sorting order for tasks on the agenda
-  (setq org-agenda-sorting-strategy
-        (quote ((agenda habit-down time-up user-defined-up effort-up category-keep)
-                (todo category-up effort-up)
-                (tags category-up effort-up)
-                (search category-up))))
+             ;; Sorting order for tasks on the agenda
+             (setq org-agenda-sorting-strategy
+                   (quote ((agenda habit-down time-up user-defined-up effort-up category-keep)
+                           (todo category-up effort-up)
+                           (tags category-up effort-up)
+                           (search category-up))))
 
 
-  ;; Display tags farther right
-  (setq org-agenda-tags-column -102)
+             ;; Display tags farther right
+             (setq org-agenda-tags-column -102)
 
-  ;;
-  ;; Agenda sorting functions
-  ;;
-  (setq org-agenda-cmp-user-defined 'bh/agenda-sort)
+             ;;
+             ;; Agenda sorting functions
+             ;;
+             (setq org-agenda-cmp-user-defined 'bh/agenda-sort)
 
-   (defun org-agenda-current-subtree-or-region (only-todos)
-     "Display an agenda view for the current subtree or region.
+             (defun org-agenda-current-subtree-or-region (only-todos)
+               "Display an agenda view for the current subtree or region.
     With prefix, display only TODO-keyword items."
-     (interactive "P")
-     (let ((starting-point (point))
-           header)
-       (with-current-buffer (or (buffer-base-buffer (current-buffer))
-                                (current-buffer))
-         (if (use-region-p)
-             (progn
-               (setq header "Region")
-               (put 'org-agenda-files 'org-restrict (list (buffer-file-name (current-buffer))))
-               (setq org-agenda-restrict (current-buffer))
-               (move-marker org-agenda-restrict-begin (region-beginning))
-               (move-marker org-agenda-restrict-end
-                            (save-excursion
-                              ;; If point is at beginning of line, include
-                              ;; heading on that line by moving forward 1.
-                              (goto-char (1+ (region-end)))
-                              (org-end-of-subtree))))
-           ;; No region; restrict to subtree.
-           (save-excursion
-             (save-restriction
-               ;; In case the command was called from an indirect buffer, set point
-               ;; in the base buffer to the same position while setting restriction.
-               (widen)
-               (goto-char starting-point)
-               (setq header "Subtree")
-               (org-agenda-set-restriction-lock))))
-         ;; NOTE: Unlike other agenda commands, binding `org-agenda-sorting-strategy'
-         ;; around `org-search-view' seems to have no effect.
-         (let ((org-agenda-sorting-strategy '(priority-down timestamp-up))
-               (org-agenda-overriding-header header)))
-           (org-agenda nil " "))
-         (org-agenda-remove-restriction-lock t)
-         (message nil)))
+               (interactive "P")
+               (let ((starting-point (point))
+                     header)
+                 (with-current-buffer (or (buffer-base-buffer (current-buffer))
+                                          (current-buffer))
+                   (if (use-region-p)
+                       (progn
+                         (setq header "Region")
+                         (put 'org-agenda-files 'org-restrict (list (buffer-file-name (current-buffer))))
+                         (setq org-agenda-restrict (current-buffer))
+                         (move-marker org-agenda-restrict-begin (region-beginning))
+                         (move-marker org-agenda-restrict-end
+                                      (save-excursion
+                                        ;; If point is at beginning of line, include
+                                        ;; heading on that line by moving forward 1.
+                                        (goto-char (1+ (region-end)))
+                                        (org-end-of-subtree))))
+                     ;; No region; restrict to subtree.
+                     (save-excursion
+                       (save-restriction
+                         ;; In case the command was called from an indirect buffer, set point
+                         ;; in the base buffer to the same position while setting restriction.
+                         (widen)
+                         (goto-char starting-point)
+                         (setq header "Subtree")
+                         (org-agenda-set-restriction-lock))))
+                   ;; NOTE: Unlike other agenda commands, binding `org-agenda-sorting-strategy'
+                   ;; around `org-search-view' seems to have no effect.
+                   (let ((org-agenda-sorting-strategy '(priority-down timestamp-up))
+                         (org-agenda-overriding-header header)))
+                   (org-agenda nil " "))
+                 (org-agenda-remove-restriction-lock t)
+                 (message nil)))
 
-   (setq appt-display-diary nil)
-   (appt-activate t)
-   (setq appt-display-interval 5)
-   (setq appt-message-warning-time 15)
-   (setq appt-display-mode-line t)
-   (display-time)
-   (setq appt-display-format 'window)
-   (setq appt-disp-window-function #'ora-appt-display)
-   (run-at-time "1 hour" 3600 #'ora-org-agenda-to-appt)
-   (remove-hook 'org-finalize-agenda-hook #'ora-org-agenda-to-appt)
-   (add-hook 'org-finalize-agenda-hook #'ora-org-agenda-to-appt)
+             (setq appt-display-diary nil)
+             (appt-activate t)
+             (setq appt-display-interval 5)
+             (setq appt-message-warning-time 15)
+             (setq appt-display-mode-line t)
+             (display-time)
+             (setq appt-display-format 'window)
+             (setq appt-disp-window-function #'ora-appt-display)
+             (run-at-time "1 hour" 3600 #'ora-org-agenda-to-appt)
+             (remove-hook 'org-finalize-agenda-hook #'ora-org-agenda-to-appt)
+             (add-hook 'org-finalize-agenda-hook #'ora-org-agenda-to-appt)
 
-   (defun ora-appt-display (min-to-app new-time msg)
-     "our little façade-function for ora-org-popup"
-     (ora-org-popup (format "Appointment in %s minute(s)" min-to-app) msg
-                    "~/Pictures/Icons/Gnome-appointment-soon.png") )
+             (defun ora-appt-display (min-to-app new-time msg)
+               "our little façade-function for ora-org-popup"
+               (ora-org-popup (format "Appointment in %s minute(s)" min-to-app) msg
+                              "~/Pictures/Icons/Gnome-appointment-soon.png") )
 
-   (defun ora-org-agenda-to-appt ()
-     "Erase all reminders and rebuild reminders for today from the agenda"
-     (interactive)
-     ;; (setq appt-time-msg-list nil)
-     (org-agenda-to-appt))
+             (defun ora-org-agenda-to-appt ()
+               "Erase all reminders and rebuild reminders for today from the agenda"
+               (interactive)
+               ;; (setq appt-time-msg-list nil)
+               (org-agenda-to-appt))
 
 
-   (defun ora-start-process (cmd)
-     (start-process
-      cmd nil shell-file-name
-      shell-command-switch
-      (format "nohup 1>/dev/null 2>/dev/null %s" cmd)))
+             (defun ora-start-process (cmd)
+               (start-process
+                cmd nil shell-file-name
+                shell-command-switch
+                (format "nohup 1>/dev/null 2>/dev/null %s" cmd)))
 
-   (defun ora-org-popup (title msg &optional icon sound)
-     "Show a popup if we're on X, or echo it otherwise; TITLE is the title
+             (defun ora-org-popup (title msg &optional icon sound)
+               "Show a popup if we're on X, or echo it otherwise; TITLE is the title
               of the message, MSG is the context. Optionally, you can provide an ICON and
               a sound to be played"
-     (interactive)
-     (if (eq window-system 'x)
-         (progn
-           (notifications-notify
-            :title title
-            :body msg
-            :app-icon icon
-            :urgency 'low)
-           (ora-start-process
-            (concat "mplayer -really-quiet " sound " 2> /dev/null")))
-       ;; text only version
-       (message (concat title ": " msg))))
+               (interactive)
+               (if (eq window-system 'x)
+                   (progn
+                     (notifications-notify
+                      :title title
+                      :body msg
+                      :app-icon icon
+                      :urgency 'low)
+                     (ora-start-process
+                      (concat "mplayer -really-quiet " sound " 2> /dev/null")))
+                 ;; text only version
+                 (message (concat title ": " msg))))
 
-   (defun bh/org-agenda-to-appt ()
-     (interactive)
-     (setq appt-time-msg-list nil)
-     (org-agenda-to-appt))
+             (defun bh/org-agenda-to-appt ()
+               (interactive)
+               (setq appt-time-msg-list nil)
+               (org-agenda-to-appt))
 
-   ;; Rebuild the reminders everytime the agenda is displayed
-   (add-hook 'org-finalize-agenda-hook 'bh/org-agenda-to-appt 'append)
+             ;; Rebuild the reminders everytime the agenda is displayed
+             (add-hook 'org-finalize-agenda-hook 'bh/org-agenda-to-appt 'append)
 
-   ;; Activate appointments so we get notifications,
-   ;; but only run this when emacs is idle for 15 seconds
-   (run-with-idle-timer 15 nil (lambda () (appt-activate t)))
+             ;; Activate appointments so we get notifications,
+             ;; but only run this when emacs is idle for 15 seconds
+             (run-with-idle-timer 15 nil (lambda () (appt-activate t)))
 
-   ;; If we leave Emacs running overnight - reset the appointments one minute after midnight
-   (run-at-time "24:01" nil 'bh/org-agenda-to-appt)
+             ;; If we leave Emacs running overnight - reset the appointments one minute after midnight
+             (run-at-time "24:01" nil 'bh/org-agenda-to-appt)
 
   (setq org-agenda-directory "~/org/agenda/")
   (setq org-ref-directory "~/org/notes/")
@@ -554,7 +610,7 @@
 
     (setq org-capture-templates
           (quote (
-          ("a" "Appointment" entry (file org-file-inbox) (file "~/.emacs.d/templates/event.tmplt")  :clock-in t :clock-resume t)
+          ("a" "Appointment" entry (file+headline "~/org/agenda/calendar.org") (file "~/.emacs.d/templates/event.tmplt")  :clock-in t :clock-resume t)
           ("t" "Task" entry (file org-file-inbox) (file "~/.emacs.d/templates/todo.tmplt") :clock-in t :clock-resume t)
           ("n" "Note" entry (file org-file-inbox) (file "~/.emacs.d/templates/note.tmplt") :clock-in t :clock-resume t)
           ("j" "Journal" entry (file+datetree "~/org/agenda/log.org")  "** %^{Title}  :journal: \n\n %?" :clock-in t :clock-resume t)
